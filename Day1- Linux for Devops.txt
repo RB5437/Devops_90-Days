@@ -664,4 +664,151 @@ Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease 
 Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 Packages [15.0 MB]
 root@ip-172-31-33-210:~# id
 uid=0(root) gid=0(root) groups=0(root)
-root@ip-172-31-33-210:~#
+root@ip-172-31-33-210:/home# ls
+dir1  dir2  file.txt_hardlink  health.sh  nohup.out  ritik  text_soft.txt  touch.txt  touch_hardlink.txt  touch_soft.txt  ubuntu
+root@ip-172-31-33-210:/home# apt
+apt 2.8.3 (amd64)
+Usage: apt [options] command
+
+apt is a commandline package manager and provides commands for
+searching and managing as well as querying information about packages.
+It provides the same functionality as the specialized APT tools,
+like apt-get and apt-cache, but enables options more suitable for
+interactive use by default.
+
+Most used commands:
+  list - list packages based on package names
+  search - search in package descriptions
+  show - show package details
+  install - install packages
+  reinstall - reinstall packages
+  remove - remove packages
+  autoremove - automatically remove all unused packages
+  update - update list of available packages
+  upgrade - upgrade the system by installing/upgrading packages
+  full-upgrade - upgrade the system by removing/installing/upgrading packages
+  edit-sources - edit the source information file
+  satisfy - satisfy dependency strings
+
+See apt(8) for more information about the available commands.
+Configuration options and syntax is detailed in apt.conf(5).
+Information about how to configure sources can be found in sources.list(5).
+Package and version choices can be expressed via apt_preferences(5).
+Security details are available in apt-secure(8).
+                                        This APT has Super Cow Powers.
+root@ip-172-31-33-210:/home# apt update
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+44 packages can be upgraded. Run 'apt list --upgradable' to see them.
+root@ip-172-31-33-210:/home# useradd ritik
+root@ip-172-31-33-210:/home# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+polkitd:x:989:989:User for polkitd:/:/usr/sbin/nologin
+ec2-instance-connect:x:109:65534::/nonexistent:/usr/sbin/nologin
+_chrony:x:110:112:Chrony daemon,,,:/var/lib/chrony:/usr/sbin/nologin
+ubuntu:x:1000:1000:Ubuntu:/home/ubuntu:/bin/bash
+ritik:x:1001:1001::/home/ritik:/bin/sh
+root@ip-172-31-33-210:/home#root@ip-172-31-33-210:/home# useradd  -m misty
+root@ip-172-31-33-210:/home# ls
+dir1  dir2  file.txt_hardlink  health.sh  misty  nohup.out  ritik  text_soft.txt  touch.txt  touch_hardlink.txt  touch_soft.txt  ubuntu
+root@ip-172-31-33-210:/home#root@ip-172-31-33-210:/home# ls
+dir1  dir2  file.txt_hardlink  health.sh  misty  nohup.out  ritik  text_soft.txt  touch.txt  touch_hardlink.txt  touch_soft.txt  ubuntu
+root@ip-172-31-33-210:/home# su ritik
+$ ls
+dir1  dir2  file.txt_hardlink  health.sh  misty  nohup.out  ritik  text_soft.txt  touch.txt  touch_hardlink.txt  touch_soft.txt  ubuntu
+$ exit
+root@ip-172-31-33-210:/home# passwd ritik
+New password:
+Retype new password:
+passwd: password updated successfully
+root@ip-172-31-33-210:/home# userdel ritik
+root@ip-172-31-33-210:/home# cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+root@ip-172-31-33-210:/home# ls
+dir1  dir2  file.txt_hardlink  health.sh  nohup.out  ritik  text_soft.txt  touch.txt  touch_hardlink.txt  touch_soft.txt  ubuntu
+root@ip-172-31-33-210:/home# groupadd devops
+root@ip-172-31-33-210:/home# cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+netdev:x:111:
+_chrony:x:112:
+ubuntu:x:1000:
+devops:x:1001:
+root@ip-172-31-33-210:/home#
+root@ip-172-31-33-210:/home# umask
+0022
+root@ip-172-31-33-210:/home# ls -l
+total 36
+drwxr-xr-x 2 root   root   4096 Apr 13 07:56 dir1
+drwxr-xr-x 2 root   root   4096 Apr 13 06:56 dir2
+-rw-r--r-- 1 root   root     71 Apr 13 07:57 file.txt_hardlink
+-rwxr--r-- 1 root   root    876 Apr 13 08:13 health.sh
+-rw------- 1 root   root   1720 Apr 13 08:16 nohup.out
+drwxr-xr-x 2 root   root   4096 Apr 13 07:48 ritik
+lrwxrwxrwx 1 root   root      8 Apr 13 07:15 text_soft.txt -> text.txt
+-rw-r--r-- 2 root   root    129 Apr 13 08:02 touch.txt
+-rw-r--r-- 2 root   root    129 Apr 13 08:02 touch_hardlink.txt
+lrwxrwxrwx 1 root   root      9 Apr 13 07:59 touch_soft.txt -> touch.txt
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 13 08:35 ubuntu
+root@ip-172-31-33-210:/home# chmod 755 nohup.out
+root@ip-172-31-33-210:/home# ls -l nohup.out
+-rwxr-xr-x 1 root root 1720 Apr 13 08:16 nohup.out
+root@ip-172-31-33-210:/home#
+root@ip-172-31-33-210:/home# ls -l
+total 36
+drwxr-xr-x 2 root   root   4096 Apr 13 07:56 dir1
+drwxr-xr-x 2 root   root   4096 Apr 13 06:56 dir2
+-rw-r--r-- 1 root   root     71 Apr 13 07:57 file.txt_hardlink
+-rwxr--r-- 1 root   root    876 Apr 13 08:13 health.sh
+-rwxr-xr-x 1 root   root   1720 Apr 13 08:16 nohup.out
+drwxr-xr-x 2 root   root   4096 Apr 13 07:48 ritik
+lrwxrwxrwx 1 root   root      8 Apr 13 07:15 text_soft.txt -> text.txt
+-rw-r--r-- 2 root   root    129 Apr 13 08:02 touch.txt
+-rw-r--r-- 2 root   root    129 Apr 13 08:02 touch_hardlink.txt
+lrwxrwxrwx 1 root   root      9 Apr 13 07:59 touch_soft.txt -> touch.txt
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 13 08:35 ubuntu
+root@ip-172-31-33-210:/home# chown  ritik touch.txt
+root@ip-172-31-33-210:/home# ls -l
+total 36
+drwxr-xr-x 2 root   root   4096 Apr 13 07:56 dir1
+drwxr-xr-x 2 root   root   4096 Apr 13 06:56 dir2
+-rw-r--r-- 1 root   root     71 Apr 13 07:57 file.txt_hardlink
+-rwxr--r-- 1 root   root    876 Apr 13 08:13 health.sh
+-rwxr-xr-x 1 root   root   1720 Apr 13 08:16 nohup.out
+drwxr-xr-x 2 root   root   4096 Apr 13 07:48 ritik
+lrwxrwxrwx 1 root   root      8 Apr 13 07:15 text_soft.txt -> text.txt
+-rw-r--r-- 2 ritik  root    129 Apr 13 08:02 touch.txt
+-rw-r--r-- 2 ritik  root    129 Apr 13 08:02 touch_hardlink.txt
+lrwxrwxrwx 1 root   root      9 Apr 13 07:59 touch_soft.txt -> touch.txt
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 13 08:35 ubuntu
+root@ip-172-31-33-210:/home#
+root@ip-172-31-33-210:/home# chgrp devops touch.txt
+root@ip-172-31-33-210:/home# ls -l
+total 36
+drwxr-xr-x 2 root   root   4096 Apr 13 07:56 dir1
+drwxr-xr-x 2 root   root   4096 Apr 13 06:56 dir2
+-rw-r--r-- 1 root   root     71 Apr 13 07:57 file.txt_hardlink
+-rwxr--r-- 1 root   root    876 Apr 13 08:13 health.sh
+-rwxr-xr-x 1 root   root   1720 Apr 13 08:16 nohup.out
+drwxr-xr-x 2 root   root   4096 Apr 13 07:48 ritik
+lrwxrwxrwx 1 root   root      8 Apr 13 07:15 text_soft.txt -> text.txt
+-rw-r--r-- 2 ritik  devops  129 Apr 13 08:02 touch.txt
+-rw-r--r-- 2 ritik  devops  129 Apr 13 08:02 touch_hardlink.txt
+lrwxrwxrwx 1 root   root      9 Apr 13 07:59 touch_soft.txt -> touch.txt
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 13 08:35 ubuntu
