@@ -1,0 +1,1383 @@
+root@ip-172-31-39-73:/# ls
+bin                boot  etc   lib                lib64       media  opt   root  sbin                snap  sys  usr
+bin.usr-is-merged  dev   home  lib.usr-is-merged  lost+found  mnt    proc  run   sbin.usr-is-merged  srv   tmp  var
+root@ip-172-31-39-73:/# cd home/
+root@ip-172-31-39-73:/home# ls
+ubuntu
+root@ip-172-31-39-73:/home# mkdir dir1
+root@ip-172-31-39-73:/home# mkdir dir2
+root@ip-172-31-39-73:/home# touch file.txt
+root@ip-172-31-39-73:/home# touch file.txt
+root@ip-172-31-39-73:/home# cat file.txt
+root@ip-172-31-39-73:/home# head -3 file.txt
+root@ip-172-31-39-73:/home# tail -3 file.txt
+root@ip-172-31-39-73:/home# echo "my name is ritik"| tee file.txt
+my name is ritik
+root@ip-172-31-39-73:/home# wc file.txt
+ 1  4 17 file.txt
+root@ip-172-31-39-73:/home# ln  file.txt  file_hardlink
+root@ip-172-31-39-73:/home# ls
+dir1  dir2  file.txt  file_hardlink  ubuntu
+root@ip-172-31-39-73:/home# ls -la
+total 28
+drwxr-xr-x  5 root   root   4096 Apr 14 07:00 .
+drwxr-xr-x 22 root   root   4096 Apr 14 06:51 ..
+drwxr-xr-x  2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x  2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r--  2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r--  2 root   root     17 Apr 14 06:59 file_hardlink
+drwxr-x---  4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# ls -li
+total 20
+262278 drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+262279 drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+ 33611 -rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+ 33611 -rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+262224 drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# ln -s file.txt file_softlink
+root@ip-172-31-39-73:/home# ls
+dir1  dir2  file.txt  file_hardlink  file_softlink  ubuntu
+root@ip-172-31-39-73:/home# ls -la
+total 28
+drwxr-xr-x  5 root   root   4096 Apr 14 07:02 .
+drwxr-xr-x 22 root   root   4096 Apr 14 06:51 ..
+drwxr-xr-x  2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x  2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r--  2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r--  2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx  1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+drwxr-x---  4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# cut -b 2 file.txt
+y
+root@ip-172-31-39-73:/home# diff file_hardlink file_softlink
+root@ip-172-31-39-73:/home# df -h
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/root        8.7G  2.1G  6.7G  24% /
+tmpfs            456M     0  456M   0% /dev/shm
+tmpfs            183M  884K  182M   1% /run
+tmpfs            5.0M     0  5.0M   0% /run/lock
+efivarfs         128K  3.6K  120K   3% /sys/firmware/efi/efivars
+/dev/nvme0n1p16  881M   94M  726M  12% /boot
+/dev/nvme0n1p15  105M  6.2M   99M   6% /boot/efi
+tmpfs             92M   12K   92M   1% /run/user/1000
+root@ip-172-31-39-73:/home# df -T
+Filesystem      Type     1K-blocks    Used Available Use% Mounted on
+/dev/root       ext4       9065864 2126296   6923184  24% /
+tmpfs           tmpfs       466664       0    466664   0% /dev/shm
+tmpfs           tmpfs       186668     884    185784   1% /run
+tmpfs           tmpfs         5120       0      5120   0% /run/lock
+efivarfs        efivarfs       128       4       120   3% /sys/firmware/efi/efivars
+/dev/nvme0n1p16 ext4        901520   95584    742808  12% /boot
+/dev/nvme0n1p15 vfat        106832    6250    100582   6% /boot/efi
+tmpfs           tmpfs        93332      12     93320   1% /run/user/1000
+root@ip-172-31-39-73:/home# df -m
+Filesystem      1M-blocks  Used Available Use% Mounted on
+/dev/root            8854  2077      6761  24% /
+tmpfs                 456     0       456   0% /dev/shm
+tmpfs                 183     1       182   1% /run
+tmpfs                   5     0         5   0% /run/lock
+efivarfs                1     1         1   3% /sys/firmware/efi/efivars
+/dev/nvme0n1p16       881    94       726  12% /boot
+/dev/nvme0n1p15       105     7        99   6% /boot/efi
+tmpfs                  92     1        92   1% /run/user/1000
+root@ip-172-31-39-73:/home# free
+               total        used        free      shared  buff/cache   available
+Mem:          933332      383568      126504        2772      589012      549764
+Swap:              0           0           0
+root@ip-172-31-39-73:/home# free -h
+               total        used        free      shared  buff/cache   available
+Mem:           911Mi       374Mi       123Mi       2.7Mi       575Mi       536Mi
+Swap:             0B          0B          0B
+root@ip-172-31-39-73:/home# du -h
+4.0K    ./ubuntu/.cache
+8.0K    ./ubuntu/.ssh
+28K     ./ubuntu
+4.0K    ./dir1
+4.0K    ./dir2
+44K     .
+root@ip-172-31-39-73:/home# du -sh
+44K     .
+root@ip-172-31-39-73:/home# du -sh /dev/nvme0n1p15
+0       /dev/nvme0n1p15
+root@ip-172-31-39-73:/home# ps -ef
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 06:51 ?        00:00:01 /sbin/init
+root           2       0  0 06:51 ?        00:00:00 [kthreadd]
+root           3       2  0 06:51 ?        00:00:00 [pool_workqueue_release]
+root           4       2  0 06:51 ?        00:00:00 [kworker/R-rcu_gp]
+root           5       2  0 06:51 ?        00:00:00 [kworker/R-sync_wq]
+root           6       2  0 06:51 ?        00:00:00 [kworker/R-kvfree_rcu_reclaim]
+root           7       2  0 06:51 ?        00:00:00 [kworker/R-slub_flushwq]
+root           8       2  0 06:51 ?        00:00:00 [kworker/R-netns]
+root           9       2  0 06:51 ?        00:00:00 [kworker/0:0-cgroup_free]
+root          11       2  0 06:51 ?        00:00:00 [kworker/0:0H-events_highpri]
+root          12       2  0 06:51 ?        00:00:00 [kworker/u8:0-events_power_efficient]
+root          13       2  0 06:51 ?        00:00:00 [kworker/R-mm_percpu_wq]
+root          14       2  0 06:51 ?        00:00:00 [ksoftirqd/0]
+root          15       2  0 06:51 ?        00:00:00 [rcu_sched]
+root          16       2  0 06:51 ?        00:00:00 [rcu_exp_par_gp_kthread_worker/0]
+root          17       2  0 06:51 ?        00:00:00 [rcu_exp_gp_kthread_worker]
+root          18       2  0 06:51 ?        00:00:00 [migration/0]
+root          19       2  0 06:51 ?        00:00:00 [idle_inject/0]
+root          20       2  0 06:51 ?        00:00:00 [cpuhp/0]
+root          21       2  0 06:51 ?        00:00:00 [cpuhp/1]
+root          22       2  0 06:51 ?        00:00:00 [idle_inject/1]
+root          23       2  0 06:51 ?        00:00:00 [migration/1]
+root          24       2  0 06:51 ?        00:00:00 [ksoftirqd/1]
+root          26       2  0 06:51 ?        00:00:00 [kworker/1:0H-events_highpri]
+root          27       2  0 06:51 ?        00:00:00 [kdevtmpfs]
+root          28       2  0 06:51 ?        00:00:00 [kworker/R-inet_frag_wq]
+root          29       2  0 06:51 ?        00:00:00 [rcu_tasks_rude_kthread]
+root          30       2  0 06:51 ?        00:00:00 [rcu_tasks_trace_kthread]
+root          31       2  0 06:51 ?        00:00:00 [kauditd]
+root          32       2  0 06:51 ?        00:00:00 [khungtaskd]
+root          33       2  0 06:51 ?        00:00:00 [kworker/u8:1-events_power_efficient]
+root          34       2  0 06:51 ?        00:00:00 [oom_reaper]
+root          35       2  0 06:51 ?        00:00:00 [kworker/R-writeback]
+root          36       2  0 06:51 ?        00:00:00 [kworker/u8:2-events_unbound]
+root          37       2  0 06:51 ?        00:00:00 [kcompactd0]
+root          38       2  0 06:51 ?        00:00:00 [ksmd]
+root          39       2  0 06:51 ?        00:00:00 [khugepaged]
+root          40       2  0 06:51 ?        00:00:00 [kworker/R-kblockd]
+root          41       2  0 06:51 ?        00:00:00 [kworker/R-blkcg_punt_bio]
+root          42       2  0 06:51 ?        00:00:00 [kworker/R-kintegrityd]
+root          43       2  0 06:51 ?        00:00:00 [kworker/1:1-events]
+root          44       2  0 06:51 ?        00:00:00 [irq/9-acpi]
+root          45       2  0 06:51 ?        00:00:00 [kworker/R-tpm_dev_wq]
+root          46       2  0 06:51 ?        00:00:00 [kworker/R-ata_sff]
+root          47       2  0 06:51 ?        00:00:00 [kworker/R-md]
+root          48       2  0 06:51 ?        00:00:00 [kworker/R-md_bitmap]
+root          49       2  0 06:51 ?        00:00:00 [kworker/R-edac-poller]
+root          50       2  0 06:51 ?        00:00:00 [kworker/R-devfreq_wq]
+root          51       2  0 06:51 ?        00:00:00 [watchdogd]
+root          52       2  0 06:51 ?        00:00:00 [kworker/R-quota_events_unbound]
+root          53       2  0 06:51 ?        00:00:00 [kworker/0:1H-kblockd]
+root          54       2  0 06:51 ?        00:00:00 [kswapd0]
+root          55       2  0 06:51 ?        00:00:00 [ecryptfs-kthread]
+root          56       2  0 06:51 ?        00:00:00 [kworker/R-kthrotld]
+root          57       2  0 06:51 ?        00:00:00 [kworker/R-acpi_thermal_pm]
+root          58       2  0 06:51 ?        00:00:00 [kworker/R-nvme-wq]
+root          59       2  0 06:51 ?        00:00:00 [kworker/R-nvme-reset-wq]
+root          60       2  0 06:51 ?        00:00:00 [kworker/R-nvme-delete-wq]
+root          61       2  0 06:51 ?        00:00:00 [kworker/R-nvme-auth-wq]
+root          62       2  0 06:51 ?        00:00:00 [kworker/u8:3-events_power_efficient]
+root          64       2  0 06:51 ?        00:00:00 [kworker/R-mld]
+root          65       2  0 06:51 ?        00:00:00 [kworker/1:1H-kblockd]
+root          66       2  0 06:51 ?        00:00:00 [kworker/R-ipv6_addrconf]
+root          67       2  0 06:51 ?        00:00:00 [kworker/R-kstrp]
+root          69       2  0 06:51 ?        00:00:00 [kworker/u9:0]
+root          80       2  0 06:51 ?        00:00:00 [kworker/R-charger_manager]
+root          81       2  0 06:51 ?        00:00:00 [jbd2/nvme0n1p1-8]
+root          82       2  0 06:51 ?        00:00:00 [kworker/R-ext4-rsv-conversion]
+root         121       1  0 06:51 ?        00:00:00 /usr/lib/systemd/systemd-journald
+root         141       2  0 06:51 ?        00:00:00 [kworker/R-kmpathd]
+root         142       2  0 06:51 ?        00:00:00 [kworker/R-kmpath_handlerd]
+root         183       1  0 06:51 ?        00:00:00 /sbin/multipathd -d -s
+root         190       2  0 06:51 ?        00:00:00 [kworker/0:3-cgroup_release]
+root         196       1  0 06:51 ?        00:00:00 /usr/lib/systemd/systemd-udevd
+root         209       2  0 06:51 ?        00:00:00 [psimon]
+root         253       2  0 06:51 ?        00:00:00 [kworker/R-ena]
+root         282       2  0 06:51 ?        00:00:00 [jbd2/nvme0n1p16-8]
+root         283       2  0 06:51 ?        00:00:00 [kworker/R-ext4-rsv-conversion]
+systemd+     333       1  0 06:51 ?        00:00:00 /usr/lib/systemd/systemd-resolved
+systemd+     519       1  0 06:51 ?        00:00:00 /usr/lib/systemd/systemd-networkd
+root         631       1  0 06:51 ?        00:00:00 /usr/sbin/acpid
+root         635       1  0 06:51 ?        00:00:00 /usr/sbin/cron -f -P
+message+     636       1  0 06:51 ?        00:00:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --syslog-only
+root         641       1  0 06:51 ?        00:00:00 /usr/sbin/irqbalance
+root         644       1  0 06:51 ?        00:00:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+polkitd      646       1  0 06:51 ?        00:00:00 /usr/lib/polkit-1/polkitd --no-debug
+root         651       1  0 06:51 ?        00:00:00 /usr/lib/snapd/snapd
+root         657       1  0 06:51 ?        00:00:00 /usr/lib/systemd/systemd-logind
+root         663       1  0 06:51 ?        00:00:00 /usr/libexec/udisks2/udisksd
+root         736       1  0 06:51 ttyS0    00:00:00 /sbin/agetty -o -p -- \u --keep-baud 115200,57600,38400,9600 - vt220
+_chrony      742       1  0 06:51 ?        00:00:00 /usr/sbin/chronyd -F 1
+_chrony      747     742  0 06:51 ?        00:00:00 /usr/sbin/chronyd -F 1
+root         769       1  0 06:51 ?        00:00:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+syslog       829       1  0 06:51 ?        00:00:00 /usr/sbin/rsyslogd -n -iNONE
+root         865       1  0 06:51 ?        00:00:00 /usr/sbin/ModemManager
+root         867       1  0 06:51 tty1     00:00:00 /sbin/agetty -o -p -- \u --noclear - linux
+root        1008       1  0 06:51 ?        00:00:00 /snap/amazon-ssm-agent/12322/amazon-ssm-agent
+root        1074       1  0 06:52 ?        00:00:00 sshd: /usr/sbin/sshd -D -o AuthorizedKeysCommand /usr/share/ec2-instance-connect/eic_run_authorized_keys
+root        1075    1074  0 06:52 ?        00:00:00 sshd: ubuntu [priv]
+root        1078       2  0 06:52 ?        00:00:00 [psimon]
+ubuntu      1080       1  0 06:52 ?        00:00:00 /usr/lib/systemd/systemd --user
+ubuntu      1081    1080  0 06:52 ?        00:00:00 (sd-pam)
+ubuntu      1185    1075  0 06:52 ?        00:00:01 sshd: ubuntu@pts/0
+ubuntu      1188    1185  0 06:52 pts/0    00:00:00 -bash
+root        1232       2  0 06:52 ?        00:00:00 [kworker/R-tls-strp]
+root        1549    1188  0 06:53 pts/0    00:00:00 sudo su -
+root        1550    1549  0 06:53 pts/1    00:00:00 sudo su -
+root        1551    1550  0 06:53 pts/1    00:00:00 su -
+root        1552    1551  0 06:53 pts/1    00:00:00 -bash
+root        1590       2  0 06:57 ?        00:00:00 [kworker/1:0-cgroup_free]
+root        1620       2  0 07:00 ?        00:00:00 [kworker/0:1-events]
+root        1656       2  0 07:06 ?        00:00:00 [kworker/1:2]
+root        1673    1552  0 07:09 pts/1    00:00:00 ps -ef
+root@ip-172-31-39-73:/home# ps -aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.1  1.4  22648 13744 ?        Ss   06:51   0:01 /sbin/init
+root           2  0.0  0.0      0     0 ?        S    06:51   0:00 [kthreadd]
+root           3  0.0  0.0      0     0 ?        S    06:51   0:00 [pool_workqueue_release]
+root           4  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-rcu_gp]
+root           5  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-sync_wq]
+root           6  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kvfree_rcu_reclaim]
+root           7  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-slub_flushwq]
+root           8  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-netns]
+root           9  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/0:0-cgroup_free]
+root          11  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/0:0H-events_highpri]
+root          12  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/u8:0-events_power_efficient]
+root          13  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-mm_percpu_wq]
+root          14  0.0  0.0      0     0 ?        S    06:51   0:00 [ksoftirqd/0]
+root          15  0.0  0.0      0     0 ?        I    06:51   0:00 [rcu_sched]
+root          16  0.0  0.0      0     0 ?        S    06:51   0:00 [rcu_exp_par_gp_kthread_worker/0]
+root          17  0.0  0.0      0     0 ?        S    06:51   0:00 [rcu_exp_gp_kthread_worker]
+root          18  0.0  0.0      0     0 ?        S    06:51   0:00 [migration/0]
+root          19  0.0  0.0      0     0 ?        S    06:51   0:00 [idle_inject/0]
+root          20  0.0  0.0      0     0 ?        S    06:51   0:00 [cpuhp/0]
+root          21  0.0  0.0      0     0 ?        S    06:51   0:00 [cpuhp/1]
+root          22  0.0  0.0      0     0 ?        S    06:51   0:00 [idle_inject/1]
+root          23  0.0  0.0      0     0 ?        S    06:51   0:00 [migration/1]
+root          24  0.0  0.0      0     0 ?        S    06:51   0:00 [ksoftirqd/1]
+root          26  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/1:0H-events_highpri]
+root          27  0.0  0.0      0     0 ?        S    06:51   0:00 [kdevtmpfs]
+root          28  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-inet_frag_wq]
+root          29  0.0  0.0      0     0 ?        I    06:51   0:00 [rcu_tasks_rude_kthread]
+root          30  0.0  0.0      0     0 ?        I    06:51   0:00 [rcu_tasks_trace_kthread]
+root          31  0.0  0.0      0     0 ?        S    06:51   0:00 [kauditd]
+root          32  0.0  0.0      0     0 ?        S    06:51   0:00 [khungtaskd]
+root          33  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/u8:1-events_power_efficient]
+root          34  0.0  0.0      0     0 ?        S    06:51   0:00 [oom_reaper]
+root          35  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-writeback]
+root          36  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/u8:2-flush-259:0]
+root          37  0.0  0.0      0     0 ?        S    06:51   0:00 [kcompactd0]
+root          38  0.0  0.0      0     0 ?        SN   06:51   0:00 [ksmd]
+root          39  0.0  0.0      0     0 ?        SN   06:51   0:00 [khugepaged]
+root          40  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kblockd]
+root          41  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-blkcg_punt_bio]
+root          42  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kintegrityd]
+root          43  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/1:1-events]
+root          44  0.0  0.0      0     0 ?        S    06:51   0:00 [irq/9-acpi]
+root          45  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-tpm_dev_wq]
+root          46  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-ata_sff]
+root          47  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-md]
+root          48  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-md_bitmap]
+root          49  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-edac-poller]
+root          50  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-devfreq_wq]
+root          51  0.0  0.0      0     0 ?        S    06:51   0:00 [watchdogd]
+root          52  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-quota_events_unbound]
+root          53  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/0:1H-kblockd]
+root          54  0.0  0.0      0     0 ?        S    06:51   0:00 [kswapd0]
+root          55  0.0  0.0      0     0 ?        S    06:51   0:00 [ecryptfs-kthread]
+root          56  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kthrotld]
+root          57  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-acpi_thermal_pm]
+root          58  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-nvme-wq]
+root          59  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-nvme-reset-wq]
+root          60  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-nvme-delete-wq]
+root          61  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-nvme-auth-wq]
+root          62  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/u8:3-events_unbound]
+root          64  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-mld]
+root          65  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/1:1H-kblockd]
+root          66  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-ipv6_addrconf]
+root          67  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kstrp]
+root          69  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/u9:0]
+root          80  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-charger_manager]
+root          81  0.0  0.0      0     0 ?        S    06:51   0:00 [jbd2/nvme0n1p1-8]
+root          82  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-ext4-rsv-conversion]
+root         121  0.0  1.5  50508 14128 ?        S<s  06:51   0:00 /usr/lib/systemd/systemd-journald
+root         141  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kmpathd]
+root         142  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-kmpath_handlerd]
+root         183  0.0  2.9 288960 27292 ?        SLsl 06:51   0:00 /sbin/multipathd -d -s
+root         190  0.0  0.0      0     0 ?        I    06:51   0:00 [kworker/0:3-cgroup_release]
+root         196  0.0  0.8  26496  8320 ?        Ss   06:51   0:00 /usr/lib/systemd/systemd-udevd
+root         209  0.0  0.0      0     0 ?        S    06:51   0:00 [psimon]
+root         253  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-ena]
+root         282  0.0  0.0      0     0 ?        S    06:51   0:00 [jbd2/nvme0n1p16-8]
+root         283  0.0  0.0      0     0 ?        I<   06:51   0:00 [kworker/R-ext4-rsv-conversion]
+systemd+     333  0.0  1.3  21604 12964 ?        Ss   06:51   0:00 /usr/lib/systemd/systemd-resolved
+systemd+     519  0.0  1.0  22420  9852 ?        Ss   06:51   0:00 /usr/lib/systemd/systemd-networkd
+root         631  0.0  0.2   2728  2016 ?        Ss   06:51   0:00 /usr/sbin/acpid
+root         635  0.0  0.3   7232  2816 ?        Ss   06:51   0:00 /usr/sbin/cron -f -P
+message+     636  0.0  0.6   9816  5680 ?        Ss   06:51   0:00 @dbus-daemon --system --address=systemd: --nofork --nopidfile --systemd-activation --sysl
+root         641  0.0  0.4  82928  4628 ?        Ssl  06:51   0:00 /usr/sbin/irqbalance
+root         644  0.0  2.2  32424 20692 ?        Ss   06:51   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+polkitd      646  0.0  1.0 383712 10028 ?        Ssl  06:51   0:00 /usr/lib/polkit-1/polkitd --no-debug
+root         651  0.0  4.0 1923412 37800 ?       Ssl  06:51   0:00 /usr/lib/snapd/snapd
+root         657  0.0  0.9  18000  8880 ?        Ss   06:51   0:00 /usr/lib/systemd/systemd-logind
+root         663  0.0  1.4 469008 13768 ?        Ssl  06:51   0:00 /usr/libexec/udisks2/udisksd
+root         736  0.0  0.2   6156  2224 ttyS0    Ss+  06:51   0:00 /sbin/agetty -o -p -- \u --keep-baud 115200,57600,38400,9600 - vt220
+_chrony      742  0.0  0.4  19412  3856 ?        S    06:51   0:00 /usr/sbin/chronyd -F 1
+_chrony      747  0.0  0.2  11084  2424 ?        S    06:51   0:00 /usr/sbin/chronyd -F 1
+root         769  0.0  2.4 110020 22928 ?        Ssl  06:51   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-si
+syslog       829  0.0  0.6 222516  6104 ?        Ssl  06:51   0:00 /usr/sbin/rsyslogd -n -iNONE
+root         865  0.0  1.3 391888 12904 ?        Ssl  06:51   0:00 /usr/sbin/ModemManager
+root         867  0.0  0.2   6112  2108 tty1     Ss+  06:51   0:00 /sbin/agetty -o -p -- \u --noclear - linux
+root        1008  0.0  2.1 1830360 20180 ?       Ssl  06:51   0:00 /snap/amazon-ssm-agent/12322/amazon-ssm-agent
+root        1074  0.0  0.8  12032  8148 ?        Ss   06:52   0:00 sshd: /usr/sbin/sshd -D -o AuthorizedKeysCommand /usr/share/ec2-instance-connect/eic_run_
+root        1075  0.0  1.1  14752 10576 ?        Ss   06:52   0:00 sshd: ubuntu [priv]
+root        1078  0.0  0.0      0     0 ?        S    06:52   0:00 [psimon]
+ubuntu      1080  0.0  1.2  20064 11368 ?        Ss   06:52   0:00 /usr/lib/systemd/systemd --user
+ubuntu      1081  0.0  0.3  21160  3568 ?        S    06:52   0:00 (sd-pam)
+ubuntu      1185  0.1  0.7  15008  7224 ?        S    06:52   0:01 sshd: ubuntu@pts/0
+ubuntu      1188  0.0  0.5   9068  5420 pts/0    Ss   06:52   0:00 -bash
+root        1232  0.0  0.0      0     0 ?        I<   06:52   0:00 [kworker/R-tls-strp]
+root        1549  0.0  0.7  17140  7028 pts/0    S+   06:53   0:00 sudo su -
+root        1550  0.0  0.2  17140  2588 pts/1    Ss   06:53   0:00 sudo su -
+root        1551  0.0  0.4   9816  4404 pts/1    S    06:53   0:00 su -
+root        1552  0.0  0.5   9200  5504 pts/1    S    06:53   0:00 -bash
+root        1590  0.0  0.0      0     0 ?        I    06:57   0:00 [kworker/1:0-cgroup_free]
+root        1620  0.0  0.0      0     0 ?        I    07:00   0:00 [kworker/0:1-events]
+root        1656  0.0  0.0      0     0 ?        I    07:06   0:00 [kworker/1:2]
+root        1674  0.0  0.5  12628  5312 pts/1    R+   07:09   0:00 ps -aux
+root@ip-172-31-39-73:/home# top
+top - 07:09:25 up 18 min,  1 user,  load average: 0.00, 0.00, 0.01
+Tasks: 113 total,   1 running, 112 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.2 sy,  0.0 ni, 99.8 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :    911.5 total,    121.8 free,    374.8 used,    576.8 buff/cache
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.    536.7 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+   1185 ubuntu    20   0   15008   7224   5248 S   0.3   0.8   0:01.13 sshd
+      1 root      20   0   22648  13744   9564 S   0.0   1.5   0:01.73 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kthreadd
+      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_workqueue_release
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-rcu_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-sync_wq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-kvfree_rcu_reclaim
+      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-slub_flushwq
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-netns
+      9 root      20   0       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0-cgroup_free
+     11 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+     12 root      20   0       0      0      0 I   0.0   0.0   0:00.15 kworker/u8:0-events_unbound
+     13 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-mm_percpu_wq
+     14 root      20   0       0      0      0 S   0.0   0.0   0:00.01 ksoftirqd/0
+     15 root      20   0       0      0      0 I   0.0   0.0   0:00.07 rcu_sched
+     16 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_exp_par_gp_kthread_worker/0
+     17 root      20   0       0      0      0 S   0.0   0.0   0:00.00 rcu_exp_gp_kthread_worker
+     18 root      rt   0       0      0      0 S   0.0   0.0   0:00.00 migration/0
+     19 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/0
+     20 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/0
+     21 root      20   0       0      0      0 S   0.0   0.0   0:00.00 cpuhp/1
+     22 root     -51   0       0      0      0 S   0.0   0.0   0:00.00 idle_inject/1
+     23 root      rt   0       0      0      0 S   0.0   0.0   0:00.04 migration/1
+     24 root      20   0       0      0      0 S   0.0   0.0   0:00.01 ksoftirqd/1
+     26 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/1:0H-events_highpri
+     27 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kdevtmpfs
+     28 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-inet_frag_wq
+     29 root      20   0       0      0      0 I   0.0   0.0   0:00.00 rcu_tasks_rude_kthread
+     30 root      20   0       0      0      0 I   0.0   0.0   0:00.00 rcu_tasks_trace_kthread
+     31 root      20   0       0      0      0 S   0.0   0.0   0:00.00 kauditd
+     32 root      20   0       0      0      0 S   0.0   0.0   0:00.00 khungtaskd
+     33 root      20   0       0      0      0 I   0.0   0.0   0:00.16 kworker/u8:1-events_power_efficient
+     34 root      20   0       0      0      0 S   0.0   0.0   0:00.00 oom_reaper
+     35 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-writeback
+[1]+  Stopped                 top
+root@ip-172-31-39-73:/home# kill -g 34
+-bash: kill: g: invalid signal specification
+root@ip-172-31-39-73:/home# ls
+dir1  dir2  file.txt  file_hardlink  file_softlink  ubuntu
+root@ip-172-31-39-73:/home# vmstat 2
+procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu
+ 2  0      0 124512  12908 577812    0    0   334   726  143    0  1  0 98  0  0  0
+ 0  0      0 124512  12908 577852    0    0     0     0  148   92  0  0 100  0  0  0
+ 0  0      0 124512  12908 577852    0    0     0     0   59   57  0  0 100  0  0  0
+ 0  0      0 124512  12908 577852    0    0     0     0   34   43  0  0 100  0  0  0
+ 0  0      0 124512  12908 577852    0    0     0     0   37   41  0  0 100  0  0  0
+^Z
+[2]+  Stopped                 vmstat 2
+root@ip-172-31-39-73:/home# uname
+Linux
+root@ip-172-31-39-73:/home# uname -a
+Linux ip-172-31-39-73 6.17.0-1007-aws #7~24.04.1-Ubuntu SMP Thu Jan 22 21:04:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+root@ip-172-31-39-73:/home# uptime
+ 07:12:20 up 21 min,  1 user,  load average: 0.00, 0.00, 0.00
+root@ip-172-31-39-73:/home# date
+Tue Apr 14 07:12:53 UTC 2026
+root@ip-172-31-39-73:/home# who
+ubuntu   pts/0        2026-04-14 06:52 (223.185.36.26)
+ubuntu   pts/1        2026-04-14 06:53 (223.185.36.26)
+root@ip-172-31-39-73:/home# whoami
+root
+root@ip-172-31-39-73:/home# which ls
+/usr/bin/ls
+root@ip-172-31-39-73:/home# which sudo
+/usr/bin/sudo
+root@ip-172-31-39-73:/home# id
+uid=0(root) gid=0(root) groups=0(root)
+root@ip-172-31-39-73:/home# which apt
+/usr/bin/apt
+root@ip-172-31-39-73:/home# useradd ritik
+root@ip-172-31-39-73:/home# useradd misty
+root@ip-172-31-39-73:/home# passwd ritik
+New password:
+Retype new password:
+passwd: password updated successfully
+root@ip-172-31-39-73:/home# passwd misty
+New password:
+Retype new password:
+passwd: password updated successfully
+root@ip-172-31-39-73:/home# su ritik
+$ exit
+root@ip-172-31-39-73:/home# userdel misty
+root@ip-172-31-39-73:/home# groupadd devops
+root@ip-172-31-39-73:/home# cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,ubuntu
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:ubuntu
+floppy:x:25:
+tape:x:26:
+sudo:x:27:ubuntu
+audio:x:29:
+dip:x:30:ubuntu
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+shadow:x:42:
+utmp:x:43:
+video:x:44:
+sasl:x:45:
+plugdev:x:46:
+staff:x:50:
+games:x:60:
+users:x:100:
+nogroup:x:65534:
+systemd-journal:x:999:
+systemd-network:x:998:
+crontab:x:997:
+systemd-timesync:x:996:
+input:x:995:
+sgx:x:994:
+kvm:x:993:
+render:x:992:
+messagebus:x:101:
+syslog:x:102:
+systemd-resolve:x:991:
+uuidd:x:103:
+tss:x:104:
+lxd:x:105:ubuntu
+_ssh:x:106:
+rdma:x:107:
+tcpdump:x:108:
+landscape:x:109:
+fwupd-refresh:x:990:
+polkitd:x:989:
+admin:x:110:
+netdev:x:111:
+_chrony:x:112:
+ubuntu:x:1000:
+ritik:x:1001:
+devops:x:1002:
+root@ip-172-31-39-73:/home# gpasswd -a ritik devops
+Adding user ritik to group devops
+root@ip-172-31-39-73:/home# cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,ubuntu
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:ubuntu
+floppy:x:25:
+tape:x:26:
+sudo:x:27:ubuntu
+audio:x:29:
+dip:x:30:ubuntu
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+shadow:x:42:
+utmp:x:43:
+video:x:44:
+sasl:x:45:
+plugdev:x:46:
+staff:x:50:
+games:x:60:
+users:x:100:
+nogroup:x:65534:
+systemd-journal:x:999:
+systemd-network:x:998:
+crontab:x:997:
+systemd-timesync:x:996:
+input:x:995:
+sgx:x:994:
+kvm:x:993:
+render:x:992:
+messagebus:x:101:
+syslog:x:102:
+systemd-resolve:x:991:
+uuidd:x:103:
+tss:x:104:
+lxd:x:105:ubuntu
+_ssh:x:106:
+rdma:x:107:
+tcpdump:x:108:
+landscape:x:109:
+fwupd-refresh:x:990:
+polkitd:x:989:
+admin:x:110:
+netdev:x:111:
+_chrony:x:112:
+ubuntu:x:1000:
+ritik:x:1001:
+devops:x:1002:ritik
+root@ip-172-31-39-73:/home# umask
+0022
+root@ip-172-31-39-73:/home# ls -l
+total 20
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# touch script.sh
+root@ip-172-31-39-73:/home# ls -l
+total 20
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rw-r--r-- 1 root   root      0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# chmod 755 script.sh
+root@ip-172-31-39-73:/home# ls -l
+total 20
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 root   root      0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# chown ritik script.sh
+root@ip-172-31-39-73:/home# ls -l script.sh
+-rwxr-xr-x 1 ritik root 0 Apr 14 07:20 script.sh
+root@ip-172-31-39-73:/home# chgrp ritik script.sh
+root@ip-172-31-39-73:/home# ls -l script.sh
+-rwxr-xr-x 1 ritik ritik 0 Apr 14 07:20 script.sh
+root@ip-172-31-39-73:/home# ls -l script.sh
+
+======Day2=====================
+
+root@ip-172-31-39-73:/home# ls -l
+total 20
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 ritik  ritik     0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# zip archive_file.txt file.txt
+Command 'zip' not found, but can be installed with:
+apt install zip
+root@ip-172-31-39-73:/home# apt install zip
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  unzip
+The following NEW packages will be installed:
+  unzip zip
+0 upgraded, 2 newly installed, 0 to remove and 44 not upgraded.
+Need to get 350 kB of archives.
+After this operation, 933 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 unzip amd64 6.0-28ubuntu4.1 [174 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 zip amd64 3.0-13ubuntu0.2 [176 kB]
+Fetched 350 kB in 0s (16.6 MB/s)
+Selecting previously unselected package unzip.
+(Reading database ... 72566 files and directories currently installed.)
+Preparing to unpack .../unzip_6.0-28ubuntu4.1_amd64.deb ...
+Unpacking unzip (6.0-28ubuntu4.1) ...
+Selecting previously unselected package zip.
+Preparing to unpack .../zip_3.0-13ubuntu0.2_amd64.deb ...
+Unpacking zip (3.0-13ubuntu0.2) ...
+Setting up unzip (6.0-28ubuntu4.1) ...
+Setting up zip (3.0-13ubuntu0.2) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# zip archive_file.txt file.txt
+  adding: file.txt (stored 0%)
+root@ip-172-31-39-73:/home# ls
+archive_file.txt  dir1  dir2  file.txt  file_hardlink  file_softlink  script.sh  ubuntu
+root@ip-172-31-39-73:/home# ls -l archive_file.txt
+-rw-r--r-- 1 root root 183 Apr 14 07:29 archive_file.txt
+root@ip-172-31-39-73:/home# du -sh archive_file.txt
+4.0K    archive_file.txt
+root@ip-172-31-39-73:/home# gzip archive_file.txt
+root@ip-172-31-39-73:/home# du -sh archive_file.txt.gz
+4.0K    archive_file.txt.gz
+root@ip-172-31-39-73:/home# du -sh file.txt
+4.0K    file.txt
+root@ip-172-31-39-73:/home# gzip file.txt
+gzip: file.txt has 1 other link -- file ignored
+root@ip-172-31-39-73:/home# ls -la
+total 32
+drwxr-xr-x  5 root   root   4096 Apr 14 07:30 .
+drwxr-xr-x 22 root   root   4096 Apr 14 06:51 ..
+-rw-r--r--  1 root   root    148 Apr 14 07:29 archive_file.txt.gz
+drwxr-xr-x  2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x  2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r--  2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r--  2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx  1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x  1 ritik  ritik     0 Apr 14 07:20 script.sh
+drwxr-x---  4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# gzip script.sh
+root@ip-172-31-39-73:/home# ls -l
+total 28
+-rw-r--r-- 1 root   root    148 Apr 14 07:29 archive_file.txt.gz
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 ritik  ritik    30 Apr 14 07:20 script.sh.gz
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# gunzip script.sh.gz
+root@ip-172-31-39-73:/home# ls -l
+total 24
+-rw-r--r-- 1 root   root    148 Apr 14 07:29 archive_file.txt.gz
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 2 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 ritik  ritik     0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# gunzip archive_file.txt.gz
+root@ip-172-31-39-73:/home# ls-l archive_file.txt
+ls-l: command not found
+root@ip-172-31-39-73:/home# ls -l archive_file.txt
+-rw-r--r-- 1 root root 183 Apr 14 07:29 archive_file.txt
+root@ip-172-31-39-73:/home# unzip archive_file.txt
+Archive:  archive_file.txt
+replace file.txt? [y]es, [n]o, [A]ll, [N]one, [r]ename: y
+ extracting: file.txt
+root@ip-172-31-39-73:/home# ls -l
+total 24
+-rw-r--r-- 1 root   root    183 Apr 14 07:29 archive_file.txt
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root   4096 Apr 14 06:57 dir2
+-rw-r--r-- 1 root   root     17 Apr 14 06:59 file.txt
+-rw-r--r-- 1 root   root     17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root      8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 ritik  ritik     0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu 4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# tar -cvf backup.tar script.sh
+script.sh
+root@ip-172-31-39-73:/home# ls -l
+total 36
+-rw-r--r-- 1 root   root     183 Apr 14 07:29 archive_file.txt
+-rw-r--r-- 1 root   root   10240 Apr 14 07:35 backup.tar
+drwxr-xr-x 2 root   root    4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root    4096 Apr 14 06:57 dir2
+-rw-r--r-- 1 root   root      17 Apr 14 06:59 file.txt
+-rw-r--r-- 1 root   root      17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root       8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 ritik  ritik      0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu  4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home# tar -xvf backup.tar
+script.sh
+root@ip-172-31-39-73:/home# ls -l
+total 36
+-rw-r--r-- 1 root   root     183 Apr 14 07:29 archive_file.txt
+-rw-r--r-- 1 root   root   10240 Apr 14 07:35 backup.tar
+drwxr-xr-x 2 root   root    4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root    4096 Apr 14 06:57 dir2
+-rw-r--r-- 1 root   root      17 Apr 14 06:59 file.txt
+-rw-r--r-- 1 root   root      17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root       8 Apr 14 07:02 file_softlink -> file.txt
+-rwxr-xr-x 1 ritik  ritik      0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu  4096 Apr 14 06:52 ubuntu
+root@ip-172-31-39-73:/home#
+=======file Transfer ======
+
+PS C:\Users\HP\Desktop>  scp -i "C:\Users\HP\Downloads\aws.pem.pem" "C:\Users\HP\Desktop\Photos.jpg" ubuntu@ec2-13-233-113-244.ap-south-1.compute.amazonaws.com:/home/ubuntu/
+Photos.jpg                                                                                                                100%   86KB   1.0MB/s   00:00
+PS C:\Users\HP\Desktop> scp -i "C:\Users\HP\Downloads\aws.pem.pem" ubuntu@ec2-13-233-113-244.ap-south-1.compute.amazonaws.com:/home/file_hardlink .
+file_hardlink       
+   =====networking=====
+root@ip-172-31-39-73:/home# ls -l
+total 40
+-rw-r--r-- 1 root   root     183 Apr 14 07:29 archive_file.txt
+-rw-r--r-- 1 root   root   10240 Apr 14 07:35 backup.tar
+drwxr-xr-x 2 root   root    4096 Apr 14 06:57 dir1
+drwxr-xr-x 2 root   root    4096 Apr 14 06:57 dir2
+-rw-r--r-- 1 root   root      17 Apr 14 06:59 file.txt
+-rw-r--r-- 1 root   root      17 Apr 14 06:59 file_hardlink
+lrwxrwxrwx 1 root   root       8 Apr 14 07:02 file_softlink -> file.txt
+-rw-r--r-- 1 root   root     353 Apr 14 08:06 myfile.txt
+-rwxr-xr-x 1 ritik  ritik      0 Apr 14 07:20 script.sh
+drwxr-x--- 4 ubuntu ubuntu  4096 Apr 14 08:16 ubuntu
+root@ip-172-31-39-73:/home# ping amazon.com
+PING amazon.com (98.87.170.71) 56(84) bytes of data.
+^Z
+[1]+  Stopped                 ping amazon.com
+root@ip-172-31-39-73:/home# ping  google.com
+PING google.com (142.250.206.174) 56(84) bytes of data.
+64 bytes from lcboma-bg-in-f14.1e100.net (142.250.206.174): icmp_seq=1 ttl=117 time=1.69 ms
+64 bytes from lcboma-bg-in-f14.1e100.net (142.250.206.174): icmp_seq=2 ttl=117 time=1.68 ms
+64 bytes from lcboma-bg-in-f14.1e100.net (142.250.206.174): icmp_seq=3 ttl=117 time=1.70 ms
+^C
+--- google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 1.683/1.688/1.696/0.005 ms
+root@ip-172-31-39-73:/home# netstat -tulnp
+Command 'netstat' not found, but can be installed with:
+apt install net-tools
+root@ip-172-31-39-73:/home# apt install net-tools
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  net-tools
+0 upgraded, 1 newly installed, 0 to remove and 44 not upgraded.
+Need to get 204 kB of archives.
+After this operation, 811 kB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 net-tools amd64 2.10-0.1ubuntu4.4 [204 kB]
+Fetched 204 kB in 0s (14.2 MB/s)
+Selecting previously unselected package net-tools.
+(Reading database ... 72598 files and directories currently installed.)
+Preparing to unpack .../net-tools_2.10-0.1ubuntu4.4_amd64.deb ...
+Unpacking net-tools (2.10-0.1ubuntu4.4) ...
+Setting up net-tools (2.10-0.1ubuntu4.4) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# netstat -tulnp
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1/init
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      333/systemd-resolve
+tcp        0      0 127.0.0.54:53           0.0.0.0:*               LISTEN      333/systemd-resolve
+tcp6       0      0 :::22                   :::*                    LISTEN      1/init
+udp        0      0 127.0.0.54:53           0.0.0.0:*                           333/systemd-resolve
+udp        0      0 127.0.0.53:53           0.0.0.0:*                           333/systemd-resolve
+udp        0      0 172.31.39.73:68         0.0.0.0:*                           519/systemd-network
+udp        0      0 127.0.0.1:323           0.0.0.0:*                           742/chronyd
+udp6       0      0 ::1:323                 :::*                                742/chronyd
+root@ip-172-31-39-73:/home# ifconfig
+ens5: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 9001
+        inet 172.31.39.73  netmask 255.255.240.0  broadcast 172.31.47.255
+        inet6 fe80::ba:cbff:fe59:e80f  prefixlen 64  scopeid 0x20<link>
+        ether 02:ba:cb:59:e8:0f  txqueuelen 1000  (Ethernet)
+        RX packets 87605  bytes 50641881 (50.6 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 55457  bytes 5196032 (5.1 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 554  bytes 121831 (121.8 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 554  bytes 121831 (121.8 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+root@ip-172-31-39-73:/home# traceroute google.com
+Command 'traceroute' not found, but can be installed with:
+apt install traceroute            # version 1:2.1.5-1, or
+apt install inetutils-traceroute  # version 2:2.5-3ubuntu4.1
+root@ip-172-31-39-73:/home# apt install traceroute
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  traceroute
+0 upgraded, 1 newly installed, 0 to remove and 44 not upgraded.
+Need to get 60.5 kB of archives.
+After this operation, 162 kB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 traceroute amd64 1:2.1.5-1 [60.5 kB]
+Fetched 60.5 kB in 0s (2251 kB/s)
+Selecting previously unselected package traceroute.
+(Reading database ... 72646 files and directories currently installed.)
+Preparing to unpack .../traceroute_1%3a2.1.5-1_amd64.deb ...
+Unpacking traceroute (1:2.1.5-1) ...
+Setting up traceroute (1:2.1.5-1) ...
+update-alternatives: using /usr/bin/traceroute.db to provide /usr/bin/traceroute (traceroute) in auto mode
+update-alternatives: using /usr/bin/traceroute6.db to provide /usr/bin/traceroute6 (traceroute6) in auto mode
+update-alternatives: using /usr/bin/lft.db to provide /usr/bin/lft (lft) in auto mode
+update-alternatives: using /usr/bin/traceproto.db to provide /usr/bin/traceproto (traceproto) in auto mode
+update-alternatives: using /usr/sbin/tcptraceroute.db to provide /usr/sbin/tcptraceroute (tcptraceroute) in auto mode
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# apt install inetutils-traceroute
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  inetutils-traceroute
+0 upgraded, 1 newly installed, 0 to remove and 44 not upgraded.
+Need to get 42.3 kB of archives.
+After this operation, 113 kB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 inetutils-traceroute amd64 2:2.5-3ubuntu4.1 [42.3 kB]
+Fetched 42.3 kB in 0s (96.5 kB/s)
+Selecting previously unselected package inetutils-traceroute.
+(Reading database ... 72666 files and directories currently installed.)
+Preparing to unpack .../inetutils-traceroute_2%3a2.5-3ubuntu4.1_amd64.deb ...
+Unpacking inetutils-traceroute (2:2.5-3ubuntu4.1) ...
+Setting up inetutils-traceroute (2:2.5-3ubuntu4.1) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# traceroute google.com
+traceroute to google.com (142.250.206.174), 30 hops max, 60 byte packets
+ 1  242.6.252.131 (242.6.252.131)  4.523 ms 242.6.253.3 (242.6.253.3)  4.506 ms 242.6.252.133 (242.6.252.133)  1.415 ms
+ 2  * * *
+ 3  * 99.82.178.53 (99.82.178.53)  1.600 ms *
+ 4  * * *
+ 5  142.251.64.14 (142.251.64.14)  3.836 ms 192.178.86.240 (192.178.86.240)  3.218 ms 142.250.214.110 (142.250.214.110)  1.330 ms
+ 6  72.14.237.139 (72.14.237.139)  1.619 ms 142.251.77.68 (142.251.77.68)  42.266 ms 72.14.237.139 (72.14.237.139)  1.617 ms
+ 7  del11s22-in-f14.1e100.net (142.250.206.174)  1.659 ms 192.178.110.207 (192.178.110.207)  1.770 ms 192.178.110.111 (192.178.110.111)  2.752 ms
+root@ip-172-31-39-73:/home# tracepath google.com
+ 1?: [LOCALHOST]                      pmtu 9001
+ 1:  ip-172-31-32-1.ap-south-1.compute.internal            0.075ms pmtu 1500
+ 1:  242.6.252.131                                         2.125ms asymm  6
+ 2:  no reply
+ 3:  99.82.178.53                                          1.689ms asymm 10
+ 4:  no reply
+ 5:  no reply
+^C
+root@ip-172-31-39-73:/home# mtr google.com
+root@ip-172-31-39-73:/home# nslookup google.com
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   google.com
+Address: 172.217.174.238
+Name:   google.com
+Address: 2404:6800:4009:800::200e
+
+root@ip-172-31-39-73:/home# telnet google.com 80
+Trying 172.217.174.238...
+Connected to google.com.
+Escape character is '^]'.
+^C^Z
+Connection closed by foreign host.
+root@ip-172-31-39-73:/home# hostname
+ip-172-31-39-73
+root@ip-172-31-39-73:/home# ip
+Usage: ip [ OPTIONS ] OBJECT { COMMAND | help }
+       ip [ -force ] -batch filename
+where  OBJECT := { address | addrlabel | amt | fou | help | ila | ioam | l2tp |
+                   link | macsec | maddress | monitor | mptcp | mroute | mrule |
+                   neighbor | neighbour | netconf | netns | nexthop | ntable |
+                   ntbl | route | rule | sr | tap | tcpmetrics |
+                   token | tunnel | tuntap | vrf | xfrm }
+       OPTIONS := { -V[ersion] | -s[tatistics] | -d[etails] | -r[esolve] |
+                    -h[uman-readable] | -iec | -j[son] | -p[retty] |
+                    -f[amily] { inet | inet6 | mpls | bridge | link } |
+                    -4 | -6 | -M | -B | -0 |
+                    -l[oops] { maximum-addr-flush-attempts } | -br[ief] |
+                    -o[neline] | -t[imestamp] | -ts[hort] | -b[atch] [filename] |
+                    -rc[vbuf] [size] | -n[etns] name | -N[umeric] | -a[ll] |
+                    -c[olor]}
+root@ip-172-31-39-73:/home# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc mq state UP group default qlen 1000
+    link/ether 02:ba:cb:59:e8:0f brd ff:ff:ff:ff:ff:ff
+    altname enp0s5
+    inet 172.31.39.73/20 metric 100 brd 172.31.47.255 scope global dynamic ens5
+       valid_lft 2988sec preferred_lft 2988sec
+    inet6 fe80::ba:cbff:fe59:e80f/64 scope link
+       valid_lft forever preferred_lft forever
+root@ip-172-31-39-73:/home# ip adds
+Object "adds" is unknown, try "ip help".
+root@ip-172-31-39-73:/home# iwconfig
+Command 'iwconfig' not found, but can be installed with:
+apt install wireless-tools
+root@ip-172-31-39-73:/home# apt install wireless-tools
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  libiw30t64
+The following NEW packages will be installed:
+  libiw30t64 wireless-tools
+0 upgraded, 2 newly installed, 0 to remove and 44 not upgraded.
+Need to get 128 kB of archives.
+After this operation, 364 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 libiw30t64 amd64 30~pre9-16.1ubuntu2 [18.6 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 wireless-tools amd64 30~pre9-16.1ubuntu2 [110 kB]
+Fetched 128 kB in 0s (7458 kB/s)
+Selecting previously unselected package libiw30t64:amd64.
+(Reading database ... 72675 files and directories currently installed.)
+Preparing to unpack .../libiw30t64_30~pre9-16.1ubuntu2_amd64.deb ...
+Adding 'diversion of /lib/x86_64-linux-gnu/libiw.so.30 to /lib/x86_64-linux-gnu/libiw.so.30.usr-is-merged by libiw30t64'
+Unpacking libiw30t64:amd64 (30~pre9-16.1ubuntu2) ...
+Selecting previously unselected package wireless-tools.
+Preparing to unpack .../wireless-tools_30~pre9-16.1ubuntu2_amd64.deb ...
+Unpacking wireless-tools (30~pre9-16.1ubuntu2) ...
+Setting up libiw30t64:amd64 (30~pre9-16.1ubuntu2) ...
+Removing 'diversion of /lib/x86_64-linux-gnu/libiw.so.30 to /lib/x86_64-linux-gnu/libiw.so.30.usr-is-merged by libiw30t64'
+Setting up wireless-tools (30~pre9-16.1ubuntu2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# iwconfig
+lo        no wireless extensions.
+
+ens5      no wireless extensions.
+
+root@ip-172-31-39-73:/home# ss -tulnp
+Netid    State     Recv-Q    Send-Q             Local Address:Port         Peer Address:Port    Process
+udp      UNCONN    0         0                     127.0.0.54:53                0.0.0.0:*        users:(("systemd-resolve",pid=333,fd=16))
+udp      UNCONN    0         0                  127.0.0.53%lo:53                0.0.0.0:*        users:(("systemd-resolve",pid=333,fd=14))
+udp      UNCONN    0         0              172.31.39.73%ens5:68                0.0.0.0:*        users:(("systemd-network",pid=519,fd=11))
+udp      UNCONN    0         0                      127.0.0.1:323               0.0.0.0:*        users:(("chronyd",pid=742,fd=5))
+udp      UNCONN    0         0                          [::1]:323                  [::]:*        users:(("chronyd",pid=742,fd=6))
+tcp      LISTEN    0         4096                     0.0.0.0:22                0.0.0.0:*        users:(("sshd",pid=1074,fd=3),("systemd",pid=1,fd=177))
+tcp      LISTEN    0         4096               127.0.0.53%lo:53                0.0.0.0:*        users:(("systemd-resolve",pid=333,fd=15))
+tcp      LISTEN    0         4096                  127.0.0.54:53                0.0.0.0:*        users:(("systemd-resolve",pid=333,fd=17))
+tcp      LISTEN    0         4096                        [::]:22                   [::]:*        users:(("sshd",pid=1074,fd=4),("systemd",pid=1,fd=178))
+root@ip-172-31-39-73:/home# arp -a
+ip-172-31-32-1.ap-south-1.compute.internal (172.31.32.1) at 02:b0:e8:89:96:cd [ether] on ens5
+root@ip-172-31-39-73:/home# dig google.com
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.2-Ubuntu <<>> google.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 20
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;google.com.                    IN      A
+
+;; ANSWER SECTION:
+google.com.             139     IN      A       172.217.174.238
+
+;; Query time: 1 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53) (UDP)
+;; WHEN: Tue Apr 14 08:32:58 UTC 2026
+;; MSG SIZE  rcvd: 55
+
+root@ip-172-31-39-73:/home# nc-zv google.com
+nc-zv: command not found
+root@ip-172-31-39-73:/home# nc -zv google.com
+nc: missing port number
+root@ip-172-31-39-73:/home# nc -zv google.com 80
+Connection to google.com (172.217.174.238) 80 port [tcp/http] succeeded!
+root@ip-172-31-39-73:/home# whois
+Command 'whois' not found, but can be installed with:
+apt install whois
+root@ip-172-31-39-73:/home# apt install whois
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  whois
+0 upgraded, 1 newly installed, 0 to remove and 44 not upgraded.
+Need to get 51.7 kB of archives.
+After this operation, 279 kB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 whois amd64 5.5.22 [51.7 kB]
+Fetched 51.7 kB in 0s (3664 kB/s)
+Selecting previously unselected package whois.
+(Reading database ... 72731 files and directories currently installed.)
+Preparing to unpack .../whois_5.5.22_amd64.deb ...
+Unpacking whois (5.5.22) ...
+Setting up whois (5.5.22) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# whois google.com
+   Domain Name: GOOGLE.COM
+   Registry Domain ID: 2138514_DOMAIN_COM-VRSN
+   Registrar WHOIS Server: whois.markmonitor.com
+   Registrar URL: http://www.markmonitor.com
+   Updated Date: 2019-09-09T15:39:04Z
+   Creation Date: 1997-09-15T04:00:00Z
+   Registry Expiry Date: 2028-09-14T04:00:00Z
+   Registrar: MarkMonitor Inc.
+   Registrar IANA ID: 292
+   Registrar Abuse Contact Email: abusecomplaints@markmonitor.com
+   Registrar Abuse Contact Phone: +1.2086851750
+   Domain Status: clientDeleteProhibited https://icann.org/epp#clientDeleteProhibited
+   Domain Status: clientTransferProhibited https://icann.org/epp#clientTransferProhibited
+   Domain Status: clientUpdateProhibited https://icann.org/epp#clientUpdateProhibited
+   Domain Status: serverDeleteProhibited https://icann.org/epp#serverDeleteProhibited
+   Domain Status: serverTransferProhibited https://icann.org/epp#serverTransferProhibited
+   Domain Status: serverUpdateProhibited https://icann.org/epp#serverUpdateProhibited
+   Name Server: NS1.GOOGLE.COM
+   Name Server: NS2.GOOGLE.COM
+   Name Server: NS3.GOOGLE.COM
+   Name Server: NS4.GOOGLE.COM
+   DNSSEC: unsigned
+   URL of the ICANN Whois Inaccuracy Complaint Form: https://www.icann.org/wicf/
+>>> Last update of whois database: 2026-04-14T08:33:36Z <<<
+
+For more information on Whois status codes, please visit https://icann.org/epp
+
+NOTICE: The expiration date displayed in this record is the date the
+registrar's sponsorship of the domain name registration in the registry is
+currently set to expire. This date does not necessarily reflect the expiration
+date of the domain name registrant's agreement with the sponsoring
+registrar.  Users may consult the sponsoring registrar's Whois database to
+view the registrar's reported date of expiration for this registration.
+
+TERMS OF USE: You are not authorized to access or query our Whois
+database through the use of electronic processes that are high-volume and
+automated except as reasonably necessary to register domain names or
+modify existing registrations; the Data in VeriSign Global Registry
+Services' ("VeriSign") Whois database is provided by VeriSign for
+information purposes only, and to assist persons in obtaining information
+about or related to a domain name registration record. VeriSign does not
+guarantee its accuracy. By submitting a Whois query, you agree to abide
+by the following terms of use: You agree that you may use this Data only
+for lawful purposes and that under no circumstances will you use this Data
+to: (1) allow, enable, or otherwise support the transmission of mass
+unsolicited, commercial advertising or solicitations via e-mail, telephone,
+or facsimile; or (2) enable high volume, automated, electronic processes
+that apply to VeriSign (or its computer systems). The compilation,
+repackaging, dissemination or other use of this Data is expressly
+prohibited without the prior written consent of VeriSign. You agree not to
+use electronic processes that are automated and high-volume to access or
+query the Whois database except as reasonably necessary to register
+domain names or modify existing registrations. VeriSign reserves the right
+to restrict your access to the Whois database in its sole discretion to ensure
+operational stability.  VeriSign may restrict or terminate your access to the
+Whois database for failure to abide by these terms of use. VeriSign
+reserves the right to modify these terms at any time.
+
+The Registry database contains ONLY .COM, .NET, .EDU domains and
+Registrars.
+Domain Name: google.com
+Registry Domain ID: 2138514_DOMAIN_COM-VRSN
+Registrar WHOIS Server: whois.markmonitor.com
+Registrar URL: http://www.markmonitor.com
+Updated Date: 2024-08-02T02:17:33+0000
+Creation Date: 1997-09-15T07:00:00+0000
+Registrar Registration Expiration Date: 2028-09-13T07:00:00+0000
+Registrar: MarkMonitor, Inc.
+Registrar IANA ID: 292
+Registrar Abuse Contact: https://corp.markmonitor.com/domain/ui/abuse-report
+Registrar Abuse Contact Phone: +1.2086851750
+Domain Status: clientUpdateProhibited (https://www.icann.org/epp#clientUpdateProhibited)
+Domain Status: clientTransferProhibited (https://www.icann.org/epp#clientTransferProhibited)
+Domain Status: clientDeleteProhibited (https://www.icann.org/epp#clientDeleteProhibited)
+Domain Status: serverUpdateProhibited (https://www.icann.org/epp#serverUpdateProhibited)
+Domain Status: serverTransferProhibited (https://www.icann.org/epp#serverTransferProhibited)
+Domain Status: serverDeleteProhibited (https://www.icann.org/epp#serverDeleteProhibited)
+Registrant Organization: Google LLC
+Registrant Country: US
+Registrant Email: Select Request Email Form at https://domains.markmonitor.com/whois/google.com
+Tech Email: Select Request Email Form at https://domains.markmonitor.com/whois/google.com
+Name Server: ns4.google.com
+Name Server: ns2.google.com
+Name Server: ns3.google.com
+Name Server: ns1.google.com
+DNSSEC: unsigned
+URL of the ICANN WHOIS Data Problem Reporting System: http://wdprs.internic.net/
+>>> Last update of WHOIS database: 2026-04-14T08:30:27+0000 <<<
+
+For more information on WHOIS status codes, please visit:
+  https://www.icann.org/resources/pages/epp-status-codes
+
+If you wish to contact this domain’s Registrant or Technical
+contact, and such email address is not visible above, you may do so via our web
+form, pursuant to ICANN’s Temporary Specification. To verify that you are not a
+robot, please enter your email address to receive a link to a page that
+facilitates email communication with the relevant contact(s).
+
+Web-based WHOIS:
+  https://domains.markmonitor.com/whois/contact/google.com
+
+If you have a legitimate interest in viewing the non-public WHOIS details, send
+your request and the reasons for your request to whoisrequest@markmonitor.com
+and specify the domain name in the subject line. We will review that request and
+may ask for supporting documentation and explanation.
+
+The data in MarkMonitor’s WHOIS database is provided for information purposes,
+and to assist persons in obtaining information about or related to a domain
+name’s registration record. While MarkMonitor believes the data to be accurate,
+the data is provided "as is" with no guarantee or warranties regarding its
+accuracy.
+
+By submitting a WHOIS query, you agree that you will use this data only for
+lawful purposes and that, under no circumstances will you use this data to:
+  (1) allow, enable, or otherwise support the transmission by email, telephone,
+or facsimile of mass, unsolicited, commercial advertising, or spam; or
+  (2) enable high volume, automated, or electronic processes that send queries,
+data, or email to MarkMonitor (or its systems) or the domain name contacts (or
+its systems).
+
+MarkMonitor reserves the right to modify these terms at any time.
+
+By submitting this query, you agree to abide by this policy.
+
+MarkMonitor Domain Management(TM)
+Protecting companies and consumers in a digital world.
+
+Visit MarkMonitor at https://www.markmonitor.com
+Contact us at +1.8007459229
+In Europe, at +44.02032062220
+--
+root@ip-172-31-39-73:/home# ifplugstatus etho
+Command 'ifplugstatus' not found, but can be installed with:
+apt install ifplugd
+root@ip-172-31-39-73:/home# apt install ifplugd
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  ifupdown libdaemon0
+Suggested packages:
+  wpasupplicant ppp rdnssd
+The following NEW packages will be installed:
+  ifplugd ifupdown libdaemon0
+0 upgraded, 3 newly installed, 0 to remove and 44 not upgraded.
+Need to get 137 kB of archives.
+After this operation, 475 kB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 libdaemon0 amd64 0.14-7.1ubuntu4 [13.0 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 ifplugd amd64 0.28-19.7 [58.6 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 ifupdown amd64 0.8.41ubuntu1 [65.9 kB]
+Fetched 137 kB in 0s (572 kB/s)
+Preconfiguring packages ...
+Selecting previously unselected package libdaemon0:amd64.
+(Reading database ... 72742 files and directories currently installed.)
+Preparing to unpack .../libdaemon0_0.14-7.1ubuntu4_amd64.deb ...
+Unpacking libdaemon0:amd64 (0.14-7.1ubuntu4) ...
+Selecting previously unselected package ifplugd.
+Preparing to unpack .../ifplugd_0.28-19.7_amd64.deb ...
+Unpacking ifplugd (0.28-19.7) ...
+Selecting previously unselected package ifupdown.
+Preparing to unpack .../ifupdown_0.8.41ubuntu1_amd64.deb ...
+Unpacking ifupdown (0.8.41ubuntu1) ...
+Setting up ifupdown (0.8.41ubuntu1) ...
+Creating /etc/network/interfaces.
+Created symlink /etc/systemd/system/multi-user.target.wants/networking.service → /usr/lib/systemd/system/networking.service.
+Created symlink /etc/systemd/system/network-online.target.wants/networking.service → /usr/lib/systemd/system/networking.service.
+Setting up libdaemon0:amd64 (0.14-7.1ubuntu4) ...
+Setting up ifplugd (0.28-19.7) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# ifplugstatus etho
+etho: not supported
+Failure (No such device)
+root@ip-172-31-39-73:/home# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc mq state UP group default qlen 1000
+    link/ether 02:ba:cb:59:e8:0f brd ff:ff:ff:ff:ff:ff
+    altname enp0s5
+    inet 172.31.39.73/20 metric 100 brd 172.31.47.255 scope global dynamic ens5
+       valid_lft 2768sec preferred_lft 2768sec
+    inet6 fe80::ba:cbff:fe59:e80f/64 scope link
+       valid_lft forever preferred_lft forever
+root@ip-172-31-39-73:/home# ifplugstatus ens5
+ens5: link beat detected
+root@ip-172-31-39-73:/home# route -n
+Kernel IP routing table
+Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+0.0.0.0         172.31.32.1     0.0.0.0         UG    100    0        0 ens5
+172.31.0.2      172.31.32.1     255.255.255.255 UGH   100    0        0 ens5
+172.31.32.0     0.0.0.0         255.255.240.0   U     100    0        0 ens5
+172.31.32.1     0.0.0.0         255.255.255.255 UH    100    0        0 ens5
+root@ip-172-31-39-73:/home# nmap 172.31.32.1
+Command 'nmap' not found, but can be installed with:
+snap install nmap  # version 7.95, or
+apt  install nmap  # version 7.94+git20230807.3be01efb1+dfsg-2
+See 'snap info nmap' for additional versions.
+root@ip-172-31-39-73:/home# apt  install nmap
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  libblas3 liblinear4 liblua5.4-0 libssh2-1t64 nmap-common
+Suggested packages:
+  liblinear-tools liblinear-dev ncat ndiff zenmap
+The following NEW packages will be installed:
+  libblas3 liblinear4 liblua5.4-0 libssh2-1t64 nmap nmap-common
+0 upgraded, 6 newly installed, 0 to remove and 44 not upgraded.
+Need to get 6452 kB of archives.
+After this operation, 28.0 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 libblas3 amd64 3.12.0-3build1.1 [238 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 liblinear4 amd64 2.3.0+dfsg-5build1 [42.3 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 liblua5.4-0 amd64 5.4.6-3build2 [166 kB]
+Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 libssh2-1t64 amd64 1.11.0-4.1build2 [120 kB]
+Get:5 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 nmap-common all 7.94+git20230807.3be01efb1+dfsg-3build2 [4192 kB]
+Get:6 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 nmap amd64 7.94+git20230807.3be01efb1+dfsg-3build2 [1694 kB]
+Fetched 6452 kB in 0s (21.0 MB/s)
+Selecting previously unselected package libblas3:amd64.
+(Reading database ... 72822 files and directories currently installed.)
+Preparing to unpack .../0-libblas3_3.12.0-3build1.1_amd64.deb ...
+Unpacking libblas3:amd64 (3.12.0-3build1.1) ...
+Selecting previously unselected package liblinear4:amd64.
+Preparing to unpack .../1-liblinear4_2.3.0+dfsg-5build1_amd64.deb ...
+Unpacking liblinear4:amd64 (2.3.0+dfsg-5build1) ...
+Selecting previously unselected package liblua5.4-0:amd64.
+Preparing to unpack .../2-liblua5.4-0_5.4.6-3build2_amd64.deb ...
+Unpacking liblua5.4-0:amd64 (5.4.6-3build2) ...
+Selecting previously unselected package libssh2-1t64:amd64.
+Preparing to unpack .../3-libssh2-1t64_1.11.0-4.1build2_amd64.deb ...
+Unpacking libssh2-1t64:amd64 (1.11.0-4.1build2) ...
+Selecting previously unselected package nmap-common.
+Preparing to unpack .../4-nmap-common_7.94+git20230807.3be01efb1+dfsg-3build2_all.deb ...
+Unpacking nmap-common (7.94+git20230807.3be01efb1+dfsg-3build2) ...
+Selecting previously unselected package nmap.
+Preparing to unpack .../5-nmap_7.94+git20230807.3be01efb1+dfsg-3build2_amd64.deb ...
+Unpacking nmap (7.94+git20230807.3be01efb1+dfsg-3build2) ...
+Setting up libblas3:amd64 (3.12.0-3build1.1) ...
+update-alternatives: using /usr/lib/x86_64-linux-gnu/blas/libblas.so.3 to provide /usr/lib/x86_64-linux-gnu/libblas.so.3 (libblas.so.3-x86_64-linux-gnu) in auto mode
+Setting up nmap-common (7.94+git20230807.3be01efb1+dfsg-3build2) ...
+Setting up liblua5.4-0:amd64 (5.4.6-3build2) ...
+Setting up libssh2-1t64:amd64 (1.11.0-4.1build2) ...
+Setting up liblinear4:amd64 (2.3.0+dfsg-5build1) ...
+Setting up nmap (7.94+git20230807.3be01efb1+dfsg-3build2) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.7) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@ip-172-31-39-73:/home# nmap 13.233.113.244
+Starting Nmap 7.94SVN ( https://nmap.org ) at 2026-04-14 08:36 UTC
+Note: Host seems down. If it is really up, but blocking our ping probes, try -Pn
+Nmap done: 1 IP address (0 hosts up) scanned in 3.09 seconds
+root@ip-172-31-39-73:/home# watch df -h
+
+[2]+  Stopped                 watch df -h
+root@ip-172-31-39-73:/home# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+root@ip-172-31-39-73:/home#   
