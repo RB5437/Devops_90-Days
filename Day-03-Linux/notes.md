@@ -1,4 +1,4 @@
-#  Day 03 - Notes
+
 
 ##  File & Text Processing
 - `awk` → Extracts columns from text
