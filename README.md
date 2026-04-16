@@ -9,3 +9,14 @@ So I reassessed my approach and started a structured 90-day plan where I am now 
 
 This time, my focus is on practical implementation and end-to-end project building, which has significantly improved my confidence. I am now actively preparing and ready for DevOps roles.
 
+## Overview
+Documenting my 90-day journey to become a DevOps Engineer.
+
+## Tools Covered
+- Linux
+- Git & GitHub
+- Docker
+- Kubernetes
+- CI/CD
+- Terraform
+- Monitoring
