@@ -6,7 +6,7 @@
 * Listing files (`ls`, `ls -la`)
 * Creating directories (`mkdir`)
 * Removing directories (`rm`, `rmdir`)
-* Viewing file content (`cat`, `head`, `tail`)
+* Viewing file content (`cat`, `head`, `tail`, 'less')
 * Understanding inode (`ls -i`)
 * Observed hard link and soft link
 
