@@ -2,8 +2,11 @@
 ##  File & Directory
 
 mkdir dir1 dir2
+
 touch file.txt
+
 echo "text" | tee file.txt
+
 cat file.txt
 
 ## Text Processing
