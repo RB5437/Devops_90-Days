@@ -5,6 +5,7 @@
 ```bash
 vmstat 2
 htop
+top
 uptime
 ```
 
