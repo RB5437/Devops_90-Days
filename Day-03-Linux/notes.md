@@ -1,7 +1,4 @@
-
-
-```markdown
-# 🧠 Day 03 - Notes
+#  Day 03 - Notes
 
 ##  File & Text Processing
 - `awk` → Extracts columns from text
