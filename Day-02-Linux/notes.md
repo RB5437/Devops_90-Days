@@ -32,7 +32,7 @@
 
 ---
 
-## 👤 User Commands
+##  User Commands
 
 * `who` → logged-in users
 * `whoami` → current user
