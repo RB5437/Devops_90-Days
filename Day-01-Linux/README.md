@@ -1,6 +1,6 @@
-# 📅 Day 01 - Linux Basics
+#  Day 01 - Linux Basics
 
-## 📚 Topics Covered
+##  Topics Covered
 
 * Linux file system
 * Basic commands
@@ -8,11 +8,11 @@
 * Inode concept
 * Hard link & Soft link
 
-## 🎯 Objective
+##  Objective
 
 To understand and practice fundamental Linux commands used in daily DevOps tasks.
 
-## 🧠 Key Learnings
+##  Key Learnings
 
 * Navigating directories using `cd`, `pwd`
 * Creating and deleting files & directories
@@ -20,15 +20,15 @@ To understand and practice fundamental Linux commands used in daily DevOps tasks
 * Understanding inode numbers (`ls -i`)
 * Difference between hard link and soft link
 
-## 🛠️ Environment Used
+##  Environment Used
 
 * Linux (Ubuntu)
 * Terminal / CLI
 
-## 📂 Files in this Folder
+##  Files in this Folder
 
 * `commands.md` → Contains all commands practiced
 
-## 🚀 Outcome
+##  Outcome
 
 Completed hands-on practice of basic Linux commands which are essential for DevOps and system administration.
