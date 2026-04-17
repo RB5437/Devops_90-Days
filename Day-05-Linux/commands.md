@@ -1,268 +1,449 @@
-# DAY-05 Commands Cheat Sheet
+# DAY-05 Commands Cheat Sheet 
 
 ## File Search & Cleanup
 
-find /var/ -type f -size +20M  
+### find large files
 
-Find large files (>20MB)
+Find files larger than 20MB
+```bash
 
-find /var/log/ -name "*.log" -type f -delete  
+find /var/ -type f -size +20M
+```
 
-Delete all log files
+### delete log files
 
+Delete all .log files
+```bash
+
+find /var/log/ -name "*.log" -type f -delete
+```
 
 ---
 
 ## File & Permission
 
-touch file  
+### touch
 
 Create file
+```bash
 
-chmod 755 file  
+touch file
+```
+
+### chmod
 
 Set permissions
+```bash
 
-ls -la file  
+chmod 755 file
+```
+
+### ls -la
 
 Check file permissions
+```bash
+
+ls -la file
+```
 
 ---
 
 ## Disk Usage
 
-du -sh /var/  
+### du
 
 Check directory size
+```bash
 
-df -h  
+du -sh /var/
+```
+
+### df
 
 Disk usage in human-readable format
+```bash
+
+df -h
+```
 
 ---
 
 ## Archiving & Logs
 
-tar -czvf logs.tar.gz /var/log/  
+### tar
 
 Compress logs
+```bash
 
-logrotate /etc/logrotate.conf --force  
+tar -czvf logs.tar.gz /var/log/
+```
+
+### logrotate
 
 Force log rotation
+```bash
 
-tail -f /var/log/syslog  
+logrotate /etc/logrotate.conf --force
+```
 
-Live log monitoring
+### tail (live logs)
 
-tail -n 50 /var/log/syslog  
+Monitor logs in real-time
+```bash
 
-Last 50 log lines
+tail -f /var/log/syslog
+```
+
+### tail (last logs)
+
+Show last 50 lines
+```bash
+
+tail -n 50 /var/log/syslog
+```
 
 ---
 
 ## Networking
 
-ping amazon.com  
+### ping
 
 Check connectivity
+```bash
 
-nslookup google.com  
+ping amazon.com
+```
+
+### nslookup
 
 DNS lookup
+```bash
 
-ip route  
+nslookup google.com
+```
+
+### ip route
 
 Show routing table
+```bash
 
-ip a  
+ip route
+```
+
+### ip a
 
 Show IP address
+```bash
 
-netstat -tulnp  
+ip a
+```
+
+### netstat
 
 Check open ports
+```bash
 
-ss -tulnp  
+netstat -tulnp
+```
+
+### ss
 
 Modern netstat alternative
+```bash
 
-nc -zv google.com 443  
+ss -tulnp
+```
+
+### nc (netcat)
 
 Check port connectivity
+```bash
 
-tcpdump -i ens5  
+nc -zv google.com 443
+```
+
+### tcpdump
 
 Capture packets
+```bash
 
-tcpdump -D  
+tcpdump -i ens5
+```
 
-List interfaces
+### tcpdump interfaces
+
+List available interfaces
+```bash
+
+tcpdump -D
+```
 
 ---
 
 ## Firewall
 
-iptables -L  
+### iptables
 
 List firewall rules
+```bash
 
-ufw allow ssh  
+iptables -L
+```
+
+### ufw allow
 
 Allow SSH
+```bash
 
-ufw status  
+ufw allow ssh
+```
+
+### ufw status
 
 Check firewall status
+```bash
+
+ufw status
+```
 
 ---
 
 ## Process Monitoring
 
-ps aux  
+### ps aux
 
-List processes
+List all processes
+```bash
 
-ps -aux --sort=-%cpu | head  
+ps aux
+```
 
-Top CPU usage
+### top CPU usage
+```bash
 
-ps -aux --sort=-%mem | head  
+ps -aux --sort=-%cpu | head
+```
 
-Top memory usage
+### top memory usage
+```bash
 
-top  
+ps -aux --sort=-%mem | head
+```
+
+### top
 
 Real-time monitoring
+```bash
 
-htop  
+top
+```
+
+### htop
 
 Advanced process viewer
+```bash
 
-iostat -x 2  
+htop
+```
 
-Disk performance (2 sec)
+### iostat (2 sec)
 
-iostat -x 1  
+Disk performance monitoring
+```bash
 
-Real-time disk stats
+iostat -x 2
+```
+
+### iostat (real-time)
+```bash
+
+iostat -x 1
+```
 
 ---
 
 ## Services
 
-systemctl list-units --type=service  
+### list services
+```bash
 
-List services
+systemctl list-units --type=service
+```
 
-systemctl restart network  
+### restart network
+```bash
 
-Restart network
+systemctl restart network
+```
 
 ---
 
 ## User Management
 
-useradd -m -d /home/ubuntu/ ritik  
+### useradd
 
 Create user
+```bash
 
-usermod -s /bin/ ritik  
+useradd -m -d /home/ubuntu/ ritik
+```
 
-Change shell
+### usermod
 
-passwd -l ritik  
+Change user shell
+```bash
 
-Lock user
+usermod -s /bin/ ritik
+```
 
-cat /etc/passwd | grep ritik  
+### passwd lock
 
-Verify user
+Lock user account
+```bash
+
+passwd -l ritik
+```
+
+### verify user
+```bash
+
+cat /etc/passwd | grep ritik
+```
 
 ---
 
 ## File Transfer & Backup
 
-rsync -av /var/log/ /home/backup  
+### rsync
 
 Backup logs
+```bash
+
+rsync -av /var/log/ /home/backup
+```
 
 ---
 
 ## System Info
 
-uname -a  
+### uname
 
 System details
+```bash
 
-lsb_release -a  
+uname -a
+```
+
+### lsb_release
 
 OS version
+```bash
 
+lsb_release -a
+```
 
-cat /etc/os-release  
-OS info
+### os-release
 
-free -m  
+Detailed OS info
+```bash
+
+cat /etc/os-release
+```
+
+### free
 
 Memory usage
+```bash
+
+free -m
+```
 
 ---
 
 ## Package Management
 
-dpkg --get-selections  
+### dpkg
 
 List installed packages
+```bash
 
-apt install firewall  
+dpkg --get-selections
+```
+
+### apt install
 
 Install package
+```bash
+
+apt install firewall
+```
 
 ---
 
 ## Logs & Debugging
 
-dmesg | grep -i "oom"  
+### check OOM errors
+```bash
 
-Check OOM errors
+dmesg | grep -i "oom"
+```
 
-dmesg | grep "soft lockup"  
+### check CPU lock issues
+```bash
 
-Check CPU issues
+dmesg | grep "soft lockup"
+```
 
-awk '/2025-01-20/,/2025-01-21/' /var/log/syslog  
+### filter logs by date
+```bash
 
-Filter logs by date
+awk '/2025-01-20/,/2025-01-21/' /var/log/syslog
+```
 
 ---
 
 ## Kernel & Modules
 
-lsmod  
+### lsmod
 
-List loaded modules
+List loaded kernel modules
+```bash
+
+lsmod
+```
 
 ---
 
 ## Process Kill
 
-kill <PID>  
+### kill by PID
+```bash
 
-Kill process by PID
+kill <PID>
+```
 
-pkill -f <process_name>  
+### kill by name
+```bash
 
-Kill by name
+pkill -f <process_name>
+```
 
 ---
 
 ## Misc
 
-which ls  
+### which
 
-Command path
+Find command path
+```bash
 
-hostname  
+which ls
+```
 
-Show hostname
+### hostname
+
+Show system hostname
+```bash
+
+hostname
+```
