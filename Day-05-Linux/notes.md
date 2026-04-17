@@ -1,15 +1,15 @@
 # Day 05 - Linux Monitoring, Logs & Networking Notes
 
 ## find Command Insights
--Command:
+*Command:
 
 find /var/ -type f -size +20M
 
-Purpose:
+*Purpose:
 
 Finds large files (>20MB)
 
-Use Case:
+*Use Case:
 
 Disk cleanup in production servers
 
@@ -17,29 +17,29 @@ Disk cleanup in production servers
 
 ## Log Cleanup
 
-Command:
+*Command:
 
 find /var/log/ -name "*.log" -type f -delete
 
-Warning:
+*Warning:
 
 Deletes all log files 
 
-Use carefully in production
+*Use carefully in production
 
 ---
 
 ## Disk Usage Understanding
 
-Command:
+*Command:
 
 du -sh /var/
 
-Output:
+*Output:
 
 579M /var/
 
-Meaning:
+*Meaning:
 
 Total space used by /var directory
 
@@ -47,15 +47,15 @@ Total space used by /var directory
 
 ## tar Command (Log Backup)
 
-Command:
+*Command:
 
 tar -czvf logs.tar.gz /var/log/
 
-Purpose:
+*Purpose:
 
 Compress logs for backup
 
-Flags:
+*Flags:
 
 c → create  
 z → gzip  
@@ -68,22 +68,22 @@ f → file
 
 ### ping
 
-Checks connectivity
+*Checks connectivity
 
 ### nslookup
 
-Resolves domain → IP
+*Resolves domain → IP
 
 ### ip route
 
-Shows default gateway
+*Shows default gateway
 
 ### nc (Netcat)
-Command:
+*Command:
 
 nc -zv google.com 443
 
-Use:
+*Use:
 
 Check port connectivity
 
@@ -91,15 +91,15 @@ Check port connectivity
 
 ## tcpdump Insight
 
-Command:
+*Command:
 
 tcpdump -i ens5
 
-Purpose:
+*Purpose:
 
 Capture live network packets
 
-Fix:
+*Fix:
 
 Use correct interface (ens5 instead of eth0)
 
@@ -114,11 +114,11 @@ Low-level firewall rules
 ### ufw
 Easy firewall tool
 
-Command:
+*Command:
 
 ufw allow ssh
 
-Note:
+*Note:
 
 ufw status → shows firewall state
 
@@ -126,19 +126,19 @@ ufw status → shows firewall state
 
 ## Process Monitoring
 
-Command:
+*Command:
 
 ps -aux --sort=-%cpu | head
 
-Purpose:
+*Purpose:
 
 Shows top CPU consuming processes
 
-Command:
+*Command:
 
 ps -aux --sort=-%mem | head
 
-Purpose:
+*Purpose:
 
 Shows top memory consuming processes
 
@@ -146,18 +146,18 @@ Shows top memory consuming processes
 
 ## iostat Output Understanding
 
-Command:
+*Command:
 
 iostat -x 2
 
-Field	Meaning
+*Field	Meaning
 
 %user	User CPU usage
 %system	System CPU usage
 %iowait	Waiting for disk
 %idle	Idle CPU
 
-Insight:
+*Insight:
 
 High iowait = disk bottleneck
 
@@ -165,11 +165,11 @@ High iowait = disk bottleneck
 
 ## systemctl Insight
 
-Command:
+*Command:
 
 systemctl list-units --type=service
 
-Purpose:
+*Purpose:
 
 List all running services
 
@@ -177,19 +177,19 @@ List all running services
 
 ## User Management Issue
 
-Command:
+*Command:
 
 usermod -s /bin/ ritik
 
-Error:
+*Error:
 
 missing or non-executable shell
 
-Reason:
+*Reason:
 
 Invalid shell path
 
-Fix:
+*Fix:
 
 Use valid shell:
 /bin/bash
@@ -198,11 +198,11 @@ Use valid shell:
 
 ## rsync Backup
 
-Command:
+*Command:
 
 rsync -av /var/log/ /home/backup
 
-Purpose:
+*Purpose:
 
 Fast and efficient backup
 
@@ -217,7 +217,7 @@ Kernel logs
 ### tail
 Real-time log monitoring
 
-Command:
+*Command:
 
 tail -f /var/log/syslog
 
@@ -225,19 +225,19 @@ tail -f /var/log/syslog
 
 ## Package Issue
 
-Command:
+*Command:
 
 apt install firewall
 
-Error:
+*Error:
 
 Could not get lock
 
-Reason:
+*Reason:
 
 Another process (unattended-upgrades) running
 
-Fix:
+*Fix:
 
 Wait or kill process carefully
 
@@ -245,14 +245,17 @@ Wait or kill process carefully
 
 ## System Info
 
-Commands:
+*Commands:
 
 free -m  
+
 df -h  
+
 uname -a  
+
 lsb_release -a  
 
-Purpose:
+*Purpose:
 
 Check system health and OS details
 
@@ -260,15 +263,15 @@ Check system health and OS details
 
 ## tcpdump Error Fix
 
-Error:
+*Error:
 
 tcpdump: eth0: No such device
 
-Reason:
+*Reason:
 
 Wrong interface name
 
-Fix:
+*Fix:
 Use:
 
 ip a → find correct interface (ens5)
@@ -277,7 +280,7 @@ ip a → find correct interface (ens5)
 
 ## Final Understanding
 
-Practiced:
+*Practiced:
 
 
 - File cleanup & disk usage analysis
@@ -298,7 +301,7 @@ Practiced:
 
 ## Pro Tip
 
-Use these together for debugging:
+*Use these together for debugging:
 
 top  
 
