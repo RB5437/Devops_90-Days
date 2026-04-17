@@ -1,7 +1,7 @@
 # Day 05 - Linux Monitoring, Logs & Networking Notes
 
 ## find Command Insights
-Command:
+-Command:
 
 find /var/ -type f -size +20M
 
