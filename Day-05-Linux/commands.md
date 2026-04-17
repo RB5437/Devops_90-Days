@@ -1,256 +1,216 @@
-File Search & Cleanup
-find
+# DAY-05 Commands Cheat Sheet
 
-Search large files
+## File Search & Cleanup
 
-find /var/ -type f -size +20M
+find /var/ -type f -size +20M  
+Find large files (>20MB)
 
-Delete log files
+find /var/log/ -name "*.log" -type f -delete  
+Delete all log files
 
-find /var/log/ -name "*.log" -type f -delete
-File & Permission
-touch
+---
 
+## File & Permission
+
+touch file  
 Create file
 
-touch file
-chmod
+chmod 755 file  
+Set permissions
 
-Change permission
+ls -la file  
+Check file permissions
 
-chmod 755 file
-ls
+---
 
-Check file details
+## Disk Usage
 
-ls -la file
-Disk Usage
-du
-
+du -sh /var/  
 Check directory size
 
-du -sh /var/
-df
+df -h  
+Disk usage in human-readable format
 
-Disk space usage
+---
 
-df -h
-Archiving & Logs
-tar
+## Archiving & Logs
 
+tar -czvf logs.tar.gz /var/log/  
 Compress logs
 
-tar -czvf logs.tar.gz /var/log/
-logrotate
-
+logrotate /etc/logrotate.conf --force  
 Force log rotation
 
-logrotate /etc/logrotate.conf --force
-tail
+tail -f /var/log/syslog  
+Live log monitoring
 
-Live logs
+tail -n 50 /var/log/syslog  
+Last 50 log lines
 
-tail -f /var/log/syslog
+---
 
-Last 50 lines
+## Networking
 
-tail -n 50 /var/log/syslog
-Networking
-ping
-
+ping amazon.com  
 Check connectivity
 
-ping amazon.com
-nslookup
-
+nslookup google.com  
 DNS lookup
 
-nslookup google.com
-ip route
+ip route  
+Show routing table
 
-Routing table
+ip a  
+Show IP address
 
-ip route
-ip a
-
-IP address
-
-ip a
-netstat
-
+netstat -tulnp  
 Check open ports
 
-netstat -tulnp
-ss
-
+ss -tulnp  
 Modern netstat alternative
 
-ss -tulnp
-nc (netcat)
-
+nc -zv google.com 443  
 Check port connectivity
 
-nc -zv google.com 443
-tcpdump
-
+tcpdump -i ens5  
 Capture packets
 
-tcpdump -i ens5
-
+tcpdump -D  
 List interfaces
 
-tcpdump -D
-Firewall
-iptables
+---
 
-View firewall rules
+## Firewall
 
-iptables -L
-ufw
+iptables -L  
+List firewall rules
 
+ufw allow ssh  
 Allow SSH
 
-ufw allow ssh
+ufw status  
+Check firewall status
 
-Check status
+---
 
-ufw status
-Process Monitoring
-ps
+## Process Monitoring
 
-Show processes
+ps aux  
+List processes
 
-ps aux
+ps -aux --sort=-%cpu | head  
+Top CPU usage
 
-Top CPU processes
+ps -aux --sort=-%mem | head  
+Top memory usage
 
-ps -aux --sort=-%cpu | head
-
-Top memory processes
-
-ps -aux --sort=-%mem | head
-top
-
+top  
 Real-time monitoring
 
-top
-htop
+htop  
+Advanced process viewer
 
-Interactive monitoring
+iostat -x 2  
+Disk performance (2 sec)
 
-htop
-iostat
+iostat -x 1  
+Real-time disk stats
 
-Disk performance
+---
 
-iostat -x 2
-iostat -x 1
-Services
-systemctl
+## Services
 
+systemctl list-units --type=service  
 List services
 
-systemctl list-units --type=service
-
+systemctl restart network  
 Restart network
 
-systemctl restart network
-User Management
-useradd
+---
 
+## User Management
+
+useradd -m -d /home/ubuntu/ ritik  
 Create user
 
-useradd -m -d /home/ubuntu/ ritik
-usermod
-
+usermod -s /bin/ ritik  
 Change shell
 
-usermod -s /bin/ ritik
-passwd
-
+passwd -l ritik  
 Lock user
 
-passwd -l ritik
-check user
-cat /etc/passwd | grep ritik
-File Transfer & Backup
-rsync
+cat /etc/passwd | grep ritik  
+Verify user
 
+---
+
+## File Transfer & Backup
+
+rsync -av /var/log/ /home/backup  
 Backup logs
 
-rsync -av /var/log/ /home/backup
-System Info
-uname
+---
 
+## System Info
+
+uname -a  
 System details
 
-uname -a
-lsb_release
+lsb_release -a  
+OS version
 
+cat /etc/os-release  
 OS info
 
-lsb_release -a
-os-release
-
-Detailed OS
-
-cat /etc/os-release
-free
-
+free -m  
 Memory usage
 
-free -m
-Package Management
-dpkg
+---
 
+## Package Management
+
+dpkg --get-selections  
 List installed packages
 
-dpkg --get-selections
-apt
-
+apt install firewall  
 Install package
 
-apt install firewall
-Logs & Debugging
-dmesg
+---
 
-OOM logs
+## Logs & Debugging
 
-dmesg | grep -i "oom"
+dmesg | grep -i "oom"  
+Check OOM errors
 
-Soft lock issues
+dmesg | grep "soft lockup"  
+Check CPU issues
 
-dmesg | grep "soft lockup"
-awk
+awk '/2025-01-20/,/2025-01-21/' /var/log/syslog  
+Filter logs by date
 
-Filter logs
+---
 
-awk '/2025-01-20/,/2025-01-21/' /var/log/syslog
-Kernel & Modules
-lsmod
+## Kernel & Modules
 
-List kernel modules
+lsmod  
+List loaded modules
 
-lsmod
-Process Kill
-kill
+---
 
-Kill process
+## Process Kill
 
-kill <PID>
-pkill
+kill <PID>  
+Kill process by PID
 
+pkill -f <process_name>  
 Kill by name
 
-pkill -f <process_name>
-Misc
-which
+---
 
-Command location
+## Misc
 
-which ls
-hostname
+which ls  
+Command path
 
-System hostname
-
-hostname
+hostname  
+Show hostname
