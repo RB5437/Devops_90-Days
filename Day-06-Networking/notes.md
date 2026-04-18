@@ -1,271 +1,224 @@
-# DAY-06 Commands Cheat Sheet (Networking)
+# Day 06 Notes - Networking
 
-## Connectivity Check
+## Basics of Networking
 
-### ping
+Networking is the process of connecting multiple systems to share data and resources.
 
-Check internet connectivity
-
-```bash
-ping netflix.com
-```
+Key Concepts:
+- Communication between systems  
+- Data transfer using protocols  
+- Client ↔ Server model  
 
 ---
 
-## Network Tools Installation
+## OSI Model (7 Layers)
 
-### netstat (net-tools)
+OSI (Open Systems Interconnection) model defines how data flows in a network.
 
-Install missing networking tools
+Layers:
 
-```bash
-apt install net-tools
-```
+Application → User interaction (HTTP, FTP)  
+Presentation → Data format & encryption  
+Session → Connection management  
+Transport → Data delivery (TCP/UDP)  
+Network → Routing (IP)  
+Data Link → MAC address  
+Physical → Cables, signals  
 
-### traceroute
+Easy Trick:  
+All People Seem To Need Data Processing  
 
-Install traceroute utility
+---
 
-```bash
-apt install traceroute
-```
+## TCP/IP Model
 
-### whois
+Simplified version of OSI (4 Layers):
 
-Install domain lookup tool
+Application  
+Transport  
+Internet  
+Network Access  
 
-```bash
-apt install whois
-```
+---
 
-### nmap
+## OSI vs TCP/IP
 
-Install network scanner
+OSI Model → 7 Layers (Theoretical, Detailed)  
+TCP/IP → 4 Layers (Practical, Simplified)  
 
-```bash
-apt install nmap
-```
+---
+
+## IP Protocol
+
+IP = Internet Protocol  
+
+Used for:
+- Identifying devices (IP Address)  
+- Routing packets across networks  
+
+Types:
+- IPv4 → 192.168.x.x  
+- IPv6 → Advanced version  
+
+---
+
+## Connectivity Check
+
+ping netflix.com → Internet connectivity working  
+
+If packets respond → network is reachable  
+If no response → network/firewall issue  
+
+---
+
+## Package Installation Insight
+
+netstat not found → installed using net-tools  
+traceroute not found → installed manually  
+whois, nmap installed when required  
+
+Lesson:  
+Minimal Linux systems don’t include all networking tools  
 
 ---
 
 ## Port & Service Monitoring
 
-### netstat
+netstat -tulnp → shows listening ports  
+ss -tuln → faster alternative  
 
-Check listening ports and services
-
-```bash
-netstat -tulnp
-```
-
-### ss
-
-Modern alternative to netstat
-
-```bash
-ss -tuln
-```
+Example:  
+Port 22 (SSH) open → remote access enabled  
 
 ---
 
-## IP & Interface Info
+## IP & Interface Understanding
 
-### ifconfig
+ip a / ifconfig → shows system IP  
 
-Show network interfaces
+Example:  
+172.31.x.x → private AWS EC2 IP  
 
-```bash
-ifconfig
-```
-
-### ip a
-
-Detailed IP information
-
-```bash
-ip a
-```
-
-### hostname
-
-Show system hostname
-
-```bash
-hostname
-```
+lo → loopback (127.0.0.1)  
+ens5 → main network interface  
 
 ---
 
-## Routing
+## Routing Concept
 
-### route
+route -n → shows routing table  
 
-Show routing table
+0.0.0.0 → default route via gateway  
 
-```bash
-route -n
-```
+Meaning:  
+All external traffic goes through gateway  
 
 ---
 
 ## Network Path Analysis
 
-### traceroute
+traceroute netflix.com → shows hops  
+tracepath → alternative tool  
+mtr → real-time analysis  
 
-Trace route to destination
-
-```bash
-traceroute netflix.com
-```
-
-### tracepath
-
-Alternative route tracing
-
-```bash
-tracepath netflix.com
-```
-
-### mtr
-
-Real-time network diagnostics
-
-```bash
-mtr netflix.com
-```
+Insight:  
+Each hop = router between source and destination  
 
 ---
 
-## DNS & Domain Info
+## DNS Debugging
 
-### nslookup
+nslookup netflix.com → resolves domain  
+dig netflix.com → detailed DNS info  
 
-DNS resolution
-
-```bash
-nslookup netflix.com
-```
-
-### dig
-
-Detailed DNS query
-
-```bash
-dig netflix.com
-```
-
-### whois
-
-Domain registration details
-
-```bash
-whois netflix.com
-```
+Insight:  
+Multiple IPs → load balancing  
 
 ---
 
-## Port Connectivity
+## Port Connectivity Testing
 
-### telnet
+telnet netflix.com 80 → HTTP port open  
+telnet netflix.com 443 → HTTPS port open  
 
-Test port connectivity
+nc error → missing port  
 
-```bash
-telnet netflix.com 80
-telnet netflix.com 443
-```
-
-### nc (netcat)
-
-Check port connectivity
-
-```bash
-nc -zv netflix.com 80
-```
+Fix:  
+nc -zv netflix.com 80  
 
 ---
 
-## Packet Capture
+## Packet Analysis
 
-### tcpdump
+tcpdump → captures live packets  
 
-Capture network packets
-
-```bash
-tcpdump -i ens5
-```
-
-### tcpdump interfaces
-
-List available interfaces
-
-```bash
-tcpdump -D
-```
+Useful for:
+- debugging network issues  
+- analyzing traffic  
 
 ---
 
 ## ARP & Network Mapping
 
-### arp
+arp -a → shows MAC to IP mapping  
 
-Check ARP table
-
-```bash
-arp -a
-```
-
-### nmap
-
-Scan network / host
-
-```bash
-nmap 172.31.32.1
-```
+Used for:
+- identifying devices  
+- LAN troubleshooting  
 
 ---
 
-## Wireless Info
+## Domain Information
 
-### iwconfig
+whois netflix.com → domain details  
 
-Check wireless interfaces
-
-```bash
-iwconfig
-```
-
----
-
-## Firewall
-
-### iptables
-
-View firewall rules
-
-```bash
-iptables -L
-```
+Includes:
+- registrar  
+- expiry  
+- name servers  
 
 ---
 
-## Monitoring
+## Network Scanning
 
-### watch
+nmap → scans open ports  
 
-Monitor command output in real-time
-
-```bash
-watch df -h
-```
+Used for:
+- security checks  
+- service discovery  
 
 ---
 
-## Key Learnings
+## Firewall Check
 
-- Installed missing networking tools (net-tools, traceroute, nmap)
-- Understood port monitoring using netstat & ss
-- Learned DNS debugging (nslookup, dig)
-- Practiced connectivity testing (ping, telnet, nc)
-- Explored routing and path tracing
-- Used packet capture for deep network analysis
+iptables -L → shows firewall rules  
+
+Current state:  
+No rules → all traffic allowed  
+
+---
+
+## Final Understanding
+
+practiced:
+
+- Connectivity Testing (ping, telnet, nc)  
+- DNS Debugging (nslookup, dig)  
+- Network Analysis (traceroute, mtr)  
+- Port Monitoring (netstat, ss)  
+- Packet Capture (tcpdump)  
+- Security Scanning (nmap)  
+
+---
+
+## Pro Tip
+
+Combine commands:
+
+ping google.com  
+ss -tuln  
+ip a  
+traceroute google.com  
+tcpdump -i ens5  
+
+This gives complete network visibility
