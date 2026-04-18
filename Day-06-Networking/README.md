@@ -131,7 +131,7 @@ Default route (0.0.0.0):
 - tracepath → alternative tool  
 - mtr → real-time network analysis  
 
-👉 Each hop = router between source and destination  
+ Each hop = router between source and destination  
 
 ---
 
