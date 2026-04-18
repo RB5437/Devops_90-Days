@@ -1,224 +1,271 @@
-# Day 06 Notes - Networking
-
-## Basics of Networking
-
-Networking is the process of connecting multiple systems to share data and resources.
-
-Key Concepts:
-- Communication between systems  
-- Data transfer using protocols  
-- Client ↔ Server model  
-
----
-
-## OSI Model (7 Layers)
-
-OSI (Open Systems Interconnection) model defines how data flows in a network.
-
-Layers:
-
-Application → User interaction (HTTP, FTP)  
-Presentation → Data format & encryption  
-Session → Connection management  
-Transport → Data delivery (TCP/UDP)  
-Network → Routing (IP)  
-Data Link → MAC address  
-Physical → Cables, signals  
-
-Easy Trick:  
-All People Seem To Need Data Processing  
-
----
-
-## TCP/IP Model
-
-Simplified version of OSI (4 Layers):
-
-Application  
-Transport  
-Internet  
-Network Access  
-
----
-
-## OSI vs TCP/IP
-
-OSI Model → 7 Layers (Theoretical, Detailed)  
-TCP/IP → 4 Layers (Practical, Simplified)  
-
----
-
-## IP Protocol
-
-IP = Internet Protocol  
-
-Used for:
-- Identifying devices (IP Address)  
-- Routing packets across networks  
-
-Types:
-- IPv4 → 192.168.x.x  
-- IPv6 → Advanced version  
-
----
+# DAY-06 Commands Cheat Sheet (Networking)
 
 ## Connectivity Check
 
-ping netflix.com → Internet connectivity working  
+### ping
 
-If packets respond → network is reachable  
-If no response → network/firewall issue  
+Check internet connectivity
+
+```bash
+ping netflix.com
+```
 
 ---
 
-## Package Installation Insight
+## Network Tools Installation
 
-netstat not found → installed using net-tools  
-traceroute not found → installed manually  
-whois, nmap installed when required  
+### netstat (net-tools)
 
-Lesson:  
-Minimal Linux systems don’t include all networking tools  
+Install missing networking tools
+
+```bash
+apt install net-tools
+```
+
+### traceroute
+
+Install traceroute utility
+
+```bash
+apt install traceroute
+```
+
+### whois
+
+Install domain lookup tool
+
+```bash
+apt install whois
+```
+
+### nmap
+
+Install network scanner
+
+```bash
+apt install nmap
+```
 
 ---
 
 ## Port & Service Monitoring
 
-netstat -tulnp → shows listening ports  
-ss -tuln → faster alternative  
+### netstat
 
-Example:  
-Port 22 (SSH) open → remote access enabled  
+Check listening ports and services
 
----
+```bash
+netstat -tulnp
+```
 
-## IP & Interface Understanding
+### ss
 
-ip a / ifconfig → shows system IP  
+Modern alternative to netstat
 
-Example:  
-172.31.x.x → private AWS EC2 IP  
-
-lo → loopback (127.0.0.1)  
-ens5 → main network interface  
+```bash
+ss -tuln
+```
 
 ---
 
-## Routing Concept
+## IP & Interface Info
 
-route -n → shows routing table  
+### ifconfig
 
-0.0.0.0 → default route via gateway  
+Show network interfaces
 
-Meaning:  
-All external traffic goes through gateway  
+```bash
+ifconfig
+```
+
+### ip a
+
+Detailed IP information
+
+```bash
+ip a
+```
+
+### hostname
+
+Show system hostname
+
+```bash
+hostname
+```
+
+---
+
+## Routing
+
+### route
+
+Show routing table
+
+```bash
+route -n
+```
 
 ---
 
 ## Network Path Analysis
 
-traceroute netflix.com → shows hops  
-tracepath → alternative tool  
-mtr → real-time analysis  
+### traceroute
 
-Insight:  
-Each hop = router between source and destination  
+Trace route to destination
 
----
+```bash
+traceroute netflix.com
+```
 
-## DNS Debugging
+### tracepath
 
-nslookup netflix.com → resolves domain  
-dig netflix.com → detailed DNS info  
+Alternative route tracing
 
-Insight:  
-Multiple IPs → load balancing  
+```bash
+tracepath netflix.com
+```
 
----
+### mtr
 
-## Port Connectivity Testing
+Real-time network diagnostics
 
-telnet netflix.com 80 → HTTP port open  
-telnet netflix.com 443 → HTTPS port open  
-
-nc error → missing port  
-
-Fix:  
-nc -zv netflix.com 80  
+```bash
+mtr netflix.com
+```
 
 ---
 
-## Packet Analysis
+## DNS & Domain Info
 
-tcpdump → captures live packets  
+### nslookup
 
-Useful for:
-- debugging network issues  
-- analyzing traffic  
+DNS resolution
+
+```bash
+nslookup netflix.com
+```
+
+### dig
+
+Detailed DNS query
+
+```bash
+dig netflix.com
+```
+
+### whois
+
+Domain registration details
+
+```bash
+whois netflix.com
+```
+
+---
+
+## Port Connectivity
+
+### telnet
+
+Test port connectivity
+
+```bash
+telnet netflix.com 80
+telnet netflix.com 443
+```
+
+### nc (netcat)
+
+Check port connectivity
+
+```bash
+nc -zv netflix.com 80
+```
+
+---
+
+## Packet Capture
+
+### tcpdump
+
+Capture network packets
+
+```bash
+tcpdump -i ens5
+```
+
+### tcpdump interfaces
+
+List available interfaces
+
+```bash
+tcpdump -D
+```
 
 ---
 
 ## ARP & Network Mapping
 
-arp -a → shows MAC to IP mapping  
+### arp
 
-Used for:
-- identifying devices  
-- LAN troubleshooting  
+Check ARP table
 
----
+```bash
+arp -a
+```
 
-## Domain Information
+### nmap
 
-whois netflix.com → domain details  
+Scan network / host
 
-Includes:
-- registrar  
-- expiry  
-- name servers  
-
----
-
-## Network Scanning
-
-nmap → scans open ports  
-
-Used for:
-- security checks  
-- service discovery  
+```bash
+nmap 172.31.32.1
+```
 
 ---
 
-## Firewall Check
+## Wireless Info
 
-iptables -L → shows firewall rules  
+### iwconfig
 
-Current state:  
-No rules → all traffic allowed  
+Check wireless interfaces
 
----
-
-## Final Understanding
-
-practiced:
-
-- Connectivity Testing (ping, telnet, nc)  
-- DNS Debugging (nslookup, dig)  
-- Network Analysis (traceroute, mtr)  
-- Port Monitoring (netstat, ss)  
-- Packet Capture (tcpdump)  
-- Security Scanning (nmap)  
+```bash
+iwconfig
+```
 
 ---
 
-## Pro Tip
+## Firewall
 
-Combine commands:
+### iptables
 
-ping google.com  
-ss -tuln  
-ip a  
-traceroute google.com  
-tcpdump -i ens5  
+View firewall rules
 
-This gives complete network visibility
+```bash
+iptables -L
+```
+
+---
+
+## Monitoring
+
+### watch
+
+Monitor command output in real-time
+
+```bash
+watch df -h
+```
+
+---
+
+## Key Learnings
+
+- Installed missing networking tools (net-tools, traceroute, nmap)
+- Understood port monitoring using netstat & ss
+- Learned DNS debugging (nslookup, dig)
+- Practiced connectivity testing (ping, telnet, nc)
+- Explored routing and path tracing
+- Used packet capture for deep network analysis
