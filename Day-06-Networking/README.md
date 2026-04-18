@@ -73,13 +73,6 @@ Types:
 - IPv6 → Advanced version  
 
 ---
-
-##  Learning Resource
-
-I studied networking concepts from the attached PDF.
-
----
-
 ##  Key Takeaways
 
 - Understood how data travels in a network  
