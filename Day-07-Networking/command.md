@@ -1,119 +1,154 @@
-# DAY-06 Commands Cheat Sheet
 
-## Connectivity
+##  Connectivity
 
 ### ping
 Check internet connectivity
+
 ```bash
 ping netflix.com
+```
 
-DNS
-nslookup
-```bash
+---
+
+##  DNS
+
+### nslookup
 Resolve domain to IP
 
+```bash
 nslookup netflix.com
+```
 
-dig
+### dig
+Detailed DNS information
+
 ```bash
-Detailed DNS info
-
 dig netflix.com
+```
 
-Network Path
-```bash
-traceroute
+---
 
+##  Network Path
+
+### traceroute
 Track network hops
 
-traceroute netflix.com
-
-
-tracepath
 ```bash
+traceroute netflix.com
+```
+
+### tracepath
 Simple traceroute alternative
 
-tracepath netflix.com
-
-Interface & IP
 ```bash
+tracepath netflix.com
+```
 
-ip a
+---
 
+##  Interface & IP
+
+### ip a
 Show IP address
 
+```bash
 ip a
+```
 
-ifconfig
+### ifconfig
+Show network interface details
 
-Show network interface
 ```bash
 ifconfig
+```
 
-Ports & Services
-```bash
-netstat
+---
 
+##  Ports & Services
+
+### netstat
 List listening ports
+
 ```bash
 netstat -tulnp
-ss
+```
 
-Modern alternative
+### ss
+Modern alternative to netstat
+
 ```bash
 ss -tulnp
+```
 
-Port Testing
-```bash
-telnet
+---
 
+##  Port Testing
+
+### telnet
 Check port connectivity
+
 ```bash
 telnet netflix.com 80
+```
 
-nc (netcat)
+### nc (netcat)
+Check port connectivity
 
-Check port
 ```bash
 nc -zv netflix.com 80
+```
 
-Routing
-```bash
-route
+---
 
+##  Routing
+
+### route
 Show routing table
+
 ```bash
 route -n
+```
 
-ARP
+---
 
-arp
+##  ARP
 
-Show MAC mapping
+### arp
+Show MAC to IP mapping
+
 ```bash
 arp -a
+```
 
-Packet Capture
-```bash
-tcpdump
+---
 
+##  Packet Capture
+
+### tcpdump
 Capture network traffic
+
 ```bash
 tcpdump -i ens5
+```
 
-Network Scan
-```bash
-nmap
+---
 
+##  Network Scan
+
+### nmap
 Scan open ports
+
 ```bash
 nmap <IP>
+```
 
-Domain Info
-```bash
-whois
+---
 
-Domain details
+##  Domain Info
+
+### whois
+Get domain details
 
 ```bash
 whois netflix.com
+```
