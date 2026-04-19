@@ -4,7 +4,7 @@
 
 ### ping
 Check internet connectivity
-```bash
+
 ping netflix.com
 
 DNS
