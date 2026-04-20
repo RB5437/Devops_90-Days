@@ -1,5 +1,5 @@
 #!/bin/bash
-# 
+
 # This is script for RBB
 
 echo "RITIK: Hello Dosto"
