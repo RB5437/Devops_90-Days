@@ -1,0 +1,140 @@
+root@ip-172-31-46-169:~# ls
+Devops_90-Days  snap
+root@ip-172-31-46-169:~# cd Devops_90-Days/
+root@ip-172-31-46-169:~/Devops_90-Days# ls
+Day-01-Linux  Day-02-Linux  Day-03-Linux  Day-04-Linux  Day-05-Linux  Day-06-Networking  Day-07-Networking  Day-08-Shell_Scripting  README.md
+root@ip-172-31-46-169:~/Devops_90-Days# mkdir Day-09-Shell_Scripting
+root@ip-172-31-46-169:~/Devops_90-Days# ls
+Day-01-Linux  Day-03-Linux  Day-05-Linux       Day-07-Networking       Day-09-Shell_Scripting
+Day-02-Linux  Day-04-Linux  Day-06-Networking  Day-08-Shell_Scripting  README.md
+root@ip-172-31-46-169:~/Devops_90-Days# cd Day-09-Shell_Scripting/
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./script.sh Docker Jenkins Git
+Name is Devops, and date is Tue Apr 21 07:11:03 UTC 2026
+enter the name:
+ritik
+you entered ritik
+The arguments in ./script.sh Docker Jenkins Git
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting#
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi check_if_jetha_loyal.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 check_if_jetha_loyal.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./check_if_jetha_loyal.sh
+jetha ne kise dekha: babitaji
+jetha is not loyal
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./check_if_jetha_loyal.sh
+jetha ne kise dekha: daya bhabhi
+jetha is loyal
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting#
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi check_if_jetha_loyal.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./check_if_jetha_loyal.sh
+jetha ne mud ke kise dekha: daya bhabhi
+jetha ka pyaar % 100
+jetha is loyal
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./check_if_jetha_loyal.sh
+jetha ne mud ke kise dekha: babita ji
+jetha ka pyaar % 70
+jetha is not loyal
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting#
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi if-condition.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 if-condition.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-condition.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-condition.sh
+tapu ki age: 16
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-condition.sh
+tapu ki age: 18
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-condition.sh
+tapu ki age: 20
+you are adult
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-condition.sh
+tapu ki age: 19
+you are adult
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+fi-elif-else  if-condition.sh  script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi if-else.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 if-else.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-else.sh
+tapu ki age: 16
+tapu minor hai abhi
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./if-else.sh
+tapu ki age: 20
+Adult hai abhi
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+fi-elif-else  if-condition.sh  if-else.sh  script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi for_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 for_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./for_loop.sh
+./for_loop.sh: line 5: ((: num=++ : syntax error: operand expected (error token is "+ ")
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi for_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./for_loop.sh
+mkdir: cannot create directory ‘demo1’: File exists
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+demo1  demo2  demo3  demo4  demo5  fi-elif-else  for_loop.sh  if-condition.sh  if-else.sh  script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+fi-elif-else  for_loop.sh  if-condition.sh  if-else.sh  script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi for_loop_arguments.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 for_loop_arguments.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./for_loop_arguments.sh
+./for_loop_arguments.sh: line 12: ((: num= : syntax error: operand expected (error token is "= ")
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./for_loop_arguments.sh day 01 90
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+day1   day15  day20  day26  day31  day37  day42  day48  day53  day59  day64  day7   day75  day80  day86  fi-elif-else
+day10  day16  day21  day27  day32  day38  day43  day49  day54  day6   day65  day70  day76  day81  day87  for_loop.sh
+day11  day17  day22  day28  day33  day39  day44  day5   day55  day60  day66  day71  day77  day82  day88  for_loop_arguments.sh
+day12  day18  day23  day29  day34  day4   day45  day50  day56  day61  day67  day72  day78  day83  day89  if-condition.sh
+day13  day19  day24  day3   day35  day40  day46  day51  day57  day62  day68  day73  day79  day84  day9   if-else.sh
+day14  day2   day25  day30  day36  day41  day47  day52  day58  day63  day69  day74  day8   day85  day90  script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting#
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+fi-elif-else  for_loop.sh  for_loop_arguments.sh  if-condition.sh  if-else.sh  script.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi for_loop_arguments.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi while_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 while_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./while_loop.sh
+0
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi while_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./while_loop.sh
+0
+2
+4
+6
+8
+10
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ls
+fi-elif-else  for_loop.sh  for_loop_arguments.sh  if-condition.sh  if-else.sh  script.sh  while_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi until_Loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 until_Loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./until_Loop.sh
+1
+2
+3
+4
+5
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi infinite_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 infinite_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./infinite_loop.sh
+Running...
+Running...
+Running...
+Running...
+^Z
+[1]+  Stopped                 ./infinite_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi break_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 break_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./break_loop.sh
+1
+2
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# vi continue_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# chmod 744 continue_loop.sh
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./continue_loop.sh
+1
+2
+4
+5
+root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting#
+
+
