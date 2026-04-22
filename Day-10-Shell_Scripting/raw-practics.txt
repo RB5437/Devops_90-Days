@@ -694,3 +694,5 @@ Successfully tagged notes-app:latest
 Starting londheshubham153-django-notes-app_web_1 ... done
 *******************DEPLOYMENT DONE*****************************
 root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting#
+
+.
