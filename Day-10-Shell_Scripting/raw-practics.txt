@@ -1,0 +1,696 @@
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ls
+error_handle.sh  prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# chmod 700 prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+Cloning into 'LondheShubham153-django-notes-app'...
+remote: Enumerating objects: 363, done.
+remote: Counting objects: 100% (363/363), done.
+remote: Compressing objects: 100% (242/242), done.
+remote: Total 363 (delta 116), reused 363 (delta 116), pack-reused 0 (from 0)
+Receiving objects: 100% (363/363), 1.65 MiB | 21.99 MiB/s, done.
+Resolving deltas: 100% (116/116), done.
+installing dependencies
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Package docker.io is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'docker.io' has no installation candidate
+Failed to enable unit: Unit file docker.service does not exist.
+Failed to enable unit: Unit file naginx.service does not exist.
+./prj1_shell_deploy_django_app.sh: line 27: docker: command not found
+./prj1_shell_deploy_django_app.sh: line 28: docker: command not found
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 Packages [15.0 MB]
+Get:5 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Get:6 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe Translation-en [5982 kB]
+Get:7 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 Components [3871 kB]
+Get:8 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 c-n-f Metadata [301 kB]
+Get:9 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [269 kB]
+Get:10 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse Translation-en [118 kB]
+Get:11 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse amd64 Components [35.0 kB]
+Get:12 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse amd64 c-n-f Metadata [8328 B]
+Get:13 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1919 kB]
+Get:14 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [345 kB]
+Get:15 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [177 kB]
+Get:16 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [16.9 kB]
+Get:17 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1684 kB]
+Get:18 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [324 kB]
+Get:19 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [386 kB]
+Get:20 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [34.3 kB]
+Get:21 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2981 kB]
+Get:22 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [697 kB]
+Get:23 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+Get:24 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [32.5 kB]
+Get:25 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [8180 B]
+Get:26 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+Get:27 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 c-n-f Metadata [512 B]
+Get:28 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [40.6 kB]
+Get:29 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main Translation-en [9172 B]
+Get:30 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7372 B]
+Get:31 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main amd64 c-n-f Metadata [368 B]
+Get:32 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [30.6 kB]
+Get:33 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe Translation-en [18.2 kB]
+Get:34 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [10.5 kB]
+Get:35 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe amd64 c-n-f Metadata [1484 B]
+Get:36 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [212 B]
+Get:37 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:38 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [748 B]
+Get:39 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/multiverse Translation-en [340 B]
+Get:40 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+Get:41 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 c-n-f Metadata [116 B]
+Get:42 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1619 kB]
+Get:43 http://security.ubuntu.com/ubuntu noble-security/main Translation-en [258 kB]
+Get:44 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+Get:45 http://security.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [10.8 kB]
+Get:46 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1181 kB]
+Get:47 http://security.ubuntu.com/ubuntu noble-security/universe Translation-en [226 kB]
+Get:48 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [74.3 kB]
+Get:49 http://security.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [22.9 kB]
+Get:50 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2833 kB]
+Get:51 http://security.ubuntu.com/ubuntu noble-security/restricted Translation-en [666 kB]
+Get:52 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+Get:53 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [28.8 kB]
+Get:54 http://security.ubuntu.com/ubuntu noble-security/multiverse Translation-en [7172 B]
+Get:55 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [208 B]
+Get:56 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 c-n-f Metadata [396 B]
+Fetched 41.7 MB in 7s (6336 kB/s)
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base nginx-common pigz runc ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-buildx docker-compose-v2 docker-doc rinse zfs-fuse | zfsutils fcgiwrap nginx-doc
+  ssl-cert
+The following NEW packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base docker.io nginx nginx-common pigz runc ubuntu-fan
+0 upgraded, 10 newly installed, 0 to remove and 60 not upgraded.
+Need to get 74.3 MB of archives.
+After this operation, 280 MB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 pigz amd64 2.8-1 [65.6 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/main amd64 bridge-utils amd64 1.7.1-1ubuntu2 [33.9 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 runc amd64 1.3.4-0ubuntu1~24.04.1 [9574 kB]
+Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 containerd amd64 2.2.1-0ubuntu1~24.04.2 [28.1 MB]
+Get:5 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 dns-root-data all 2024071801~ubuntu0.24.04.1 [5918 B]
+Get:6 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 dnsmasq-base amd64 2.90-2ubuntu0.1 [376 kB]
+Get:7 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 docker.io amd64 29.1.3-0ubuntu3~24.04.1 [35.5 MB]
+Get:8 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 nginx-common all 1.24.0-2ubuntu7.6 [43.5 kB]
+Get:9 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 nginx amd64 1.24.0-2ubuntu7.6 [521 kB]
+Get:10 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 ubuntu-fan all 0.12.16+24.04.1 [34.2 kB]
+Fetched 74.3 MB in 1s (88.0 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... 72566 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.8-1_amd64.deb ...
+Unpacking pigz (2.8-1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../1-bridge-utils_1.7.1-1ubuntu2_amd64.deb ...
+Unpacking bridge-utils (1.7.1-1ubuntu2) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../2-runc_1.3.4-0ubuntu1~24.04.1_amd64.deb ...
+Unpacking runc (1.3.4-0ubuntu1~24.04.1) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../3-containerd_2.2.1-0ubuntu1~24.04.2_amd64.deb ...
+Unpacking containerd (2.2.1-0ubuntu1~24.04.2) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../4-dns-root-data_2024071801~ubuntu0.24.04.1_all.deb ...
+Unpacking dns-root-data (2024071801~ubuntu0.24.04.1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../5-dnsmasq-base_2.90-2ubuntu0.1_amd64.deb ...
+Unpacking dnsmasq-base (2.90-2ubuntu0.1) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../6-docker.io_29.1.3-0ubuntu3~24.04.1_amd64.deb ...
+Unpacking docker.io (29.1.3-0ubuntu3~24.04.1) ...
+Selecting previously unselected package nginx-common.
+Preparing to unpack .../7-nginx-common_1.24.0-2ubuntu7.6_all.deb ...
+Unpacking nginx-common (1.24.0-2ubuntu7.6) ...
+Selecting previously unselected package nginx.
+Preparing to unpack .../8-nginx_1.24.0-2ubuntu7.6_amd64.deb ...
+Unpacking nginx (1.24.0-2ubuntu7.6) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../9-ubuntu-fan_0.12.16+24.04.1_all.deb ...
+Unpacking ubuntu-fan (0.12.16+24.04.1) ...
+Setting up nginx-common (1.24.0-2ubuntu7.6) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/nginx.service → /usr/lib/systemd/system/nginx.service.
+Setting up dnsmasq-base (2.90-2ubuntu0.1) ...
+Setting up runc (1.3.4-0ubuntu1~24.04.1) ...
+Setting up dns-root-data (2024071801~ubuntu0.24.04.1) ...
+Setting up bridge-utils (1.7.1-1ubuntu2) ...
+Setting up pigz (2.8-1) ...
+Setting up containerd (2.2.1-0ubuntu1~24.04.2) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /usr/lib/systemd/system/containerd.service.
+Setting up ubuntu-fan (0.12.16+24.04.1) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/ubuntu-fan.service → /usr/lib/systemd/system/ubuntu-fan.service.
+Setting up nginx (1.24.0-2ubuntu7.6) ...
+ * Upgrading binary nginx                                                                                                                            [ OK ]
+Setting up docker.io (29.1.3-0ubuntu3~24.04.1) ...
+info: Selecting GID from range 100 to 999 ...
+info: Adding group `docker' (GID 113) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /usr/lib/systemd/system/docker.service.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /usr/lib/systemd/system/docker.socket.
+Processing triggers for dbus (1.14.10-4ubuntu4.1) ...
+Processing triggers for ufw (0.36.2-6) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /root/Devops_90-Days/Day-10-Shell_Scripting/Dockerfile: no such file or directory
+Unable to find image 'notes-app:latest' locally
+docker: Error response from daemon: pull access denied for notes-app, repository does not exist or may require 'docker login'
+
+Run 'docker run --help' for more information
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ls
+LondheShubham153-django-notes-app  error_handle.sh  prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# cd LondheShubham153-django-notes-app/
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting/LondheShubham153-django-notes-app# ls
+Dockerfile  Jenkinsfile  README.md  api  db.sqlite3  docker-compose.yml  manage.py  mynotes  notesapp  procfile  requirements.txt  staticfiles
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting/LondheShubham153-django-notes-app# cd ..
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+./prj1_shell_deploy_django_app.sh: line 34: cd: django-notes-app: No such file or directory
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+0 upgraded, 0 newly installed, 0 to remove and 60 not upgraded.
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /root/Devops_90-Days/Day-10-Shell_Scripting/Dockerfile: no such file or directory
+Unable to find image 'notes-app:latest' locally
+docker: Error response from daemon: pull access denied for notes-app, repository does not exist or may require 'docker login'
+
+Run 'docker run --help' for more information
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+ 39L, 822B written
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+0 upgraded, 0 newly installed, 0 to remove and 60 not upgraded.
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.364MB
+Step 1/7 : FROM python:3.9
+3.9: Pulling from library/python
+91c91c91f1d2: Pulling fs layer
+26dfe2fac1c4: Pulling fs layer
+795dbedde24d: Pulling fs layer
+79d5bd8a8d26: Pulling fs layer
+89d573bf42b3: Pulling fs layer
+081ccf923272: Pulling fs layer
+c9723aa529b0: Pulling fs layer
+e4c690b16c7b: Download complete
+91c91c91f1d2: Download complete
+63320b40b5fa: Download complete
+c9723aa529b0: Download complete
+081ccf923272: Download complete
+89d573bf42b3: Download complete
+795dbedde24d: Download complete
+26dfe2fac1c4: Download complete
+79d5bd8a8d26: Download complete
+795dbedde24d: Pull complete
+89d573bf42b3: Pull complete
+26dfe2fac1c4: Pull complete
+79d5bd8a8d26: Pull complete
+081ccf923272: Pull complete
+c9723aa529b0: Pull complete
+91c91c91f1d2: Pull complete
+Digest: sha256:da5aee29682d12a6649f51c8d6f15b87deb3e6c524b923c41d0cb3304d07c913
+Status: Downloaded newer image for python:3.9
+ ---> da5aee29682d
+Step 2/7 : WORKDIR /app/backend
+ ---> Running in a4cd5c6ea039
+ ---> Removed intermediate container a4cd5c6ea039
+ ---> 53e21e017bf4
+Step 3/7 : COPY requirements.txt /app/backend
+ ---> 93b6dfd614db
+Step 4/7 : RUN pip install -r requirements.txt
+ ---> Running in d4ff851b742f
+Collecting asgiref==3.6.0
+  Downloading asgiref-3.6.0-py3-none-any.whl (23 kB)
+Collecting Django==4.1.5
+  Downloading Django-4.1.5-py3-none-any.whl (8.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.1/8.1 MB 78.6 MB/s eta 0:00:00
+Collecting django-cors-headers==3.13.0
+  Downloading django_cors_headers-3.13.0-py3-none-any.whl (13 kB)
+Collecting djangorestframework==3.14.0
+  Downloading djangorestframework-3.14.0-py3-none-any.whl (1.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 60.5 MB/s eta 0:00:00
+Collecting gunicorn==20.1.0
+  Downloading gunicorn-20.1.0-py3-none-any.whl (79 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 11.0 MB/s eta 0:00:00
+Collecting pytz==2022.7.1
+  Downloading pytz-2022.7.1-py2.py3-none-any.whl (499 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 499.4/499.4 kB 46.5 MB/s eta 0:00:00
+Collecting sqlparse==0.4.3
+  Downloading sqlparse-0.4.3-py3-none-any.whl (42 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.8/42.8 kB 5.6 MB/s eta 0:00:00
+Collecting tzdata==2022.7
+  Downloading tzdata-2022.7-py2.py3-none-any.whl (340 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 340.1/340.1 kB 33.0 MB/s eta 0:00:00
+Collecting whitenoise==6.3.0
+  Downloading whitenoise-6.3.0-py3-none-any.whl (19 kB)
+Requirement already satisfied: setuptools>=3.0 in /usr/local/lib/python3.9/site-packages (from gunicorn==20.1.0->-r requirements.txt (line 5)) (79.0.1)
+Installing collected packages: pytz, whitenoise, tzdata, sqlparse, gunicorn, asgiref, Django, djangorestframework, django-cors-headers
+Successfully installed Django-4.1.5 asgiref-3.6.0 django-cors-headers-3.13.0 djangorestframework-3.14.0 gunicorn-20.1.0 pytz-2022.7.1 sqlparse-0.4.3 tzdata-2022.7 whitenoise-6.3.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.0.1 -> 26.0.1
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container d4ff851b742f
+ ---> 45726cb39dfb
+Step 5/7 : COPY . /app/backend
+ ---> 43cd88bb3de8
+Step 6/7 : EXPOSE 8000
+ ---> Running in c587105e98dc
+ ---> Removed intermediate container c587105e98dc
+ ---> bedcfb5d66eb
+Step 7/7 : CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+ ---> Running in 6d62f0b29a9e
+ ---> Removed intermediate container 6d62f0b29a9e
+ ---> b60a107343ca
+Successfully built b60a107343ca
+Successfully tagged notes-app:latest
+bd29b415c3b51304956ea7691f990ffe432783d9344ace92820dd8c59fcbd6e8
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED          STATUS          PORTS                                         NAMES
+bd29b415c3b5   notes-app:latest   "/bin/sh -c 'python …"   14 seconds ago   Up 13 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   agitated_booth
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+0 upgraded, 0 newly installed, 0 to remove and 60 not upgraded.
+Synchronizing state of nginx.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable nginx
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.364MB
+Step 1/7 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/7 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 53e21e017bf4
+Step 3/7 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 93b6dfd614db
+Step 4/7 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 45726cb39dfb
+Step 5/7 : COPY . /app/backend
+ ---> Using cache
+ ---> 43cd88bb3de8
+Step 6/7 : EXPOSE 8000
+ ---> Using cache
+ ---> bedcfb5d66eb
+Step 7/7 : CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+ ---> Using cache
+ ---> b60a107343ca
+Successfully built b60a107343ca
+Successfully tagged notes-app:latest
+de85d31484391fe433c92c9abec52373a594164f16792a619f94eac59ad5808f
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+de85d3148439   notes-app:latest   "/bin/sh -c 'python …"   7 seconds ago   Up 7 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   quizzical_hodgkin
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+0 upgraded, 0 newly installed, 0 to remove and 60 not upgraded.
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.364MB
+Step 1/7 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/7 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 53e21e017bf4
+Step 3/7 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 93b6dfd614db
+Step 4/7 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 45726cb39dfb
+Step 5/7 : COPY . /app/backend
+ ---> Using cache
+ ---> 43cd88bb3de8
+Step 6/7 : EXPOSE 8000
+ ---> Using cache
+ ---> bedcfb5d66eb
+Step 7/7 : CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+ ---> Using cache
+ ---> b60a107343ca
+Successfully built b60a107343ca
+Successfully tagged notes-app:latest
+49b9e634632e6682c1cfea58fba5ba981d4dd7cc82a7941e1faf6251a8330a8a
+docker: Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint quizzical_turing (71dda424541e7b6ec778117b1eadc67fc5e976206d8934ae6dbc1447787c1eaa): Bind for 0.0.0.0:8000 failed: port is already allocated
+
+Run 'docker run --help' for more information
+Deployment failed, mailing the admin:
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+de85d3148439   notes-app:latest   "/bin/sh -c 'python …"   5 minutes ago   Up 5 minutes   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   quizzical_hodgkin
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+The following additional packages will be installed:
+  python3-compose python3-docker python3-dockerpty python3-docopt python3-dotenv python3-texttable python3-websocket
+The following NEW packages will be installed:
+  docker-compose python3-compose python3-docker python3-dockerpty python3-docopt python3-dotenv python3-texttable python3-websocket
+0 upgraded, 8 newly installed, 0 to remove and 60 not upgraded.
+Need to get 297 kB of archives.
+After this operation, 1589 kB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 python3-websocket all 1.7.0-1 [38.1 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 python3-docker all 5.0.3-1ubuntu1.1 [89.1 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 python3-dockerpty all 0.4.1-5 [11.4 kB]
+Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 python3-docopt all 0.6.2-6 [26.1 kB]
+Get:5 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 python3-dotenv all 1.0.1-1 [22.3 kB]
+Get:6 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 python3-texttable all 1.6.7-1 [11.0 kB]
+Get:7 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 python3-compose all 1.29.2-6ubuntu1 [84.6 kB]
+Get:8 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 docker-compose all 1.29.2-6ubuntu1 [14.0 kB]
+Fetched 297 kB in 0s (11.9 MB/s)
+Selecting previously unselected package python3-websocket.
+(Reading database ... 72986 files and directories currently installed.)
+Preparing to unpack .../0-python3-websocket_1.7.0-1_all.deb ...
+Unpacking python3-websocket (1.7.0-1) ...
+Selecting previously unselected package python3-docker.
+Preparing to unpack .../1-python3-docker_5.0.3-1ubuntu1.1_all.deb ...
+Unpacking python3-docker (5.0.3-1ubuntu1.1) ...
+Selecting previously unselected package python3-dockerpty.
+Preparing to unpack .../2-python3-dockerpty_0.4.1-5_all.deb ...
+Unpacking python3-dockerpty (0.4.1-5) ...
+Selecting previously unselected package python3-docopt.
+Preparing to unpack .../3-python3-docopt_0.6.2-6_all.deb ...
+Unpacking python3-docopt (0.6.2-6) ...
+Selecting previously unselected package python3-dotenv.
+Preparing to unpack .../4-python3-dotenv_1.0.1-1_all.deb ...
+Unpacking python3-dotenv (1.0.1-1) ...
+Selecting previously unselected package python3-texttable.
+Preparing to unpack .../5-python3-texttable_1.6.7-1_all.deb ...
+Unpacking python3-texttable (1.6.7-1) ...
+Selecting previously unselected package python3-compose.
+Preparing to unpack .../6-python3-compose_1.29.2-6ubuntu1_all.deb ...
+Unpacking python3-compose (1.29.2-6ubuntu1) ...
+Selecting previously unselected package docker-compose.
+Preparing to unpack .../7-docker-compose_1.29.2-6ubuntu1_all.deb ...
+Unpacking docker-compose (1.29.2-6ubuntu1) ...
+Setting up python3-dotenv (1.0.1-1) ...
+Setting up python3-texttable (1.6.7-1) ...
+Setting up python3-docopt (0.6.2-6) ...
+Setting up python3-websocket (1.7.0-1) ...
+Setting up python3-dockerpty (0.4.1-5) ...
+Setting up python3-docker (5.0.3-1ubuntu1.1) ...
+Setting up python3-compose (1.29.2-6ubuntu1) ...
+Setting up docker-compose (1.29.2-6ubuntu1) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.364MB
+Step 1/7 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/7 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 53e21e017bf4
+Step 3/7 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 93b6dfd614db
+Step 4/7 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 45726cb39dfb
+Step 5/7 : COPY . /app/backend
+ ---> Using cache
+ ---> 43cd88bb3de8
+Step 6/7 : EXPOSE 8000
+ ---> Using cache
+ ---> bedcfb5d66eb
+Step 7/7 : CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+ ---> Using cache
+ ---> b60a107343ca
+Successfully built b60a107343ca
+Successfully tagged notes-app:latest
+Creating network "londheshubham153-django-notes-app_default" with the default driver
+Pulling web (trainwithshubham/my-note-app:latest)...
+latest: Pulling from trainwithshubham/my-note-app
+6e5565e0ba8d: Pull complete
+d3797e13cc41: Pull complete
+9421d62bef94: Pull complete
+19d7d75bfdca: Pull complete
+0cf53032c230: Pull complete
+7dd206bea61f: Pull complete
+7fd1e151fa8d: Pull complete
+d52e4f012db1: Pull complete
+2320f9be4a9c: Pull complete
+4e6d698d2e77: Pull complete
+67f28346abde: Pull complete
+49d939fa78c9: Pull complete
+Digest: sha256:39e44e89f74e9a700ee83e6340cda9cbeea14595c525ed32e579a56308e16459
+Status: Downloaded newer image for trainwithshubham/my-note-app:latest
+Creating londheshubham153-django-notes-app_web_1 ...
+Creating londheshubham153-django-notes-app_web_1 ... error
+
+ERROR: for londheshubham153-django-notes-app_web_1  Cannot start service web: failed to set up container networking: driver failed programming external connectivity on endpoint londheshubham153-django-notes-app_web_1 (af151d495efb56fd90ccb893b70229d8ed35d48f3a75038d507f864bef365ffd): Bind for 0.0.0.0:8000 failed: port is already allocated
+
+ERROR: for web  Cannot start service web: failed to set up container networking: driver failed programming external connectivity on endpoint londheshubham153-django-notes-app_web_1 (af151d495efb56fd90ccb893b70229d8ed35d48f3a75038d507f864bef365ffd): Bind for 0.0.0.0:8000 failed: port is already allocated
+ERROR: Encountered errors while bringing up the project.
+Deployment failed, mailing the admin:
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE              COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+de85d3148439   notes-app:latest   "/bin/sh -c 'python …"   6 minutes ago   Up 6 minutes   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   quizzical_hodgkin
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker kill de85d3148439
+de85d3148439
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+docker-compose is already the newest version (1.29.2-6ubuntu1).
+0 upgraded, 0 newly installed, 0 to remove and 60 not upgraded.
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.364MB
+Step 1/7 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/7 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 53e21e017bf4
+Step 3/7 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 93b6dfd614db
+Step 4/7 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 45726cb39dfb
+Step 5/7 : COPY . /app/backend
+ ---> Using cache
+ ---> 43cd88bb3de8
+Step 6/7 : EXPOSE 8000
+ ---> Using cache
+ ---> bedcfb5d66eb
+Step 7/7 : CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+ ---> Using cache
+ ---> b60a107343ca
+Successfully built b60a107343ca
+Successfully tagged notes-app:latest
+Starting londheshubham153-django-notes-app_web_1 ... done
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED              STATUS          PORTS                                         NAMES
+947b9688b584   trainwithshubham/my-note-app:latest   "/bin/sh -c 'python …"   About a minute ago   Up 25 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp   londheshubham153-django-notes-app_web_1
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker kill de85d3148439
+Error response from daemon: cannot kill container: de85d3148439: container de85d31484391fe433c92c9abec52373a594164f16792a619f94eac59ad5808f is not running
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi prj1_shell_deploy_django_app.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# docker kill 947b9688b584
+947b9688b584
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./prj1_shell_deploy_django_app.sh
+*******************DEPLOYMENT STARTED*****************************
+cloneing the django app....
+fatal: destination path 'LondheShubham153-django-notes-app' already exists and is not an empty directory.
+the code directory already exists
+installing dependencies
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu noble-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu3~24.04.1).
+nginx is already the newest version (1.24.0-2ubuntu7.6).
+docker-compose is already the newest version (1.29.2-6ubuntu1).
+0 upgraded, 0 newly installed, 0 to remove and 60 not upgraded.
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.364MB
+Step 1/7 : FROM python:3.9
+ ---> da5aee29682d
+Step 2/7 : WORKDIR /app/backend
+ ---> Using cache
+ ---> 53e21e017bf4
+Step 3/7 : COPY requirements.txt /app/backend
+ ---> Using cache
+ ---> 93b6dfd614db
+Step 4/7 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 45726cb39dfb
+Step 5/7 : COPY . /app/backend
+ ---> Using cache
+ ---> 43cd88bb3de8
+Step 6/7 : EXPOSE 8000
+ ---> Using cache
+ ---> bedcfb5d66eb
+Step 7/7 : CMD python /app/backend/manage.py runserver 0.0.0.0:8000
+ ---> Using cache
+ ---> b60a107343ca
+Successfully built b60a107343ca
+Successfully tagged notes-app:latest
+Starting londheshubham153-django-notes-app_web_1 ... done
+*******************DEPLOYMENT DONE*****************************
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting#

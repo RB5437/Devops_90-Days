@@ -136,5 +136,38 @@ root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting# ./continue_loop.s
 4
 5
 root@ip-172-31-46-169:~/Devops_90-Days/Day-09-Shell_Scripting#
-
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi function.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function.sh
+-bash: ./function.sh: Permission denied
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# chmod 744 function.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function.sh
+Hello Devops
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi function_Arguments.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# chmod 744 function_Arguments.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function_Arguments.sh
+tom ne mud ke kise dekha: babita
+tom ka pyaar % 100
+tom is loyal
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function_Arguments.sh
+tom ne mud ke kise dekha: jeery
+tom ka pyaar % 100
+tom is loyal
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function_Arguments.sh
+tom ne mud ke kise dekha: jeery
+tom ka pyaar % 80
+tom is loyal
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function_Arguments.sh
+tom ne mud ke kise dekha: babita
+tom ka pyaar % 70
+tom is not loyal
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi function_Arguments.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi function_Arguments.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# mv function_Arguments.sh  function_Argument_condition.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ls
+function.sh  function_Argument_condition.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# vi function_Argument.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# chmod 744 function_Argument.sh
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting# ./function_Argument.sh
+Hello Ritik
+root@ip-172-31-33-248:~/Devops_90-Days/Day-10-Shell_Scripting#
 
