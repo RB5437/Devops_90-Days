@@ -7,7 +7,7 @@ task
 
 code_clone() {
   echo "cloneing the django app...."
-  git clone https://github.com/ShendeShubham17/LondheShubham153-django-notes-app.git
+  git clone https://github.com/RB5437/django-notes-app.git
 }
 
 
@@ -34,7 +34,7 @@ deploy() {
 echo "*******************DEPLOYMENT STARTED*****************************"
 if ! code_clone; then
 	echo "the code directory already exists"
-	cd LondheShubham153-django-notes-app
+	cd django-notes-app
 fi
 
 if ! install_requirements; then
