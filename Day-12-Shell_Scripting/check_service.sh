@@ -4,7 +4,7 @@ service="nginx"
 
 if systemctl is-active --quiet $service
 then
-    echo "$service is Running"
+    echo "$service is running"
 else
     echo "$service is down "
     echo "restarting..."
