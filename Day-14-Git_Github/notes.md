@@ -2,18 +2,6 @@
 
  Date: 26-04-2026
 
----
-
-#  Topics Covered
-
-1. Git & GitHub Basics
-2. Basic Commands of Git
-3. PR Merging & Branching Strategies
-4. Hooks (Pre-commit hooks)
-5. Repo Setup End-to-End (GitHub Actions CI/CD)
-
----
-
 #  What is Git?
 
 Git is a **Version Control System (VCS)** used in industry to:
