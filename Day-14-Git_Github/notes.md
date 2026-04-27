@@ -1,6 +1,6 @@
 #  Day Notes: Git & GitHub Basics (DevOps)
 
- Date: 26-04-2026
+
 
 #  What is Git?
 
