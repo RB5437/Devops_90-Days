@@ -1,0 +1,190 @@
+PS C:\Users\HP\Documents\Git_Github_Devops> git branch
+  dev
+* main
+PS C:\Users\HP\Documents\Git_Github_Devops> git checkout dev
+error: The following untracked working tree files would be overwritten by checkout:
+        this_is_from_dev.txt
+Please move or remove them before you switch branches.
+Aborting
+PS C:\Users\HP\Documents\Git_Github_Devops> git branch dev  
+fatal: a branch named 'dev' already exists
+PS C:\Users\HP\Documents\Git_Github_Devops> git switch dev
+error: The following untracked working tree files would be overwritten by checkout:
+        this_is_from_dev.txt
+Please move or remove them before you switch branches.
+Aborting
+PS C:\Users\HP\Documents\Git_Github_Devops> git checkout dev
+D       README.md
+Switched to branch 'dev'
+PS C:\Users\HP\Documents\Git_Github_Devops> ls
+
+
+    Directory: C:\Users\HP\Documents\Git_Github_Devops
+
+
+Mode                 LastWriteTime         Length Name                                                                                                                                                  
+----                 -------------         ------ ----                                                                                                                                                  
+-a----        27-04-2026     15:25           2145 git_commands.txt                                                                                                                                      
+-a----        27-04-2026     14:36             20 testing.py                                                                                                                                            
+-a----        27-04-2026     16:17             21 this_is_from_dev.txt                                                                                                                                  
+
+
+PS C:\Users\HP\Documents\Git_Github_Devops> rm .\this_is_from_dev.txt
+PS C:\Users\HP\Documents\Git_Github_Devops> ls
+
+
+    Directory: C:\Users\HP\Documents\Git_Github_Devops
+
+
+Mode                 LastWriteTime         Length Name                                                                                                                                                  
+----                 -------------         ------ ----                                                                                                                                                  
+-a----        27-04-2026     15:25           2145 git_commands.txt                                                                                                                                      
+-a----        27-04-2026     14:36             20 testing.py                                                                                                                                            
+
+
+PS C:\Users\HP\Documents\Git_Github_Devops> git checkout main        
+error: Your local changes to the following files would be overwritten by checkout:
+        this_is_from_dev.txt
+Please commit your changes or stash them before you switch branches.
+Aborting
+PS C:\Users\HP\Documents\Git_Github_Devops> git branch               
+* dev
+  main
+PS C:\Users\HP\Documents\Git_Github_Devops> git add .\this_is_from_dev.txt
+PS C:\Users\HP\Documents\Git_Github_Devops> git commit -m "update"
+[dev 2483fb9] update
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+PS C:\Users\HP\Documents\Git_Github_Devops> git checkout main             
+D       README.md
+Switched to branch 'main'
+PS C:\Users\HP\Documents\Git_Github_Devops> git log
+commit 83f971bec5b1b9d318838a2a402219bbfc7602aa (HEAD -> main, origin/main)
+Author: Ritik Bawane <Ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:25:35 2026 +0530
+
+    Update git_commands.txt
+
+commit 7799e54d7828472a4bac705f129371921e34155b
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:22:05 2026 +0530
+
+    added command
+
+commit 91c304b9d6ce405507f040b724c19f2d902d91ac
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:20:18 2026 +0530
+
+    added command
+
+commit dd9bb2ef735143ca3be5d2d51e1ab15003ef9a99
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:25:35 2026 +0530
+
+    Update git_commands.txt
+
+commit 7799e54d7828472a4bac705f129371921e34155b
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:22:05 2026 +0530
+
+    added command
+
+commit 91c304b9d6ce405507f040b724c19f2d902d91ac
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:20:18 2026 +0530
+
+    added command
+
+commit dd9bb2ef735143ca3be5d2d51e1ab15003ef9a99
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:25:35 2026 +0530
+
+    Update git_commands.txt
+
+commit 7799e54d7828472a4bac705f129371921e34155b
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:22:05 2026 +0530
+
+    added command
+
+commit 91c304b9d6ce405507f040b724c19f2d902d91ac
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:20:18 2026 +0530
+
+    added command
+
+commit dd9bb2ef735143ca3be5d2d51e1ab15003ef9a99
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:25:35 2026 +0530
+
+    Update git_commands.txt
+
+commit 7799e54d7828472a4bac705f129371921e34155b
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:22:05 2026 +0530
+
+    added command
+
+commit 91c304b9d6ce405507f040b724c19f2d902d91ac
+Author: rb5437 <ritikbawane5437@gmail.com>
+Date:   Mon Apr 27 15:20:18 2026 +0530
+
+    added command
+
+commit dd9bb2ef735143ca3be5d2d51e1ab15003ef9a99
+Author: rb5437 <ritikbawane5437@gmail.com>
+PS C:\Users\HP\Documents\Git_Github_Devops> git log --oneline
+83f971b (HEAD -> main, origin/main) Update git_commands.txt
+7799e54 added command
+91c304b added command
+dd9bb2e update
+875ddca Initial commit
+PS C:\Users\HP\Documents\Git_Github_Devops> git status
+On branch main
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    README.md
+
+no changes added to commit (use "git add" and/or "git commit -a")
+PS C:\Users\HP\Documents\Git_Github_Devops> git checkout dev
+D       README.md
+Switched to branch 'dev'
+PS C:\Users\HP\Documents\Git_Github_Devops> git log --oneline
+2483fb9 (HEAD -> dev) update
+ca30379 dev branch
+83f971b (origin/main, main) Update git_commands.txt
+7799e54 added command
+91c304b added command
+dd9bb2e update
+875ddca Initial commit
+PS C:\Users\HP\Documents\Git_Github_Devops> git push origin dev
+Enumerating objects: 7, done.
+Counting objects: 100% (7/7), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (6/6), 510 bytes | 510.00 KiB/s, done.
+Total 6 (delta 2), reused 0 (delta 0), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (2/2), completed with 1 local object.
+remote: 
+remote: Create a pull request for 'dev' on GitHub by visiting:
+remote:      https://github.com/RB5437/git-github-workshop/pull/new/dev
+remote: 
+To https://github.com/RB5437/git-github-workshop.git
+ * [new branch]      dev -> dev
+PS C:\Users\HP\Documents\Git_Github_Devops> git checkout main
+D       README.md
+Switched to branch 'main'
+PS C:\Users\HP\Documents\Git_Github_Devops> git pull origin main
+remote: Enumerating objects: 1, done.
+remote: Counting objects: 100% (1/1), done.
+remote: Total 1 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Unpacking objects: 100% (1/1), 882 bytes | 98.00 KiB/s, done.
+From https://github.com/RB5437/git-github-workshop
+ * branch            main       -> FETCH_HEAD
+   83f971b..adb54dd  main       -> origin/main
+Updating 83f971b..adb54dd
+Fast-forward
+ this_is_from_dev.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 this_is_from_dev.txt
+PS C:\Users\HP\Documents\Git_Github_Devops> 
