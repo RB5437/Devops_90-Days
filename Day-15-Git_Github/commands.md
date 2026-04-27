@@ -1,12 +1,5 @@
 #  Git Commands Cheat Sheet
 
----
-
-##  What is Git?
-
-Git is a **Version Control System (VCS)** used to track code changes, manage history, and collaborate.
-
----
 
 ##  Basic Workflow (Local → GitHub)
 
