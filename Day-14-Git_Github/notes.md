@@ -56,7 +56,7 @@ Folder → File → Git (VCS) → Push → GitHub → PR → Automation
 
 ---
 
-# 🔹 File System vs Git (VCS)
+#  File System vs Git (VCS)
 
 ## File System
 
@@ -71,7 +71,7 @@ Folder → File → Git (VCS) → Push → GitHub → PR → Automation
 
 ---
 
-# 🔹 Git File States
+#  Git File States
 
 ### 1. Untracked (Red)
 
@@ -87,7 +87,7 @@ Folder → File → Git (VCS) → Push → GitHub → PR → Automation
 
 ---
 
-# 🔹 Basic Git Commands
+#  Basic Git Commands
 
 ## Initialize repository
 
@@ -159,7 +159,7 @@ git restore <file-name>
 
 ---
 
-# 🔹 Git Configuration
+#  Git Configuration
 
 ## Set username
 
@@ -175,7 +175,7 @@ git config --global user.email "your-email@example.com"
 
 ---
 
-# 🔹 Step-by-Step Workflow
+#  Step-by-Step Workflow
 
 ```bash id="x12"
 # Create file
@@ -202,7 +202,7 @@ git restore testing.py
 
 ---
 
-# 🔹 Important Notes
+#  Important Notes
 
 * `git add` → moves file to staging
 * `git commit` → saves changes permanently
