@@ -8,7 +8,7 @@ git init
 
 ---
 
-##🔹 Check Hidden Files (.git folder)
+## Check Hidden Files (.git folder)
 
 ```bash
 ls -a
