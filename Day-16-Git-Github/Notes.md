@@ -65,7 +65,7 @@ If detected → commit fails
 
 ---
 
-## 🔹 CI/CD Concept
+##  CI/CD Concept
 
 ### GitHub Actions / Jenkins Pipeline
 
@@ -91,8 +91,8 @@ When you push code:
 
 | Feature        | Git Hooks        | CI/CD (GitHub Actions) |
 |---------------|----------------|------------------------|
-| Runs Locally  | ✅ Yes         | ❌ No                 |
-| Runs on Push  | ❌ No          | ✅ Yes                |
+| Runs Locally  |  Yes           |  No                 |
+| Runs on Push  |  No            |  Yes                |
 | Speed         | Fast           | Slower                |
 | Use Case      | Early checks   | Full pipeline         |
 
