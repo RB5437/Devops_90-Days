@@ -1,0 +1,18 @@
+#!/bin/bash
+
+<< disclaimer
+This is just for infotainment purpose
+disclaimer
+
+read -p "jetha ne mud ke kise dekha: " wife
+read -p "jetha ka pyaar % " pyaar
+
+if [[ $wife == "daya bhabhi" ]];
+then
+	echo "jetha is loyal"
+elif [[ $pyaar -ge 100 ]];
+then
+	echo "jetha is loyal"
+else
+	echo "jetha is not loyal"
+fi
