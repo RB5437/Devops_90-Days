@@ -1,4 +1,4 @@
-# What will you learn 
+
 
 ## Introduction to EC2:
 
