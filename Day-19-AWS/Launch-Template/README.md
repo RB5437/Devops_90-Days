@@ -1,7 +1,7 @@
 
 ---
 
-# 📁 2. Launch Template — README.md
+#  2. Launch Template — README.md
 
 ```markdown id="lt01"
 # Launch Template
