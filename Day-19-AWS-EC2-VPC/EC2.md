@@ -62,57 +62,7 @@ These accelerators offload computationally intensive tasks from the main CPU, en
 
 ![image](https://github.com/iam-veeramalla/aws-devops-zero-to-hero/assets/43399466/fc8e083c-dba5-41a6-94b9-14ebef0255c1)
 
-Instance families
 
-```
-    C – Compute
-
-    D – Dense storage
-
-    F – FPGA
-
-    G – GPU
-
-    Hpc – High performance computing
-
-    I – I/O
-
-    Inf – AWS Inferentia
-
-    M – Most scenarios
-
-    P – GPU
-
-    R – Random access memory
-
-    T – Turbo
-
-    Trn – AWS Tranium
-
-    U – Ultra-high memory
-
-    VT – Video transcoding
-
-    X – Extra-large memory
-```
-
-Additional capabilities
-
-```
-    a – AMD processors
-
-    g – AWS Graviton processors
-
-    i – Intel processors
-
-    d – Instance store volumes
-
-    n – Network and EBS optimized
-
-    e – Extra storage or memory
-
-    z – High performance
-```
 
 ## EC2 Instance Basics:
 
