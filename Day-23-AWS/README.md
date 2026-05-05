@@ -1,7 +1,7 @@
- S3, IAM & AWS CLI
-
-Welcome to Day 3 of the AWS learning challenge.  
+## S3, IAM & AWS CLI
+ 
 Today focuses on storing data securely, managing access, and automating AWS tasks using CLI.
+I practics a EC2, IAM, S3 AND AWS CLI.
 
 ---
 
