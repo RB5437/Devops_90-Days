@@ -1,61 +1,77 @@
-– S3, IAM & AWS CLI
-Welcome to Day 3 of the 7 Days of AWS Challenge 🚀
-Today, you’ll explore how to store and protect data on AWS, manage user access securely, and perform tasks from the Command Line Interface (CLI) like a true Cloud Engineer.
+ S3, IAM & AWS CLI
 
- Concepts to Learn
- What is Amazon S3?
-Amazon Simple Storage Service (Amazon S3) is a scalable object storage service that allows you to store and retrieve data from anywhere on the internet.
-Common use cases include:
+Welcome to Day 3 of the AWS learning challenge.  
+Today focuses on storing data securely, managing access, and automating AWS tasks using CLI.
 
-Backup & Restore
-Hosting Static Websites
-Data Archiving & Content Delivery
- S3 Documentation → Click Here
+---
 
- What is IAM?
-Identity and Access Management (IAM) is AWS’s service for controlling access to resources securely.
-It lets you create users, groups, and roles with defined permissions.
+## Overview
 
-Key Components:
+In this module, you will learn:
 
-Users – Individual accounts
-Groups – Collection of users with common permissions
-Roles – Temporary credentials for apps or services
-Policies – JSON documents defining permissions
- IAM Documentation → Click Here
+- Amazon S3 (Storage Service)
+- IAM (Access Control)
+- AWS CLI (Command Line Tool)
 
- What is AWS CLI?
-AWS Command Line Interface (CLI) is a unified tool that lets you manage AWS services from your terminal instead of the console.
+These are core services used in real-world AWS environments.
 
-With CLI, you can:
+---
 
-Launch EC2 instances
-Upload data to S3
-Configure IAM roles and permissions
- AWS CLI Documentation → Click Here
+## Amazon S3 (Simple Storage Service)
 
- Tasks for Day 3
- Task 1: Secure Your S3 Bucket
-Create a private S3 bucket in AWS.
-Modify the bucket policy so you can access its contents securely without making it public.
- This helps you understand how to secure your S3 storage using policies.
+Amazon S3 is a scalable object storage service used to store and retrieve data from anywhere.
 
- Task 2: Configure AWS CLI
-Install and configure the AWS CLI on your Ubuntu or local machine using your AWS credentials.
- Task 3: Launch EC2 Using CLI
-Create an EC2 instance using AWS CLI.
- Resource: Creating EC2 Using AWS CLI (Blog)
+### Key Features:
+- Highly durable (99.999999999%)
+- Scalable storage
+- Secure with bucket policies and IAM
 
- Task 4: IAM Access Setup for a New Team Member
-Scenario:
-You’re an IT admin at GlobalTech Inc. and a new team member, Alex, joins your team.
+### Use Cases:
+- Backup & Restore
+- Static Website Hosting
+- Data Archiving
+- Media storage
 
-You must configure IAM to provide specific access rights:
+### Interview Points:
+- S3 is object storage (not block storage)
+- Data is stored in **buckets**
+- Access controlled via **bucket policies & IAM**
 
-View EC2 instances (monitor only).
-Create S3 buckets (no EC2 modification rights).
-Document your steps and write a short LinkedIn blog titled:
+---
 
+## IAM (Identity and Access Management)
 
+IAM is used to securely control access to AWS resources.
 
+### Key Components:
 
+- **Users** → Individual identities  
+- **Groups** → Collection of users  
+- **Roles** → Temporary access (used by services)  
+- **Policies** → JSON permissions  
+
+### Best Practice:
+- Follow **Principle of Least Privilege**
+
+### Interview Points:
+- Authentication = Who you are  
+- Authorization = What you can access  
+- IAM is global service
+
+---
+
+## AWS CLI (Command Line Interface)
+
+AWS CLI is a tool to interact with AWS services using terminal commands.
+
+### Key Uses:
+- Automate tasks
+- Manage resources faster
+- Useful in DevOps & scripting
+
+### Example Commands:
+
+```bash
+aws configure
+aws s3 ls
+aws ec2 describe-instances
