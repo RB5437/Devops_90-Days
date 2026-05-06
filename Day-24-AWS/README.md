@@ -1,4 +1,4 @@
-# 🚀 Day X – AWS RDS, EC2, DynamoDB & Lambda
+# 🚀  AWS RDS, EC2, DynamoDB & Lambda
 
 ## 📌 Overview
 
