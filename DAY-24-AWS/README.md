@@ -1,4 +1,4 @@
-# 🚀  AWS RDS, EC2, DynamoDB & Lambda
+# 🚀   AWS RDS, EC2, DynamoDB & Lambda
 
 ## 📌 Overview
 
@@ -16,6 +16,8 @@ This includes:
 ## 🧠 Key Concepts
 
 ### 🔹 Amazon RDS
+
+📘 Official Docs: https://docs.aws.amazon.com/rds/
 
 * Managed relational database service
 * Supports MySQL, PostgreSQL, MariaDB, Oracle, SQL Server
@@ -36,6 +38,9 @@ This includes:
 
 ### 🔹 EC2 ↔ RDS Connection
 
+📘 EC2 Docs: https://docs.aws.amazon.com/ec2/
+📘 RDS Connectivity: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_CommonTasks.Connect.html
+
 * EC2 used as a client to connect to RDS
 * Connection happens via:
 
@@ -51,6 +56,8 @@ This includes:
 ---
 
 ### 🔹 DynamoDB
+
+📘 Official Docs: https://docs.aws.amazon.com/dynamodb/
 
 * Fully managed NoSQL database
 * Key-value + document based
@@ -75,6 +82,8 @@ This includes:
 
 ### 🔹 AWS Lambda
 
+📘 Official Docs: https://docs.aws.amazon.com/lambda/
+
 * Serverless compute service
 * Run code without managing servers
 
@@ -97,6 +106,10 @@ Unknown parameter in input: "key"
 ### 🔍 Root Cause:
 
 * Case-sensitive parameter mistake in boto3
+
+### 📘 Boto3 Docs:
+
+https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/dynamodb.html
 
 ### ✅ Fix:
 
