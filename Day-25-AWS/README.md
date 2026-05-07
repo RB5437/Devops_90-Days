@@ -187,6 +187,53 @@ Configured routes for:
 * Used for metrics, logs, and alarms
 
 ---
+# 🔗 Official AWS Documentation Links
+
+## 🌐 Amazon VPC
+
+* AWS VPC Documentation: https://docs.aws.amazon.com/vpc/
+
+## 📂 Subnets
+
+* AWS Subnet Documentation: https://docs.aws.amazon.com/vpc/latest/userguide/configure-subnets.html
+
+## 🌍 Internet Gateway
+
+* Internet Gateway Documentation: https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html
+
+## 🛣️ Route Tables
+
+* Route Table Documentation: https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html
+
+## 🔄 NAT Gateway
+
+* NAT Gateway Documentation: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
+
+## 🔗 VPC Peering
+
+* VPC Peering Documentation: https://docs.aws.amazon.com/vpc/latest/peering/
+
+## 📊 Amazon CloudWatch
+
+* CloudWatch Documentation: https://docs.aws.amazon.com/cloudwatch/
+
+---
+
+# 🚀 Interview Preparation Resources
+
+## AWS Networking Overview
+
+https://aws.amazon.com/vpc/
+
+## CloudWatch Overview
+
+https://aws.amazon.com/cloudwatch/
+
+## AWS Architecture Center
+
+https://aws.amazon.com/architecture/
+
+
 
 # ✅ Outcome
 
