@@ -1,0 +1,470 @@
+ubuntu@ip-172-31-38-32:~$ sudo apt-get install docker.io
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Solving dependencies... Done
+The following additional packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base pigz runc ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-buildx docker-compose-v2 docker-doc rinse rootlesskit zfs-fuse | zfsutils
+The following NEW packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base docker.io pigz runc ubuntu-fan
+0 upgraded, 8 newly installed, 0 to remove and 26 not upgraded.
+Need to get 74.0 MB of archives.
+After this operation, 281 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 pigz amd64 2.8-1build1 [68.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 bridge-utils amd64 1.7.1-4ubuntu3 [34.8 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 runc amd64 1.4.0-0ubuntu1 [9829 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 containerd amd64 2.2.2-0ubuntu1 [28.0 MB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 dns-root-data all 2025080400build1 [6022 B]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 dnsmasq-base amd64 2.92-1 [441 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 docker.io amd64 29.1.3-0ubuntu4.1 [35.5 MB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 ubuntu-fan all 0.12.17 [34.3 kB]
+Fetched 74.0 MB in 1s (94.7 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... 85301 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.8-1build1_amd64v3.deb ...
+Unpacking pigz (2.8-1build1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../1-bridge-utils_1.7.1-4ubuntu3_amd64v3.deb ...
+Unpacking bridge-utils (1.7.1-4ubuntu3) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../2-runc_1.4.0-0ubuntu1_amd64v3.deb ...
+Unpacking runc (1.4.0-0ubuntu1) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../3-containerd_2.2.2-0ubuntu1_amd64v3.deb ...
+Unpacking containerd (2.2.2-0ubuntu1) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../4-dns-root-data_2025080400build1_all.deb ...
+Unpacking dns-root-data (2025080400build1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../5-dnsmasq-base_2.92-1_amd64v3.deb ...
+Unpacking dnsmasq-base (2.92-1) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../6-docker.io_29.1.3-0ubuntu4.1_amd64v3.deb ...
+Unpacking docker.io (29.1.3-0ubuntu4.1) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../7-ubuntu-fan_0.12.17_all.deb ...
+Unpacking ubuntu-fan (0.12.17) ...
+Setting up dnsmasq-base (2.92-1) ...
+Setting up runc (1.4.0-0ubuntu1) ...
+Setting up dns-root-data (2025080400build1) ...
+Setting up bridge-utils (1.7.1-4ubuntu3) ...
+Setting up pigz (2.8-1build1) ...
+Setting up containerd (2.2.2-0ubuntu1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/containerd.service' → '/usr/lib/systemd/system/containerd.service'.
+Setting up ubuntu-fan (0.12.17) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/ubuntu-fan.service' → '/usr/lib/systemd/system/ubuntu-fan.service'.
+Setting up docker.io (29.1.3-0ubuntu4.1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/docker.service' → '/usr/lib/systemd/system/docker.service'.
+Created symlink '/etc/systemd/system/sockets.target.wants/docker.socket' → '/usr/lib/systemd/system/docker.socket'.
+Processing triggers for dbus (1.16.2-2ubuntu4) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-38-32:~$ sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: enabled)
+     Active: active (running) since Sun 2026-05-10 08:13:00 UTC; 2min 23s ago
+ Invocation: 84e7d67f7e4a4e90b5654cfd8176979f
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 1966 (dockerd)
+      Tasks: 9
+     Memory: 27.4M (peak: 27.8M)
+        CPU: 364ms
+     CGroup: /system.slice/docker.service
+             └─1966 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.274110407Z" level=info msg="Restoring containers: start."
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.314696392Z" level=info msg="Deleting nftables IPv4 rules" error="exit status 1"
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.321088286Z" level=info msg="Deleting nftables IPv6 rules" error="exit status 1"
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.635004424Z" level=info msg="Loading containers: done."
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.642854183Z" level=info msg="Docker daemon" commit=29.1.3-0ubuntu4.1 containerd-sna>
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.642983331Z" level=info msg="Initializing buildkit"
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.674274377Z" level=info msg="Completed buildkit initialization"
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.679767854Z" level=info msg="Daemon has completed initialization"
+May 10 08:13:00 ip-172-31-38-32 systemd[1]: Started docker.service - Docker Application Container Engine.
+May 10 08:13:00 ip-172-31-38-32 dockerd[1966]: time="2026-05-10T08:13:00.680567308Z" level=info msg="API listen on /run/docker.sock"
+lines 1-23/23 (END)
+[1]+  Stopped                    sudo systemctl status docker
+ubuntu@ip-172-31-38-32:~$ docker ps
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+ubuntu@ip-172-31-38-32:~$ whoami
+ubuntu
+ubuntu@ip-172-31-38-32:~$ sudo usermod -aG docker $USER
+ubuntu@ip-172-31-38-32:~$ newgrp docker
+ubuntu@ip-172-31-38-32:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-38-32:~$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE   ID             DISK USAGE   CONTENT SIZE   EXTRA
+ubuntu@ip-172-31-38-32:~$
+
+ubuntu@ip-172-31-38-32:~$ docker login
+
+USING WEB-BASED LOGIN
+
+i Info → To sign in with credentials on the command line, use 'docker login -u <username>'
+
+
+Your one-time device confirmation code is: QFCB-GCLW
+Press ENTER to open your browser or submit your device code here: https://login.docker.com/activate
+
+Waiting for authentication in the browser…
+
+WARNING! Your credentials are stored unencrypted in '/home/ubuntu/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+Login Succeeded
+ubuntu@ip-172-31-38-32:~$ docker pull hello-world
+Using default tag: latest
+latest: Pulling from library/hello-world
+4f55086f7dd0: Pull complete
+d5e71e642bf5: Download complete
+Digest: sha256:f9078146db2e05e794366b1bfe584a14ea6317f44027d10ef7dad65279026885
+Status: Downloaded newer image for hello-world:latest
+docker.io/library/hello-world:latest
+ubuntu@ip-172-31-38-32:~$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest   f9078146db2e       25.9kB         9.49kB
+ubuntu@ip-172-31-38-32:~$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+ubuntu@ip-172-31-38-32:~$ docker pull mysql
+Using default tag: latest
+latest: Pulling from library/mysql
+edf85873f64e: Pull complete
+2289aa81323e: Pull complete
+9e1e11de502d: Pull complete
+e070bfedbe5c: Pull complete
+98aef952816f: Pull complete
+53faec57e673: Pull complete
+18084fb5d973: Pull complete
+6c2253d147ea: Pull complete
+bfad527af331: Pull complete
+8fa99ae45fef: Pull complete
+3769042852bc: Download complete
+88f318259e72: Download complete
+Digest: sha256:f0ef1d92fa650fcfa5b85f1d82bb1a56a6dd579bf256b8f8f2a5a0b1b61c8b0b
+Status: Downloaded newer image for mysql:latest
+docker.io/library/mysql:latest
+ubuntu@ip-172-31-38-32:~$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                ID             DISK USAGE   CONTENT SIZE   EXTRA
+hello-world:latest   f9078146db2e       25.9kB         9.49kB    U
+mysql:latest         f0ef1d92fa65        1.3GB          290MB
+
+ubuntu@ip-172-31-38-32:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS                 NAMES
+a7e3016064fc   mysql     "docker-entrypoint.s…"   About a minute ago   Up About a minute   3306/tcp, 33060/tcp   priceless_bohr
+ubuntu@ip-172-31-38-32:~$ docker stop a7e3016064fc
+a7e3016064fc
+ubuntu@ip-172-31-38-32:~$ docker run -d -e MYSQL_ROOT_PASSWORD=root mysql
+e88b28684e7a2dc6366fd384d99a8a5995a5e3ef9de905eb1bf6dbd60e448d55
+ubuntu@ip-172-31-38-32:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                 NAMES
+e88b28684e7a   mysql     "docker-entrypoint.s…"   8 seconds ago   Up 8 seconds   3306/tcp, 33060/tcp   priceless_wing
+ubuntu@ip-172-31-38-32:~$ubuntu@ip-172-31-38-32:~$ mkdir projects
+ubuntu@ip-172-31-38-32:~$ ls
+projects
+ubuntu@ip-172-31-38-32:~$ cd projects/
+ubuntu@ip-172-31-38-32:~/projects$ ls
+ubuntu@ip-172-31-38-32:~/projects$ git clone https://github.com/RB5437/simple-java-docker.git
+Cloning into 'simple-java-docker'...
+remote: Enumerating objects: 8, done.
+remote: Counting objects: 100% (8/8), done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 8 (delta 0), reused 8 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (8/8), done.
+ubuntu@ip-172-31-38-32:~/projects$ ls
+simple-java-docker
+ubuntu@ip-172-31-38-32:~/projects$ cd simple-java-docker/
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ ls
+Dockerfile  LICENSE  README.md  simple-java-app-working-app-tested-on-11-jan-26  src
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ rm -rv Dockerfile
+removed 'Dockerfile'
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ vi Dockerfile
+ubuntu@ip-172-31-38-32:~$ mkdir projects
+ubuntu@ip-172-31-38-32:~$ ls
+projects
+ubuntu@ip-172-31-38-32:~$ cd projects/
+ubuntu@ip-172-31-38-32:~/projects$ ls
+ubuntu@ip-172-31-38-32:~/projects$ git clone https://github.com/RB5437/simple-java-docker.git
+Cloning into 'simple-java-docker'...
+remote: Enumerating objects: 8, done.
+remote: Counting objects: 100% (8/8), done.
+remote: Compressing objects: 100% (6/6), done.
+remote: Total 8 (delta 0), reused 8 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (8/8), done.
+ubuntu@ip-172-31-38-32:~/projects$ ls
+simple-java-docker
+ubuntu@ip-172-31-38-32:~/projects$ cd simple-java-docker/
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ ls
+Dockerfile  LICENSE  README.md  simple-java-app-working-app-tested-on-11-jan-26  src
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ rm -rv Dockerfile
+removed 'Dockerfile'
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ vi Dockerfile
+=====================Dockerfile============================
+# pull a base image which gives all reuired tools and libraries
+FROM eclipse-temurin:17-jdk-alpine
+
+#create a folder where the app code will be stored
+WORKDIR /app
+
+#copy the source code from your HOST machine to your container
+COPY  src/Main.java /app/Main.java
+
+#compile the application code
+RUN javac Main.java
+
+#run the application
+CMD ["java","Main"]
+==============================
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ ls
+Dockerfile  LICENSE  README.md  simple-java-app-working-app-tested-on-11-jan-26  src
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ cat Dockerfile
+# pull a base image which gives all reuired tools and libraries
+FROM eclipse-temurin:17-jdk-alpine
+
+#create a folder where the app code will be stored
+WORKDIR /app
+
+#copy the source code from your HOST machine to your container
+COPY  src/Main.java /app/Main.java
+
+#compile the application code
+RUN javac Main.java
+
+#run the application
+CMD ["java","Main"]
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ docker build -t java-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  68.61kB
+Step 1/5 : FROM eclipse-temurin:17-jdk-alpine
+17-jdk-alpine: Pulling from library/eclipse-temurin
+665e255b26ac: Pulling fs layer
+7b50ae58d435: Pulling fs layer
+6a0ac1617861: Pulling fs layer
+ede0d10cee20: Pulling fs layer
+b97e55ba8d37: Pulling fs layer
+b97e55ba8d37: Download complete
+665e255b26ac: Download complete
+6a0ac1617861: Download complete
+0ff8dc90c5e8: Download complete
+ae12e7871527: Download complete
+6a0ac1617861: Pull complete
+7b50ae58d435: Download complete
+7b50ae58d435: Pull complete
+ede0d10cee20: Download complete
+b97e55ba8d37: Pull complete
+665e255b26ac: Pull complete
+ede0d10cee20: Pull complete
+Digest: sha256:5d14725f0e49e19df217f6ce179039f01ca25f5f9aa958573b467312599ca246
+Status: Downloaded newer image for eclipse-temurin:17-jdk-alpine
+ ---> 5d14725f0e49
+Step 2/5 : WORKDIR /app
+ ---> Running in fe5d09186d59
+ ---> Removed intermediate container fe5d09186d59
+ ---> 1adf2c1ec84f
+Step 3/5 : COPY  src/Main.java /app/Main.java
+ ---> 0aca318ba384
+Step 4/5 : RUN javac Main.java
+ ---> Running in d9035be8b793
+ ---> Removed intermediate container d9035be8b793
+ ---> 47c0ba6cdf15
+Step 5/5 : CMD ["java","Main"]
+ ---> Running in eab2cacfbf55
+ ---> Removed intermediate container eab2cacfbf55
+ ---> 4c494d06c906
+Successfully built 4c494d06c906
+Successfully tagged java-app:latest
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ ls
+Dockerfile  LICENSE  README.md  simple-java-app-working-app-tested-on-11-jan-26  src
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                           ID             DISK USAGE   CONTENT SIZE   EXTRA
+eclipse-temurin:17-jdk-alpine   5d14725f0e49        512MB          171MB
+hello-world:latest              f9078146db2e       25.9kB         9.49kB    U
+java-app:latest                 4c494d06c906        511MB          170MB
+mysql:latest                    f0ef1d92fa65        1.3GB          290MB    U
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ docker run java-app
+Hello, Docker! Current date: Sun May 10 08:51:56 GMT 2026
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ docker run java-app
+Hello, Docker! Current date: Sun May 10 08:51:56 GMT 2026
+ubuntu@ip-172-31-38-32:~/projects/simple-java-docker$ cd ..
+ubuntu@ip-172-31-38-32:~/projects$ ls
+simple-java-docker
+ubuntu@ip-172-31-38-32:~/projects$ git clone https://github.com/RB5437/flask-app-ecs.git
+Cloning into 'flask-app-ecs'...
+remote: Enumerating objects: 68, done.
+remote: Counting objects: 100% (68/68), done.
+remote: Compressing objects: 100% (33/33), done.
+remote: Total 68 (delta 19), reused 65 (delta 19), pack-reused 0 (from 0)
+Receiving objects: 100% (68/68), 15.19 KiB | 1.69 MiB/s, done.
+Resolving deltas: 100% (19/19), done.
+ubuntu@ip-172-31-38-32:~/projects$ cd flask-app-ecs/
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ ls
+Dockerfile-multi  README.md  app.py  requirements.txt  run.py  templates
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ vi Dockerfile
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ cat Dockerfile
+FROM python:3.10
+
+WORKDIR /app
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+ENTRYPOINT ["python","run.py"]
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker build -t flask-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  97.28kB
+Step 1/5 : FROM python:3.10
+3.10: Pulling from library/python
+9d4c62869945: Pulling fs layer
+307f8152a55e: Pulling fs layer
+caf6c0a95e34: Pulling fs layer
+db0071f7b771: Pulling fs layer
+1326ac9eaf9f: Pulling fs layer
+82a92b93bf71: Pulling fs layer
+547079076124: Pulling fs layer
+9d4c62869945: Download complete
+7b32dec50131: Download complete
+db0071f7b771: Download complete
+caf6c0a95e34: Download complete
+bf0282eaa427: Download complete
+1326ac9eaf9f: Download complete
+307f8152a55e: Download complete
+82a92b93bf71: Download complete
+547079076124: Download complete
+307f8152a55e: Pull complete
+caf6c0a95e34: Pull complete
+82a92b93bf71: Pull complete
+547079076124: Pull complete
+db0071f7b771: Pull complete
+9d4c62869945: Pull complete
+1326ac9eaf9f: Pull complete
+Digest: sha256:c65474d899184fd43af6abc57108e47849d05e4917405743d0f7952e43f5c6a4
+Status: Downloaded newer image for python:3.10
+ ---> c65474d89918
+Step 2/5 : WORKDIR /app
+ ---> Running in 051898c016a3
+ ---> Removed intermediate container 051898c016a3
+ ---> 7f61abb5ca82
+Step 3/5 : COPY . .
+ ---> 1933708c4b7c
+Step 4/5 : RUN pip install -r requirements.txt
+ ---> Running in 3c6afdb82cb3
+Collecting flask==3.1.1
+  Downloading flask-3.1.1-py3-none-any.whl (103 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 103.3/103.3 kB 9.0 MB/s eta 0:00:00
+Collecting Werkzeug==3.1.3
+  Downloading werkzeug-3.1.3-py3-none-any.whl (224 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 224.5/224.5 kB 21.4 MB/s eta 0:00:00
+Collecting itsdangerous>=2.2.0
+  Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+Collecting jinja2>=3.1.2
+  Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 134.9/134.9 kB 19.6 MB/s eta 0:00:00
+Collecting markupsafe>=2.1.1
+  Downloading markupsafe-3.0.3-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (20 kB)
+Collecting click>=8.1.3
+  Downloading click-8.3.3-py3-none-any.whl (110 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 110.5/110.5 kB 16.5 MB/s eta 0:00:00
+Collecting blinker>=1.9.0
+  Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+Installing collected packages: markupsafe, itsdangerous, click, blinker, Werkzeug, jinja2, flask
+Successfully installed Werkzeug-3.1.3 blinker-1.9.0 click-8.3.3 flask-3.1.1 itsdangerous-2.2.0 jinja2-3.1.6 markupsafe-3.0.3
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.0.1 -> 26.1.1
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 3c6afdb82cb3
+ ---> 631294d7eaf0
+Step 5/5 : ENTRYPOINT ["python","run.py"]
+ ---> Running in 0d16d555b8d6
+ ---> Removed intermediate container 0d16d555b8d6
+ ---> 319900c67c92
+Successfully built 319900c67c92
+Successfully tagged flask-app:latest
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker run -d -p 80:80 flask-app
+28f8e478b06c290914290343f964a98693565410b1fcdb0c22dc76495351c63e
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker ps
+CONTAINER ID   IMAGE       COMMAND           CREATED         STATUS         PORTS                                 NAMES
+28f8e478b06c   flask-app   "python run.py"   6 seconds ago   Up 6 seconds   0.0.0.0:80->80/tcp, [::]:80->80/tcp   clever_aryabhata
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker logs 28f8e478b06c
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:80
+ * Running on http://172.17.0.2:80
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 751-021-952
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker ps
+CONTAINER ID   IMAGE       COMMAND           CREATED         STATUS         PORTS                                 NAMES
+ce5f543fb57c   flask-app   "python run.py"   4 minutes ago   Up 4 minutes   0.0.0.0:80->80/tcp, [::]:80->80/tcp   tender_aryabhata
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker stop ce5f543fb57c
+ce5f543fb57c
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker  start ce5f543fb57c
+ce5f543fb57c
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker ps
+CONTAINER ID   IMAGE       COMMAND           CREATED         STATUS         PORTS                                 NAMES
+ce5f543fb57c   flask-app   "python run.py"   6 minutes ago   Up 5 seconds   0.0.0.0:80->80/tcp, [::]:80->80/tcp   tender_aryabhata
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$ docker exec -it ce5f543fb57c bash
+root@ce5f543fb57c:/app# ls
+Dockerfile  Dockerfile-multi  README.md  __pycache__  app.py  requirements.txt  run.py  templates
+root@ce5f543fb57c:/app# exit
+exit
+ubuntu@ip-172-31-38-32:~/projects/flask-app-ecs$
+
+
+
+
