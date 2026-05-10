@@ -1,23 +1,43 @@
-# 🚀 Introduction to Docker & Docker Architecture
+# 🐳 Introduction to Docker & Docker Architecture
 
 ![Docker](https://www.docker.com/wp-content/uploads/2022/03/Moby-logo.png)
 
-## 📌 What is Docker?
+> **90-Day DevOps Challenge | Day 27 | 9 May 2026**
+> Trainer: Shubham Londhe [@TrainWithShubham](https://www.youtube.com/@TrainWithShubham)
+> Practiced on: AWS EC2 (Ubuntu)
 
-Docker is an open-source platform used to develop, package, ship, and run applications inside lightweight containers.
+---
+
+## ✅ What I Learned Today
+
+| # | Topic | Status |
+|---|-------|--------|
+| 1 | What is Docker & Why Docker | ✅ Done |
+| 2 | Virtualization vs Containerization | ✅ Done |
+| 3 | VM Architecture vs Container Architecture | ✅ Done |
+| 4 | Docker Architecture — Client, Daemon, containerd | ✅ Done |
+| 5 | Docker Components — Images, Containers, Registry | ✅ Done |
+| 6 | Docker Workflow — Client → Daemon → Image → Container | ✅ Done |
+| 7 | Installing Docker on Ubuntu (EC2) | ✅ Done |
+| 8 | Basic Docker Commands | ✅ Done |
+
+---
+
+## 🚀 What is Docker?
+
+Docker is an open-source platform used to develop, package, ship, and run applications inside lightweight **containers**.
 
 Containers allow developers to package applications with all dependencies, libraries, and configurations so the application runs consistently across all environments.
 
 ---
 
-# 🔥 Why Docker?
+## 🔥 Why Docker?
 
 Before Docker, applications worked differently on different systems because of dependency and environment issues.
 
 Docker solves this problem by using **containers**.
 
-### ✅ Benefits of Docker
-
+### ✅ Benefits of Docker:
 - Lightweight
 - Faster deployment
 - Easy scalability
@@ -28,9 +48,9 @@ Docker solves this problem by using **containers**.
 
 ---
 
-# 🖥️ Virtualization vs Containerization
+## 🖥️ Virtualization vs Containerization
 
-## 🔹 Virtualization
+### ▶ Virtualization
 
 Virtualization uses a **Hypervisor** to create multiple Virtual Machines (VMs).
 
@@ -39,21 +59,23 @@ Each VM contains:
 - Application
 - Required Libraries
 
-### Architecture
-
-```text
+#### Architecture:
+```
 Hardware
-   ↓
-Host Operating System
-   ↓
-Hypervisor
-   ↓
-Virtual Machines
-   ↓
-Applications
+  └── Host Operating System
+        └── Hypervisor
+              ├── Virtual Machine 1
+              │     ├── Guest OS
+              │     └── Application
+              ├── Virtual Machine 2
+              │     ├── Guest OS
+              │     └── Application
+              └── Virtual Machine 3
+                    ├── Guest OS
+                    └── Application
 ```
 
-### ❌ Disadvantages
+#### ❌ Disadvantages:
 - Heavyweight
 - High RAM and CPU usage
 - Slow boot time
@@ -61,285 +83,308 @@ Applications
 
 ---
 
-## 🔹 Containerization
+### ▶ Containerization
 
 Containerization uses a **Container Engine** like Docker.
 
-Containers share the host OS kernel.
+Containers share the **Host OS kernel**.
 
-### Architecture
-
-```text
+#### Architecture:
+```
 Hardware
-   ↓
-Host Operating System
-   ↓
-Docker Engine
-   ↓
-Containers
-   ↓
-Applications
+  └── Host Operating System (Linux Kernel — shared)
+        └── Docker Engine (Container Runtime)
+              ├── Container 1
+              │     └── App + Libraries
+              ├── Container 2
+              │     └── App + Libraries
+              └── Container 3
+                    └── App + Libraries
 ```
 
-### ✅ Advantages
+#### ✅ Advantages:
 - Lightweight
-- Fast startup
+- Fast startup (seconds)
 - Less memory usage
-- Portable
+- Portable across environments
+- Shares Host OS — no separate OS per container
 - Efficient resource usage
 
 ---
 
-# 🐳 Docker Architecture
+## ⚖️ VM vs Container — Comparison Table
 
-Docker uses a client-server architecture.
+| Feature | Virtual Machine | Container |
+|---------|----------------|-----------|
+| OS | Own OS per VM | Shares Host OS Kernel |
+| Size | GBs | MBs |
+| Boot Time | Minutes | Seconds |
+| Performance | Slower | Faster |
+| Isolation | Strong (full OS) | Process-level |
+| Portability | Less portable | Highly portable |
+| Resource Usage | High | Low |
+| Tools | VMware, VirtualBox, Hyper-V | Docker, Podman, Containerd |
 
-## Components of Docker
+> 💡 **Key insight:** Docker Engine does NOT need its own OS — it runs directly on the Host OS. That's why containers are **lightweight!**
 
-### 1️⃣ Docker Client
+---
 
-The Docker Client is the command-line interface used by users.
+## 🏗️ Docker Architecture
 
-Example:
+Docker follows a **Client-Server architecture**.
 
-```bash
-docker run nginx
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      DOCKER ENGINE                          │
+│                                                             │
+│   ┌─────────────┐   REST API   ┌──────────────────────┐    │
+│   │  Docker CLI │ ──────────▶  │  Docker Daemon       │    │
+│   │  (Client)   │              │  (dockerd)           │    │
+│   │             │              │                      │    │
+│   │ docker run  │              │  ┌────────────────┐  │    │
+│   │ docker build│              │  │  containerd    │  │    │
+│   │ docker ps   │              │  │  (runtime)     │  │    │
+│   └─────────────┘              │  └────────────────┘  │    │
+│                                └──────────────────────┘    │
+└─────────────────────────────────────────────────────────────┘
+                                          │
+                    ┌─────────────────────┼──────────────────────┐
+                    ▼                     ▼                      ▼
+             Container 1           Container 2            Container 3
 ```
 
----
+### Components:
 
-### 2️⃣ Docker Daemon (dockerd)
-
-The Docker daemon runs in the background and manages:
-
-- Containers
-- Images
-- Networks
-- Volumes
-
----
-
-### 3️⃣ Docker Engine
-
-Docker Engine is the core component that allows Docker to run containers.
-
-It includes:
-- Docker Daemon
-- REST API
-- Docker CLI
+| Component | Description |
+|-----------|-------------|
+| **Docker Client (CLI)** | Interface you use to type commands — `docker run`, `docker build`, `docker ps` |
+| **Docker Daemon (dockerd)** | Background service that manages containers, images, networks, volumes |
+| **containerd** | Low-level container runtime — actually creates and manages containers |
+| **REST API** | Communication bridge between Docker CLI and Docker Daemon |
+| **Docker Registry (Hub)** | Stores Docker images — public registry at [hub.docker.com](https://hub.docker.com) |
 
 ---
 
-### 4️⃣ Docker Images
+## 📊 Docker Workflow
 
-Docker Images are read-only templates used to create containers.
+### How a command flows:
 
-Example:
-- Ubuntu Image
-- Nginx Image
-
----
-
-### 5️⃣ Docker Containers
-
-Containers are running instances of Docker images.
-
-Example:
-
-```bash
-docker run ubuntu
+```
+You type: docker run nginx
+        ↓
+Docker CLI sends request → REST API → Docker Daemon
+        ↓
+Docker Daemon checks if image exists locally
+        ↓  (if not found)
+Pulls image from Docker Hub (Registry)
+        ↓
+Passes to containerd → creates and starts container
+        ↓
+Container is running! ✅
 ```
 
----
-
-# 📊 Docker Workflow
-
-```text
+### Simple view:
+```
 Docker Client
       ↓
-Docker Daemon
+Docker Daemon (dockerd)
       ↓
-Docker Images
+Docker Images (pulled from Hub)
       ↓
-Docker Containers
+Docker Containers (running instances)
 ```
 
 ---
 
-# ⚙️ Install Docker on Ubuntu
+## 📦 Dockerfile → Image → Container
 
-## Step 1: Update Packages
-
-```bash
-sudo apt update
 ```
+┌─────────────────┐        ┌─────────────────┐        ┌─────────────────┐
+│                 │        │                 │        │                 │
+│   Dockerfile    │─build─▶│     Image       │─run──▶ │   Container     │
+│                 │        │                 │        │                 │
+│  Instructions   │        │  Blueprint /    │        │ Running Instance │
+│  to build image │        │  Answer Script  │        │  of the image   │
+│                 │        │  (Read-only)    │        │                 │
+└─────────────────┘        └─────────────────┘        └─────────────────┘
+```
+
+- **Dockerfile** = Text file with step-by-step instructions to build image
+- **Image** = Read-only blueprint (snapshot) created from Dockerfile
+- **Container** = Live running instance of an image — one image → many containers
 
 ---
 
-## Step 2: Install Required Packages
+## ⚙️ Installing Docker on Ubuntu (EC2)
+
+### Method 1 — Quick install using apt (what I used)
 
 ```bash
-sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
-```
+# Step 1 — Update packages
+sudo apt-get update
 
----
+# Step 2 — Install Docker
+sudo apt-get install docker.io -y
 
-## Step 3: Add Docker GPG Key
-
-```bash
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-```
-
----
-
-## Step 4: Add Docker Repository
-
-```bash
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-
----
-
-## Step 5: Install Docker
-
-```bash
-sudo apt update
-sudo apt install docker-ce docker-ce-cli containerd.io -y
-```
-
----
-
-## Step 6: Verify Docker Installation
-
-```bash
-docker --version
-```
-
----
-
-# ▶️ Start Docker Service
-
-```bash
+# Step 3 — Start and enable Docker service
 sudo systemctl start docker
 sudo systemctl enable docker
-```
 
-Check status:
+# Step 4 — Check status
+sudo systemctl status docker         # Should show: active (running) ✅
 
-```bash
-sudo systemctl status docker
-```
-
----
-
-# 👤 Run Docker Without sudo
-
-```bash
+# Step 5 — Fix permission denied error
 sudo usermod -aG docker $USER
 newgrp docker
-```
 
----
-
-# 🧪 Test Docker
-
-Run Hello World container:
-
-```bash
+# Step 6 — Verify installation
+docker --version
 docker run hello-world
 ```
 
----
-
-# 📦 Basic Docker Commands
-
-## Check Docker Version
+### Method 2 — Official Docker CE install
 
 ```bash
+# Step 1 — Update packages
+sudo apt update
+
+# Step 2 — Install required packages
+sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+
+# Step 3 — Add Docker GPG key
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+# Step 4 — Add Docker repository
+echo "deb [arch=$(dpkg --print-architecture) \
+  signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+  https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# Step 5 — Install Docker CE
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io -y
+
+# Step 6 — Verify
 docker --version
 ```
 
-## Pull Image
+---
 
+## 📦 Basic Docker Commands
+
+### Image Commands:
 ```bash
-docker pull nginx
+docker images                        # List all local images
+docker pull nginx                    # Pull image from Docker Hub
+docker pull ubuntu:22.04             # Pull specific version
+docker rmi nginx                     # Remove image
+docker rmi <image_id>                # Remove by ID
+docker build -t myapp:v1 .           # Build image from Dockerfile
+docker push username/myapp:v1        # Push image to Docker Hub
 ```
 
-## Run Container
-
+### Container Commands:
 ```bash
-docker run -d -p 80:80 nginx
+docker run nginx                     # Run container (foreground)
+docker run -d nginx                  # Run in background (detached)
+docker run -d -p 80:80 nginx         # Map port — host:container
+docker run -d --name myapp nginx     # Run with custom name
+docker run -it ubuntu bash           # Interactive terminal
+
+docker ps                            # List running containers
+docker ps -a                         # List all containers (running + stopped)
+docker stop <container_id>           # Stop container (graceful)
+docker start <container_id>          # Start stopped container
+docker restart <container_id>        # Restart container
+docker rm <container_id>             # Remove stopped container
+docker rm -f <container_id>          # Force remove running container
+
+docker logs <container_id>           # View container logs
+docker logs -f <container_id>        # Follow logs live
+docker exec -it <container_id> bash  # Enter running container
+docker inspect <container_id>        # Inspect container details
+docker stats                         # Live CPU/RAM usage
 ```
 
-## List Running Containers
-
+### Cleanup Commands:
 ```bash
-docker ps
-```
-
-## List All Containers
-
-```bash
-docker ps -a
-```
-
-## Stop Container
-
-```bash
-docker stop <container_id>
-```
-
-## Remove Container
-
-```bash
-docker rm <container_id>
-```
-
-## Remove Image
-
-```bash
-docker rmi <image_id>
+docker system prune                  # Remove all unused data
+docker system df                     # Check disk usage
+docker volume prune                  # Remove unused volumes
 ```
 
 ---
 
-# 📁 Docker Use Cases
+## 📁 Docker Use Cases
 
-- Application Deployment
-- Microservices
-- CI/CD Pipelines
-- DevOps Automation
-- Cloud-native Applications
-- Kubernetes
-- Testing Environments
-
----
-
-# 📚 Key Learnings
-
-✅ Difference between Virtualization and Containerization  
-✅ Docker Architecture  
-✅ Docker Components  
-✅ Installing Docker on Ubuntu  
-✅ Running Containers  
-✅ Basic Docker Commands  
+| Use Case | Description |
+|----------|-------------|
+| **Application Deployment** | Ship any app consistently across all environments |
+| **Microservices** | Run each service in its own isolated container |
+| **CI/CD Pipelines** | Build, test, and deploy in containers automatically |
+| **DevOps Automation** | Automate infra with Docker + Terraform + Kubernetes |
+| **Cloud-native Apps** | Run on AWS ECS, EKS, Google GKE, Azure AKS |
+| **Kubernetes** | Docker containers are the base unit for K8s pods |
+| **Testing Environments** | Spin up isolated test environments in seconds |
 
 ---
 
-# 📖 Official Documentation
+## 📚 Key Learnings Today
 
-- Docker Official Website: https://www.docker.com/
-- Docker Documentation: https://docs.docker.com/
-- Docker Hub: https://hub.docker.com/
-
----
-
-# 🏷️ Tags
-
-`Docker` `DevOps` `Containerization` `Linux` `Docker Engine` `Docker Architecture` `Cloud Computing`
+- ✅ Difference between Virtualization and Containerization
+- ✅ Docker Architecture — Client, Daemon, containerd, REST API
+- ✅ Docker Components — Images, Containers, Registry
+- ✅ Docker Workflow — how `docker run` flows internally
+- ✅ Dockerfile → Image → Container flow
+- ✅ Installing Docker on Ubuntu EC2
+- ✅ Basic Docker Commands
 
 ---
 
-# ✨ Author
+## 📅 Progress Tracker
 
-Learning Docker & DevOps 🚀
+| Day | Date | Topic | Status |
+|-----|------|-------|--------|
+| Day 27 | 9 May 2026 | Virtualization vs Containerization, Docker Architecture | ✅ Done |
+| Day 28 | 10 May 2026 | Install Docker, Dockerfile, Java App, Flask App | ✅ Done |
+| Day 29 | 11 May 2026 | Docker Volumes & Networking | ⬜ Pending |
+| Day 30 | 12 May 2026 | Docker Compose | ⬜ Pending |
+| Day 31 | 13 May 2026 | Multi-stage Builds | ⬜ Pending |
+| Day 32 | 14 May 2026 | Mini Project — Push to Docker Hub | ⬜ Pending |
+
+---
+
+## 🔗 Resources
+
+| Resource | Link |
+|----------|------|
+| 🎥 Docker One Shot — Shubham Londhe | [YouTube](https://www.youtube.com/watch?v=9bSbNNH4Nqw) |
+| 📺 TrainWithShubham Channel | [YouTube](https://www.youtube.com/@TrainWithShubham) |
+| 📖 Docker Official Docs | [docs.docker.com](https://docs.docker.com) |
+| 🐳 Docker Hub | [hub.docker.com](https://hub.docker.com) |
+| 💻 LondheShubham153 GitHub | [GitHub](https://github.com/LondheShubham153) |
+
+---
+
+## 🏷️ Tags
+
+`Docker` `DevOps` `Containerization` `Linux` `Docker Engine` `Docker Architecture` `Cloud Computing` `90DaysOfDevOps`
+
+---
+
+## 👤 About Me
+
+**Ritik Bawane**
+- 🎯 90-Day DevOps Challenge — Day 27/90
+- 💼 Ex-Kyndryl | 3.4 Years Experience | Technical Engineer
+- 🏅 AWS Solutions Architect Associate Certified
+- 🏅 RHCSA Certified
+- 🔗 [GitHub](https://github.com/RB5437)
+
+---
+
+*⭐ If this helped you, give the repo a star!*
+
+*Progress: Linux ✅ | Networking ✅ | Shell Scripting ✅ | Git/GitHub ✅ | AWS ✅ | Docker 🔄 | Jenkins ⬜ | Terraform ⬜ | Kubernetes ⬜*
