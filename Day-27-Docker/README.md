@@ -349,10 +349,10 @@ docker volume prune                  # Remove unused volumes
 |-----|------|-------|--------|
 | Day 27 | 9 May 2026 | Virtualization vs Containerization, Docker Architecture | ✅ Done |
 | Day 28 | 10 May 2026 | Install Docker, Dockerfile, Java App, Flask App | ✅ Done |
-| Day 29 | 11 May 2026 | Docker Volumes & Networking | ⬜ Pending |
-| Day 30 | 12 May 2026 | Docker Compose | ⬜ Pending |
-| Day 31 | 13 May 2026 | Multi-stage Builds | ⬜ Pending |
-| Day 32 | 14 May 2026 | Mini Project — Push to Docker Hub | ⬜ Pending |
+| Day 29 | 11 May 2026 | Docker Volumes & Networking & Docker Compose | ⬜ Pending |
+| Day 30 | 12 May 2026 | Docker Registry & Multi-stage Builds  | ⬜ Pending |
+| Day 31 | 13 May 2026 |Mini Project1 — Push to Docker Hub | ⬜ Pending |
+| Day 32 | 14 May 2026 | Mini Project2 — Push to Docker Hub | ⬜ Pending |
 
 ---
 
