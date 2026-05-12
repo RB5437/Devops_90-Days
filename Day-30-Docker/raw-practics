@@ -1,0 +1,671 @@
+======Multi-satge-Docker Build=========================================================================================
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE   ID             DISK USAGE   CONTENT SIZE   EXTRA
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ ls
+Dockerfile  README.md  app.py  requirements.txt  run.py  templates
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ cat Dockerfile
+#stage1  base image 994mb ~ 1.04gb
+
+FROM python:3.10 AS builder
+
+WORKDIR /app
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt
+
+
+#stage 2 base image 400mb
+FROM python:3.10-slim
+
+WORKDIR /app
+
+COPY --from=builder /usr/local/lib/python3.10/site-packages/  /usr/local/lib/python3.10/site-packages/
+
+COPY . .
+
+ENTRYPOINT ["python","run.py"]
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker build -t flask-app-mini .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  104.4kB
+Step 1/9 : FROM python:3.10 AS builder
+3.10: Pulling from library/python
+7b32dec50131: Download complete
+bf0282eaa427: Download complete
+Digest: sha256:c65474d899184fd43af6abc57108e47849d05e4917405743d0f7952e43f5c6a4
+Status: Downloaded newer image for python:3.10
+ ---> c65474d89918
+Step 2/9 : WORKDIR /app
+ ---> Using cache
+ ---> cbb3ffff1eda
+Step 3/9 : COPY requirements.txt .
+ ---> Using cache
+ ---> 3b72b7dd14bb
+Step 4/9 : RUN pip install -r requirements.txt
+ ---> Using cache
+ ---> 7f2cd0cb7b0e
+Step 5/9 : FROM python:3.10-slim
+3.10-slim: Pulling from library/python
+916e7db83f22: Download complete
+b952c8efc16e: Download complete
+Digest: sha256:3ff3599b60b92eeb304e6bd580b765c4e46f0290e687926bb37a078c74a181a1
+Status: Downloaded newer image for python:3.10-slim
+ ---> 3ff3599b60b9
+Step 6/9 : WORKDIR /app
+ ---> Running in df4ddf023078
+ ---> Removed intermediate container df4ddf023078
+ ---> e8f87fd75ceb
+Step 7/9 : COPY --from=builder /usr/local/lib/python3.10/site-packages/  /usr/local/lib/python3.10/site-packages/
+ ---> 98c89620cb66
+Step 8/9 : COPY . .
+ ---> 09606d046626
+Step 9/9 : ENTRYPOINT ["python","run.py"]
+ ---> Running in 63c88e1d7322
+ ---> Removed intermediate container 63c88e1d7322
+ ---> 51e29232dc62
+Successfully built 51e29232dc62
+Successfully tagged flask-app-mini:latest
+=============================Monitoring and Logging in Docker========================================================
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                   ID             DISK USAGE   CONTENT SIZE   EXTRA
+flask-app-mini:latest   51e29232dc62        212MB         50.4MB
+python:3.10             c65474d89918        1.6GB          424MB
+python:3.10-slim        3ff3599b60b9        185MB         47.1MB
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker run -d -p 80:80 flask-app-mini:latest
+710f6b4debef3af7360deaa91a5dfde5996127f03d4f3b59d3184ec51aec3bb6
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker ps
+CONTAINER ID   IMAGE                   COMMAND           CREATED              STATUS              PORTS                                 NAMES
+710f6b4debef   flask-app-mini:latest   "python run.py"   About a minute ago   Up About a minute   0.0.0.0:80->80/tcp, [::]:80->80/tcp   pensive_leavitt
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker logs 710f6b4debef
+ * Serving Flask app 'app'
+ * Debug mode: on
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:80
+ * Running on http://172.17.0.2:80
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 280-731-253
+223.185.39.192 - - [12/May/2026 07:21:55] "GET / HTTP/1.1" 200 -
+223.185.39.192 - - [12/May/2026 07:21:55] "GET /favicon.ico HTTP/1.1" 404 -
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker run -d -p 80:80 flask-app-mini:latest
+1db4f752d4d2e86bceb6b73603ae529f23ec807cf1c6e881d49fc017c0c8a33d
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ docker ps
+CONTAINER ID   IMAGE                   COMMAND           CREATED         STATUS         PORTS                                 NAMES
+1db4f752d4d2   flask-app-mini:latest   "python run.py"   6 seconds ago   Up 5 seconds   0.0.0.0:80->80/tcp, [::]:80->80/tcp   zealous_bell
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ sudo cat nohup.out
+cannot attach to a stopped container, start it first
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ nohup docker attach 1db4f752d4d2 &
+[1] 3620
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ nohup: ignoring input and appending output to 'nohup.out'
+
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$ cat nohup.out
+cannot attach to a stopped container, start it first
+223.185.39.192 - - [12/May/2026 07:27:45] "GET / HTTP/1.1" 200 -
+223.185.39.192 - - [12/May/2026 07:28:20] "GET /error/ HTTP/1.1" 404 -
+223.185.39.192 - - [12/May/2026 07:28:32] "GET /health HTTP/1.1" 200 -
+ubuntu@ip-172-31-80-77:~/project/flask-app-ecs$
+===============================================================================================================
+Project.1:-- Deploying a web application with Nginx and MySQL---------------------
+
+ubuntu@ip-172-31-80-77:~/project$ git clone https://github.com/RB5437/django-notes-app.git
+Cloning into 'django-notes-app'...
+remote: Enumerating objects: 288, done.
+remote: Counting objects: 100% (288/288), done.
+remote: Compressing objects: 100% (242/242), done.
+remote: Total 288 (delta 46), reused 275 (delta 42), pack-reused 0 (from 0)
+Receiving objects: 100% (288/288), 1.73 MiB | 23.58 MiB/s, done.
+Resolving deltas: 100% (46/46), done.
+ubuntu@ip-172-31-80-77:~/project$ ls
+django-notes-app
+ubuntu@ip-172-31-80-77:~/project$ cd django-notes-app/
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ ls
+Dockerfile                Jenkinsfile  README.md  db.sqlite3          manage.py  nginx     requirements.txt
+Dockerproject_Output.png  Procfile     api        docker-compose.yml  mynotes    notesapp  staticfiles
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ ls -la
+total 292
+drwxrwxr-x 8 ubuntu ubuntu   4096 May 12 08:20 .
+drwxrwxr-x 3 ubuntu ubuntu   4096 May 12 08:20 ..
+-rw-rw-r-- 1 ubuntu ubuntu     70 May 12 08:20 .env
+drwxrwxr-x 7 ubuntu ubuntu   4096 May 12 08:20 .git
+-rw-rw-r-- 1 ubuntu ubuntu    343 May 12 08:20 .gitignore
+-rw-rw-r-- 1 ubuntu ubuntu    591 May 12 08:20 Dockerfile
+-rw-rw-r-- 1 ubuntu ubuntu  91951 May 12 08:20 Dockerproject_Output.png
+-rw-rw-r-- 1 ubuntu ubuntu    637 May 12 08:20 Jenkinsfile
+-rw-rw-r-- 1 ubuntu ubuntu     30 May 12 08:20 Procfile
+-rw-rw-r-- 1 ubuntu ubuntu    504 May 12 08:20 README.md
+drwxrwxr-x 4 ubuntu ubuntu   4096 May 12 08:20 api
+-rw-rw-r-- 1 ubuntu ubuntu 135168 May 12 08:20 db.sqlite3
+-rw-rw-r-- 1 ubuntu ubuntu   1157 May 12 08:20 docker-compose.yml
+-rw-rw-r-- 1 ubuntu ubuntu    664 May 12 08:20 manage.py
+drwxrwxr-x 5 ubuntu ubuntu   4096 May 12 08:20 mynotes
+drwxrwxr-x 2 ubuntu ubuntu   4096 May 12 08:20 nginx
+drwxrwxr-x 3 ubuntu ubuntu   4096 May 12 08:20 notesapp
+-rw-rw-r-- 1 ubuntu ubuntu    166 May 12 08:20 requirements.txt
+drwxrwxr-x 7 ubuntu ubuntu   4096 May 12 08:20 staticfiles
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ ls
+Dockerfile                Jenkinsfile  README.md  db.sqlite3          manage.py  nginx     requirements.txt
+Dockerproject_Output.png  Procfile     api        docker-compose.yml  mynotes    notesapp  staticfiles
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ vi Dockerfile
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker build -t notes-app .
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  8.536MB
+Step 1/8 : FROM python:3.9-slim
+3.9-slim: Pulling from library/python
+ea56f685404a: Pulling fs layer
+38513bd72563: Pulling fs layer
+b3ec39b36ae8: Pulling fs layer
+fc7443084902: Pulling fs layer
+ea56f685404a: Download complete
+b3ec39b36ae8: Download complete
+a5e5b1b19090: Download complete
+fc7443084902: Download complete
+967a6079ce08: Download complete
+38513bd72563: Download complete
+38513bd72563: Pull complete
+b3ec39b36ae8: Pull complete
+ea56f685404a: Pull complete
+fc7443084902: Pull complete
+Digest: sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b
+Status: Downloaded newer image for python:3.9-slim
+ ---> 2d97f6910b16
+Step 2/8 : WORKDIR /app/backend
+ ---> Running in 9add89c0e319
+ ---> Removed intermediate container 9add89c0e319
+ ---> 083963c5a54c
+Step 3/8 : COPY requirements.txt /app/backend
+ ---> 07666f10e552
+Step 4/8 : RUN apt-get update     && apt-get upgrade -y     && apt-get install -y gcc default-libmysqlclient-dev pkg-config     && rm -rf /var/lib/apt/lists/*
+ ---> Running in 864e165c2360
+Get:1 http://deb.debian.org/debian trixie InRelease [140 kB]
+Get:2 http://deb.debian.org/debian trixie-updates InRelease [47.3 kB]
+Get:3 http://deb.debian.org/debian-security trixie-security InRelease [43.4 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 Packages [9671 kB]
+Get:5 http://deb.debian.org/debian trixie-updates/main amd64 Packages [5412 B]
+Get:6 http://deb.debian.org/debian-security trixie-security/main amd64 Packages [159 kB]
+Fetched 10.1 MB in 1s (9263 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+Calculating upgrade...
+The following packages will be upgraded:
+  base-files bash dpkg libc-bin libc6 libcap2 libsqlite3-0 libssl3t64
+  libsystemd0 libudev1 openssl openssl-provider-legacy sqv tzdata
+14 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+Need to get 13.3 MB of archives.
+After this operation, 25.6 kB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian trixie/main amd64 libc6 amd64 2.41-12+deb13u2 [2847 kB]
+Get:2 http://deb.debian.org/debian trixie/main amd64 base-files amd64 13.8+deb13u4 [73.3 kB]
+Get:3 http://deb.debian.org/debian trixie/main amd64 bash amd64 5.2.37-2+b8 [1501 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 dpkg amd64 1.22.22 [1537 kB]
+Get:5 http://deb.debian.org/debian trixie/main amd64 libc-bin amd64 2.41-12+deb13u2 [638 kB]
+Get:6 http://deb.debian.org/debian trixie/main amd64 libcap2 amd64 1:2.75-10+b8 [28.7 kB]
+Get:7 http://deb.debian.org/debian trixie/main amd64 libsqlite3-0 amd64 3.46.1-7+deb13u1 [914 kB]
+Get:8 http://deb.debian.org/debian-security trixie-security/main amd64 openssl-provider-legacy amd64 3.5.5-1~deb13u2 [311 kB]
+Get:9 http://deb.debian.org/debian-security trixie-security/main amd64 libssl3t64 amd64 3.5.5-1~deb13u2 [2445 kB]
+Get:10 http://deb.debian.org/debian trixie/main amd64 libsystemd0 amd64 257.9-1~deb13u1 [453 kB]
+Get:11 http://deb.debian.org/debian trixie/main amd64 libudev1 amd64 257.9-1~deb13u1 [152 kB]
+Get:12 http://deb.debian.org/debian trixie/main amd64 sqv amd64 1.3.0-3+b2 [661 kB]
+Get:13 http://deb.debian.org/debian trixie/main amd64 tzdata all 2026a-0+deb13u1 [264 kB]
+Get:14 http://deb.debian.org/debian-security trixie-security/main amd64 openssl amd64 3.5.5-1~deb13u2 [1500 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 14.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Teletype
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Noninteractive
+Preconfiguring packages ...
+Fetched 13.3 MB in 0s (131 MB/s)
+(Reading database ... 5644 files and directories currently installed.)
+Preparing to unpack .../libc6_2.41-12+deb13u2_amd64.deb ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Teletype
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Noninteractive
+Unpacking libc6:amd64 (2.41-12+deb13u2) over (2.41-12) ...
+Setting up libc6:amd64 (2.41-12+deb13u2) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Teletype
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Noninteractive
+(Reading database ... 5644 files and directories currently installed.)
+Preparing to unpack .../base-files_13.8+deb13u4_amd64.deb ...
+Unpacking base-files (13.8+deb13u4) over (13.8+deb13u1) ...
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Teletype
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Noninteractive
+
+Current default time zone: 'Etc/UTC'
+Local time is now:      Tue May 12 08:31:06 UTC 2026.
+Universal Time is now:  Tue May 12 08:31:06 UTC 2026.
+Run 'dpkg-reconfigure tzdata' if you wish to change it.
+
+Setting up openssl (3.5.5-1~deb13u2) ...
+Processing triggers for debianutils (5.23.2) ...
+Processing triggers for libc-bin (2.41-12+deb13u2) ...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  binutils binutils-common binutils-x86-64-linux-gnu cpp cpp-14
+  cpp-14-x86-64-linux-gnu cpp-x86-64-linux-gnu gcc-14 gcc-14-x86-64-linux-gnu
+  gcc-x86-64-linux-gnu libasan8 libatomic1 libbinutils libc-dev-bin libc6-dev
+  libcc1-0 libcrypt-dev libctf-nobfd0 libctf0 libgcc-14-dev libgomp1
+  libgprofng0 libhwasan0 libisl23 libitm1 libjansson4 liblsan0 libmariadb-dev
+  libmariadb-dev-compat libmariadb3 libmpc3 libmpfr6 libpkgconf3 libquadmath0
+  libsframe1 libssl-dev libtsan2 libubsan1 linux-libc-dev manpages
+  manpages-dev mariadb-common mysql-common pkgconf pkgconf-bin rpcsvc-proto
+  zlib1g-dev
+Suggested packages:
+  binutils-doc gprofng-gui binutils-gold cpp-doc gcc-14-locales cpp-14-doc
+  gcc-multilib make autoconf automake libtool flex bison gdb gcc-doc
+  gcc-14-multilib gcc-14-doc gdb-x86-64-linux-gnu libc-devtools glibc-doc
+  libssl-doc man-browser
+The following NEW packages will be installed:
+  binutils binutils-common binutils-x86-64-linux-gnu cpp cpp-14
+  cpp-14-x86-64-linux-gnu cpp-x86-64-linux-gnu default-libmysqlclient-dev gcc
+  gcc-14 gcc-14-x86-64-linux-gnu gcc-x86-64-linux-gnu libasan8 libatomic1
+  libbinutils libc-dev-bin libc6-dev libcc1-0 libcrypt-dev libctf-nobfd0
+  libctf0 libgcc-14-dev libgomp1 libgprofng0 libhwasan0 libisl23 libitm1
+  libjansson4 liblsan0 libmariadb-dev libmariadb-dev-compat libmariadb3
+  libmpc3 libmpfr6 libpkgconf3 libquadmath0 libsframe1 libssl-dev libtsan2
+  libubsan1 linux-libc-dev manpages manpages-dev mariadb-common mysql-common
+  pkg-config pkgconf pkgconf-bin rpcsvc-proto zlib1g-dev
+0 upgraded, 50 newly installed, 0 to remove and 0 not upgraded.
+Need to get 65.0 MB of archives.
+After this operation, 242 MB of additional disk space will be used.
+Get:1 http://deb.debian.org/debian trixie/main amd64 manpages all 6.9.1-1 [1393 kB]
+Get:2 http://deb.debian.org/debian trixie/main amd64 libsframe1 amd64 2.44-3 [78.4 kB]
+Get:3 http://deb.debian.org/debian trixie/main amd64 binutils-common amd64 2.44-3 [2509 kB]
+Get:4 http://deb.debian.org/debian trixie/main amd64 libbinutils amd64 2.44-3 [534 kB]
+Get:5 http://deb.debian.org/debian trixie/main amd64 libgprofng0 amd64 2.44-3 [808 kB]
+Get:6 http://deb.debian.org/debian trixie/main amd64 libctf-nobfd0 amd64 2.44-3 [156 kB]
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.40.1 /usr/local/share/perl/5.40.1 /usr/lib/x86_64-linux-gnu/perl5/5.40 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.40 /usr/share/perl/5.40 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8, <STDIN> line 50.)
+debconf: falling back to frontend: Teletype
+debconf: unable to initialize frontend: Teletype
+debconf: (This frontend requires a controlling tty.)
+debconf: falling back to frontend: Noninteractive
+Fetched 65.0 MB in 0s (138 MB/s)
+Selecting previously unselected package manpages.
+(Reading database ... 5645 files and directories currently installed.)
+Preparing to unpack .../00-manpages_6.9.1-1_all.deb ...
+Unpacking manpages (6.9.1-1) ...
+Selecting previously unselected package libsframe1:amd64.
+Preparing to unpack .../01-libsframe1_2.44-3_amd64.deb ...
+Unpacking libsframe1:amd64 (2.44-3) ...
+Selecting previously unselected package binutils-common:amd64.
+Setting up mysql-common (5.8+1.1.1) ...
+update-alternatives: using /etc/mysql/my.cnf.fallback to provide /etc/mysql/my.cnf (my.cnf) in auto mode
+Setting up manpages (6.9.1-1) ...
+Setting up binutils-common:amd64 (2.44-3) ...
+Setting up linux-libc-dev (6.12.86-1) ...
+Setting up libctf-nobfd0:amd64 (2.44-3) ...
+Setting up libgomp1:amd64 (14.2.0-19) ...
+Setting up libsframe1:amd64 (2.44-3) ...
+Setting up libjansson4:amd64 (2.14-2+b3) ...
+Setting up mariadb-common (1:11.8.6-0+deb13u1) ...
+update-alternatives: using /etc/mysql/mariadb.cnf to provide /etc/mysql/my.cnf (my.cnf) in auto mode
+Setting up libpkgconf3:amd64 (1.8.1-4) ...
+Setting up rpcsvc-proto (1.4.3-1) ...
+Setting up libmpfr6:amd64 (4.2.2-1) ...
+Setting up libquadmath0:amd64 (14.2.0-19) ...
+Setting up libssl-dev:amd64 (3.5.5-1~deb13u2) ...
+Setting up libmpc3:amd64 (1.3.1-1+b3) ...
+Setting up libatomic1:amd64 (14.2.0-19) ...
+Setting up libmariadb3:amd64 (1:11.8.6-0+deb13u1) ...
+Setting up pkgconf-bin (1.8.1-4) ...
+Setting up libubsan1:amd64 (14.2.0-19) ...
+Setting up libhwasan0:amd64 (14.2.0-19) ...
+Setting up libcrypt-dev:amd64 (1:4.4.38-1) ...
+Setting up libasan8:amd64 (14.2.0-19) ...
+Setting up libtsan2:amd64 (14.2.0-19) ...
+Setting up libbinutils:amd64 (2.44-3) ...
+Setting up libisl23:amd64 (0.27-1) ...
+Setting up libc-dev-bin (2.41-12+deb13u2) ...
+Setting up libcc1-0:amd64 (14.2.0-19) ...
+Setting up liblsan0:amd64 (14.2.0-19) ...
+Setting up libitm1:amd64 (14.2.0-19) ...
+Setting up libctf0:amd64 (2.44-3) ...
+Setting up manpages-dev (6.9.1-1) ...
+Setting up pkgconf:amd64 (1.8.1-4) ...
+Setting up libgprofng0:amd64 (2.44-3) ...
+Setting up pkg-config:amd64 (1.8.1-4) ...
+Setting up cpp-14-x86-64-linux-gnu (14.2.0-19) ...
+Setting up cpp-14 (14.2.0-19) ...
+Setting up libc6-dev:amd64 (2.41-12+deb13u2) ...
+Setting up libgcc-14-dev:amd64 (14.2.0-19) ...
+Setting up binutils-x86-64-linux-gnu (2.44-3) ...
+Setting up cpp-x86-64-linux-gnu (4:14.2.0-1) ...
+Setting up binutils (2.44-3) ...
+Setting up zlib1g-dev:amd64 (1:1.3.dfsg+really1.3.1-1+b1) ...
+Setting up cpp (4:14.2.0-1) ...
+Setting up gcc-14-x86-64-linux-gnu (14.2.0-19) ...
+Setting up gcc-x86-64-linux-gnu (4:14.2.0-1) ...
+Setting up gcc-14 (14.2.0-19) ...
+Setting up libmariadb-dev (1:11.8.6-0+deb13u1) ...
+Setting up libmariadb-dev-compat (1:11.8.6-0+deb13u1) ...
+Setting up gcc (4:14.2.0-1) ...
+Setting up default-libmysqlclient-dev:amd64 (1.1.1) ...
+Processing triggers for libc-bin (2.41-12+deb13u2) ...
+ ---> Removed intermediate container 864e165c2360
+ ---> 70e661a86754
+Step 5/8 : RUN pip install mysqlclient
+ ---> Running in 0518a784dfb7
+Collecting mysqlclient
+  Downloading mysqlclient-2.2.7.tar.gz (91 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 91.4/91.4 kB 10.7 MB/s eta 0:00:00
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Getting requirements to build wheel: started
+  Getting requirements to build wheel: finished with status 'done'
+  Preparing metadata (pyproject.toml): started
+  Preparing metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: mysqlclient
+  Building wheel for mysqlclient (pyproject.toml): started
+  Building wheel for mysqlclient (pyproject.toml): finished with status 'done'
+  Created wheel for mysqlclient: filename=mysqlclient-2.2.7-cp39-cp39-linux_x86_64.whl size=133781 sha256=44dccfff475af7121abe2d6dd33009fa43e5272085f0e57e0c9b9823532684df
+  Stored in directory: /root/.cache/pip/wheels/ed/03/da/e61775175405d4b30c644467a6d377a98fd5a5da1bf5364614
+Successfully built mysqlclient
+Installing collected packages: mysqlclient
+Successfully installed mysqlclient-2.2.7
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.0.1 -> 26.0.1
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container 0518a784dfb7
+ ---> 3b291f89146a
+Step 6/8 : RUN pip install --no-cache-dir -r requirements.txt
+ ---> Running in be20e13014d5
+Collecting asgiref==3.6.0
+  Downloading asgiref-3.6.0-py3-none-any.whl (23 kB)
+Collecting Django==4.1.5
+  Downloading Django-4.1.5-py3-none-any.whl (8.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.1/8.1 MB 174.6 MB/s eta 0:00:00
+Collecting django-cors-headers==3.13.0
+  Downloading django_cors_headers-3.13.0-py3-none-any.whl (13 kB)
+Collecting djangorestframework==3.14.0
+  Downloading djangorestframework-3.14.0-py3-none-any.whl (1.1 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 225.4 MB/s eta 0:00:00
+Collecting gunicorn==20.1.0
+  Downloading gunicorn-20.1.0-py3-none-any.whl (79 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 79.5/79.5 kB 220.3 MB/s eta 0:00:00
+Collecting pytz==2022.7.1
+  Downloading pytz-2022.7.1-py2.py3-none-any.whl (499 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 499.4/499.4 kB 238.6 MB/s eta 0:00:00
+Collecting sqlparse==0.4.3
+  Downloading sqlparse-0.4.3-py3-none-any.whl (42 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 42.8/42.8 kB 169.2 MB/s eta 0:00:00
+Collecting tzdata==2022.7
+  Downloading tzdata-2022.7-py2.py3-none-any.whl (340 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 340.1/340.1 kB 248.4 MB/s eta 0:00:00
+Collecting whitenoise==6.3.0
+  Downloading whitenoise-6.3.0-py3-none-any.whl (19 kB)
+Requirement already satisfied: setuptools>=3.0 in /usr/local/lib/python3.9/site-packages (from gunicorn==20.1.0->-r requirements.txt (line 5)) (79.0.1)
+Installing collected packages: pytz, whitenoise, tzdata, sqlparse, gunicorn, asgiref, Django, djangorestframework, django-cors-headers
+Successfully installed Django-4.1.5 asgiref-3.6.0 django-cors-headers-3.13.0 djangorestframework-3.14.0 gunicorn-20.1.0 pytz-2022.7.1 sqlparse-0.4.3 tzdata-2022.7 whitenoise-6.3.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+
+[notice] A new release of pip is available: 23.0.1 -> 26.0.1
+[notice] To update, run: pip install --upgrade pip
+ ---> Removed intermediate container be20e13014d5
+ ---> 8f9875d2748c
+Step 7/8 : COPY . /app/backend
+ ---> 60dc6d00d27d
+Step 8/8 : EXPOSE       8000
+ ---> Running in 12deb1583037
+ ---> Removed intermediate container 12deb1583037
+ ---> 5c3e84f4a893
+Successfully built 5c3e84f4a893
+Successfully tagged notes-app:latest
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE              ID             DISK USAGE   CONTENT SIZE   EXTRA
+notes-app:latest   5c3e84f4a893        632MB          154MB
+python:3.9-slim    2d97f6910b16        185MB         47.2MB
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ cat Dockerfile
+
+#Use an official python runtime as the base image
+FROM python:3.9-slim
+
+#Set the working directory in the container
+WORKDIR /app/backend
+
+#Copy the requirements file into the container
+COPY requirements.txt /app/backend
+# install required packages for system
+RUN apt-get update \
+    && apt-get upgrade -y \
+    && apt-get install -y gcc default-libmysqlclient-dev pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
+
+#install app dependencies
+
+RUN pip install mysqlclient
+RUN pip install --no-cache-dir -r requirements.txt
+#Copy the rest of the application code
+COPY . /app/backend
+
+EXPOSE  8000
+
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ ls
+Dockerfile                Jenkinsfile  README.md  db.sqlite3          manage.py  nginx     requirements.txt
+Dockerproject_Output.png  Procfile     api        docker-compose.yml  mynotes    notesapp  staticfiles
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ vi docker-compose.yml
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ cd nginx/
+ubuntu@ip-172-31-80-77:~/project/django-notes-app/nginx$ ls
+Dockerfile  default.conf
+ubuntu@ip-172-31-80-77:~/project/django-notes-app/nginx$ cat default.conf
+upstream django{
+    server django_cont:8000;
+}
+
+server {
+    listen 80;
+
+    server_name localhost;
+
+    location / {
+        proxy_pass http://django_cont:8000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+ubuntu@ip-172-31-80-77:~/project/django-notes-app/nginx$ cat Dockerfile
+FROM nginx:1.23.3-alpine
+
+COPY ./default.conf /etc/nginx/conf.d/default.confubuntu@ip-172-31-80-77:~/project/django-notes-app/nginx$ cd ..
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ ls
+Dockerfile                Jenkinsfile  README.md  db.sqlite3          manage.py  nginx     requirements.txt
+Dockerproject_Output.png  Procfile     api        docker-compose.yml  mynotes    notesapp  staticfiles
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ vi docker-compose.yml
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ cat docker-compose.yml
+version: "3.9"
+
+services:
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx_cont
+    ports:
+      - "80:80"
+    networks:
+      - notes-app
+    restart: always
+    depends_on:
+      - django
+
+  db:
+    container_name: db_cont
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_db
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    networks:
+      - notes-app
+    restart: always
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping","-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  django:
+    build:
+      context: .
+    container_name: django_cont
+    command: sh -c "python manage.py migrate --noinput &&  gunicorn notesapp.wsgi --bind 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    env_file:
+      -  .env
+    restart: always
+    depends_on:
+      - db
+    networks:
+      - notes-app
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/admin || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+networks:
+  notes-app:
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker network create notes-app -d bridge
+c99647f435414b562a47c544a0c4e4cb29d349e8e89df414ce7e7ba74cb59f20
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker volume create mysql-data
+mysql-data
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                            ID             DISK USAGE   CONTENT SIZE   EXTRA
+django-notes-app-django:latest   3c7e0700d350        631MB          154MB    U
+django-notes-app-nginx:latest    2beb13558c7d       62.7MB         16.7MB    U
+mysql:latest                     f0ef1d92fa65        1.3GB          290MB    U
+notes-app:latest                 5c3e84f4a893        632MB          154MB
+python:3.9-slim                  2d97f6910b16        185MB         47.2MB
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker compose up --build
+WARN[0000] /home/ubuntu/project/django-notes-app/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] Docker Compose is configured to build using Bake, but buildx isn't installed
+[+] Building 0.2s (5/11)                                                                                                                     docker:default
+ => [django internal] load build definition from Dockerfile                                                                                            0.0s
+ => => transferring dockerfile: 634B                                                                                                                   0.0s
+ => [django internal] load metadata for docker.io/library/python:3.9-slim                                                                              0.0s
+ => [django internal] load .dockerignore                                                                                                               0.0s
+ => => transferring context: 2B                                                                                                                        0.0s
+ => CANCELED [django 1/7] FROM docker.io/library/python:3.9-slim@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b               0.0s
+ => => resolve docker.io/library/python:3.9-slim@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b                               0.0s
+ => ERROR [django internal] load build context                                                                                                         0.0s
+ => => transferring context: 5.86kB                                                                                                                    0.0s
+------
+ > [django internal] load build context:
+------
+failed to solve: error from sender: open /home/ubuntu/project/django-notes-app/mysql-data/#innodb_redo: permission denied
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ vi .dockerignore
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker compose up --build -d
+WARN[0000] /home/ubuntu/project/django-notes-app/docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion
+WARN[0000] Docker Compose is configured to build using Bake, but buildx isn't installed
+[+] Building 2.0s (22/22) FINISHED                                                                                                           docker:default
+ => [django internal] load build definition from Dockerfile                                                                                            0.0s
+ => => transferring dockerfile: 634B                                                                                                                   0.0s
+ => [django internal] load metadata for docker.io/library/python:3.9-slim                                                                              0.0s
+ => [django internal] load .dockerignore                                                                                                               0.0s
+ => => transferring context: 51B                                                                                                                       0.0s
+ => [django 1/7] FROM docker.io/library/python:3.9-slim@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b                        0.1s
+ => => resolve docker.io/library/python:3.9-slim@sha256:2d97f6910b16bd338d3060f261f53f144965f755599aab1acda1e13cf1731b1b                               0.1s
+ => [django internal] load build context                                                                                                               0.2s
+ => => transferring context: 8.31MB                                                                                                                    0.2s
+ => CACHED [django 2/7] WORKDIR /app/backend                                                                                                           0.0s
+ => CACHED [django 3/7] COPY requirements.txt /app/backend                                                                                             0.0s
+ => CACHED [django 4/7] RUN apt-get update     && apt-get upgrade -y     && apt-get install -y gcc default-libmysqlclient-dev pkg-config     && rm -r  0.0s
+ => CACHED [django 5/7] RUN pip install mysqlclient                                                                                                    0.0s
+ => CACHED [django 6/7] RUN pip install --no-cache-dir -r requirements.txt                                                                             0.0s
+ => [django 7/7] COPY . /app/backend                                                                                                                   0.1s
+ => [django] exporting to image                                                                                                                        0.8s
+ => => exporting layers                                                                                                                                0.5s
+ => => exporting manifest sha256:4bb0c04a82a65e9516880f39c7a8352f496d23d1711695d991be40d2734a7aab                                                      0.0s
+ => => exporting config sha256:daff068cd3d6cb48cdfdb3cdb757fe3f7c6ac87365a919835ece6c357ffd1953                                                        0.0s
+ => => exporting attestation manifest sha256:dd5defa367b21c646cf28f4cc3e857d4e70c198fb667b97ff60337ab10933117                                          0.0s
+ => => exporting manifest list sha256:40c234909a59944467f40881d11d233ff0c189168a5d19c101ce217881a37349                                                 0.0s
+ => => naming to docker.io/library/django-notes-app-django:latest                                                                                      0.0s
+ => => unpacking to docker.io/library/django-notes-app-django:latest                                                                                   0.1s
+ => [django] resolving provenance for metadata file                                                                                                    0.0s
+ => [nginx internal] load build definition from Dockerfile                                                                                             0.0s
+ => => transferring dockerfile: 113B                                                                                                                   0.0s
+ => [nginx internal] load metadata for docker.io/library/nginx:1.23.3-alpine                                                                           0.3s
+ => [nginx auth] library/nginx:pull token for registry-1.docker.io                                                                                     0.0s
+ => [nginx internal] load .dockerignore                                                                                                                0.0s
+ => => transferring context: 2B                                                                                                                        0.0s
+ => [nginx internal] load build context                                                                                                                0.0s
+ => => transferring context: 34B                                                                                                                       0.0s
+ => [nginx 1/2] FROM docker.io/library/nginx:1.23.3-alpine@sha256:6318314189b40e73145a48060bff4783a116c34cc7241532d0d94198fb2c9629                     0.0s
+ => => resolve docker.io/library/nginx:1.23.3-alpine@sha256:6318314189b40e73145a48060bff4783a116c34cc7241532d0d94198fb2c9629                           0.0s
+ => CACHED [nginx 2/2] COPY ./default.conf /etc/nginx/conf.d/default.conf                                                                              0.0s
+ => [nginx] exporting to image                                                                                                                         0.1s
+ => => exporting layers                                                                                                                                0.0s
+ => => exporting manifest sha256:3bf53092c2f17b42a85de0e083722ea120db2db91bab8b86011c4a1064255156                                                      0.0s
+ => => exporting config sha256:83d76147523c5f8a6af8b0cbcf483b5ec37b96b3986f3145cb1b8cc3e5feca3a                                                        0.0s
+ => => exporting attestation manifest sha256:aab2e21cc88833167f4a3a81d2044ad9f10ffd9187a04a74bd71bfd5d5cc2806                                          0.0s
+ => => exporting manifest list sha256:3c13d9a6b4371decd05abd680771701be914d8c5f90d5287050956f891047a79                                                 0.0s
+ => => naming to docker.io/library/django-notes-app-nginx:latest                                                                                       0.0s
+ => => unpacking to docker.io/library/django-notes-app-nginx:latest                                                                                    0.0s
+ => [nginx] resolving provenance for metadata file                                                                                                     0.0s
+[+] Running 5/5
+ ✔ django                 Built                                                                                                                        0.0s
+ ✔ nginx                  Built                                                                                                                        0.0s
+ ✔ Container django_cont  Started                                                                                                                      0.8s
+ ✔ Container nginx_cont   Started                                                                                                                      1.0s
+ ✔ Container db_cont      Started                                                                                                                      0.2s
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                            ID             DISK USAGE   CONTENT SIZE   EXTRA
+django-notes-app-django:latest   40c234909a59        631MB          154MB    U
+django-notes-app-nginx:latest    3c13d9a6b437       62.7MB         16.7MB    U
+mysql:latest                     f0ef1d92fa65        1.3GB          290MB    U
+notes-app:latest                 5c3e84f4a893        632MB          154MB
+python:3.9-slim                  2d97f6910b16        185MB         47.2MB
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$ docker ps
+CONTAINER ID   IMAGE                     COMMAND                  CREATED          STATUS                             PORTS                                                    NAMES
+9a0b2fbf9854   django-notes-app-nginx    "/docker-entrypoint.…"   53 seconds ago   Up 52 seconds                      0.0.0.0:80->80/tcp, [::]:80->80/tcp                      nginx_cont
+d050b97b82a0   django-notes-app-django   "sh -c 'python manag…"   53 seconds ago   Up 49 seconds (health: starting)   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp              django_cont
+3f2852aac4e3   mysql                     "docker-entrypoint.s…"   8 minutes ago    Up 52 seconds (healthy)            0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp, 33060/tcp   db_cont
+ubuntu@ip-172-31-80-77:~/project/django-notes-app$
+
