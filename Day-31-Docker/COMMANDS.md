@@ -442,4 +442,4 @@ docker system df
 ---
 
 *Day 31 Commands — Docker Scout, Init, Multi-stage, Full Stack Project*
-*DevOps 90-Day Challenge — Ritik Sharma*
+*DevOps 90-Day Challenge — Ritik Bawane*
