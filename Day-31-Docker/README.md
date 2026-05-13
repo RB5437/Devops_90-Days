@@ -331,4 +331,4 @@ http://<your-ec2-public-ip>:80
 ---
 
 *Day 31 of 90 — Docker Series | DevOps 90-Day Challenge*
-*Ritik Sharma | AWS Certified | RHCSA | Kyndryl MNC*
+*Ritik Bawane | AWS Certified | RHCSA | Kyndryl MNC*
