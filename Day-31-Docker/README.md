@@ -314,7 +314,7 @@ http://<your-ec2-public-ip>:80
 | Day 29 | 11 May 2026 | Networking + Volumes + Compose + Registry | ✅ Done |
 | Day 30 | 12 May 2026 | Multi-stage + Monitoring + Django+Nginx+MySQL | ✅ Done |
 | Day 31 | 13 May 2026 | Docker Scout + Init + Student Grade Tracker | ✅ Done |
-| Day 32 | 14 May 2026 | Final Docker Project | ⬜ Pending |
+| Day 32 | 14 May 2026 | Docker Complete Revision — Images, Containers, Networks, Volumes, Compose, Scout, t | ⬜ Pending |
 
 ---
 
