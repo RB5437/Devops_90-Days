@@ -240,7 +240,7 @@ server {
 | Day 29 | 11 May 2026 | Docker Networking, Volumes, Compose, Registry | ✅ Done |
 | Day 30 | 12 May 2026 | Multi-stage Builds, Monitoring, Django+Nginx+MySQL Project | ✅ Done |
 | Day 31 | 13 May 2026 | Mini Project 1 — Push to Docker Hub | ⬜ Pending |
-| Day 32 | 14 May 2026 | Mini Project 2 — Push to Docker Hub | ⬜ Pending |
+| Day 32 | 14 May 2026 |Docker Complete Revision — Images, Containers, Networks, Volumes, Compose, Scout  | ⬜ Pending |
 
 ---
 
