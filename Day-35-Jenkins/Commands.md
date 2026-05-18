@@ -1,4 +1,4 @@
-# ⚡ Day 35 — Jenkins Commands (Copy-Paste Ready)
+# ⚡ Day 35 — Jenkins Commands 
 > Webhook + Shared Libraries + User Management
 
 ---
