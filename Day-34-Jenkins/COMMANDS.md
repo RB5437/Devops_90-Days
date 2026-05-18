@@ -1,4 +1,4 @@
-# ⚡ Day 34 — Jenkins Commands (Copy-Paste Ready)
+# ⚡ Day 34 — Jenkins Commands 
 > Declarative Pipeline + Multi-Node Agent Setup
 
 ---
