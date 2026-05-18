@@ -1,4 +1,4 @@
-# ⚡ Day 33 — Jenkins Commands (Copy-Paste Ready)
+# ⚡ Day 33 — Jenkins Commands 
 
 ---
 
