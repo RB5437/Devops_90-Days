@@ -1,4 +1,4 @@
-# 📝 Day 34 — Jenkins Notes (Deep Concepts)
+# 📝 Day 34 — Jenkins Notes 
 > Declarative Pipeline + Multi-Node Agent Architecture
 
 ---
