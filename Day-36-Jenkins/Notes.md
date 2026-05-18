@@ -1,4 +1,4 @@
-# 📝 Day 36 — Jenkins Advanced Notes (Deep Concepts)
+# 📝 Day 36 — Jenkins Advanced Notes
 
 ---
 
