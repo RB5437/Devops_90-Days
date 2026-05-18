@@ -1,4 +1,4 @@
-# 📝 Day 31 — Docker Notes (Deep Concepts)
+# 📝 Day 31 — Docker Notes 
 > Based on actual Student Grade Tracker project — live on AWS EC2
 
 ---
