@@ -1,4 +1,4 @@
-# 📝 Day 33 — Jenkins Notes (Deep Concepts)
+# 📝 Day 33 — Jenkins Notes 
 
 ---
 
