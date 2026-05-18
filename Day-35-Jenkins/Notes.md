@@ -1,4 +1,4 @@
-# 📝 Day 35 — Jenkins Notes (Deep Concepts)
+# 📝 Day 35 — Jenkins Notes 
 > Webhook + Shared Libraries + User Management
 
 ---
