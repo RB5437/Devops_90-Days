@@ -1,5 +1,4 @@
-# ⚡ Day 31 — Docker Commands (Copy-Paste Ready)
-
+# ⚡ Day 31 — Docker Commands
 ---
 
 ## 🛡️ DOCKER SCOUT COMMANDS
