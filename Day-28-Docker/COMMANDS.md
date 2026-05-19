@@ -1,5 +1,5 @@
-# ⚡ Docker Commands — Quick Reference
-> Day 28 | 10 May 2026 | One-click copy-paste ready
+# ⚡ Docker Commands 
+> Day 28 | 10 May 2026 
 
 ---
 
