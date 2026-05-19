@@ -1,5 +1,5 @@
-# ⚡ Docker Commands — Day 30 Quick Reference
-> Multi-Stage Builds + Monitoring + Django Project | One-click copy-paste ready
+# ⚡ Docker Commands — Day 30 
+> Multi-Stage Builds + Monitoring + Django Project |
 
 ---
 
