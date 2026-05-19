@@ -1,5 +1,5 @@
-# ⚡ Docker Commands — Day 29 Quick Reference
-> Networking + Volumes + Compose + Registry | One-click copy-paste ready
+# ⚡ Docker Commands — Day 29 
+> Networking + Volumes + Compose + Registry |
 
 ---
 
