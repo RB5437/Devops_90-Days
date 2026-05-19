@@ -2,7 +2,7 @@
 
 # 🚀 Devops_90-Days
 
-### From System Engineer to DevOps Engineer — 90 Days of Hands-On Learning
+### From Technical Engineer to DevOps Engineer — 90 Days of Hands-On Learning
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Ritik%20Bawane-blue?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ritik-bawane)
 [![GitHub followers](https://img.shields.io/github/followers/RB5437?style=social)](https://github.com/RB5437)
