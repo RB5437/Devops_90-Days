@@ -1,0 +1,19 @@
+key: value
+name: shubham
+
+
+
+courses:
+  - Devops
+  - AWS
+  - Python
+  - Gen AI
+
+info:
+  name: Ritik
+  age: 26
+  channel: RITIK
+  jobs:
+    - remote
+    - YT
+    - live courses
