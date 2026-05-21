@@ -1,0 +1,644 @@
+Day2=====================
+
+install-kind.sh  kind  kind-cluster  kubernetes-2
+ubuntu@ip-172-31-95-166:~$ cd kind-cluster/
+ubuntu@ip-172-31-95-166:~/kind-cluster$ ls
+config.yml
+ubuntu@ip-172-31-95-166:~/kind-cluster$ vi config.yml
+ubuntu@ip-172-31-95-166:~/kind-cluster$ cat config.yml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+
+
+nodes:
+- role: control-plane
+  image: kindest/node:v1.33.1
+
+- role: worker
+  image: kindest/node:v1.33.1
+
+  extraPortMappings:
+    - containerPort: 80
+      hostPort: 80
+      protocol: TCP
+
+    - containerPort: 443
+      hostPort: 443
+      protocol: TCP
+ubuntu@ip-172-31-95-166:~/kind-cluster$ kind create cluster --name mini-cluster --config=config.yml
+Creating cluster "mini-cluster" ...
+ ✓ Ensuring node image (kindest/node:v1.33.1) 🖼
+ ✓ Preparing nodes 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-mini-cluster"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-mini-cluster
+
+Not sure what to do next? 😅  Check out https://kind.sigs.k8s.io/docs/user/quick-start/
+ubuntu@ip-172-31-95-166:~/kind-cluster$ kubectl cluster-info --context kind-mini-cluster
+Kubernetes control plane is running at https://127.0.0.1:33807
+CoreDNS is running at https://127.0.0.1:33807/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@ip-172-31-95-166:~/kind-cluster$ cd ..
+ubuntu@ip-172-31-95-166:~$ ls
+install-kind.sh  kind  kind-cluster  kubernetes-2
+ubuntu@ip-172-31-95-166:~$ cd kubernetes-2/
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ ls
+namespace.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$  cat namespace.yml
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nginx
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f namespace.yml
+namespace/nginx created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl create ns nginx
+Error from server (AlreadyExists): namespaces "nginx" already exists
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   2m49s
+kube-node-lease      Active   2m49s
+kube-public          Active   2m49s
+kube-system          Active   2m49s
+local-path-storage   Active   2m44s
+nginx                Active   73s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ ls
+namespace.yml  pod.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat pod.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f pod.yml
+pod/nginx created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods
+No resources found in default namespace.
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pod
+No resources found in default namespace.
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          51s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ ls
+namespace.yml  pod.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat pod.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f pod.yml
+pod/nginx created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods
+No resources found in default namespace.
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pod
+No resources found in default namespace.
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          51s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl exec -it pod/nginx-pod -n nginx -- bash
+Error from server (NotFound): pods "nginx-pod" not found
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl exec -it nginx-pod -n nginx -- bash
+Error from server (NotFound): pods "nginx-pod" not found
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl exec -it nginx -n nginx -- bash
+root@nginx:/# ls
+bin   dev                  docker-entrypoint.sh  home  lib64  mnt  proc          product_uuid  run   srv  tmp  var
+boot  docker-entrypoint.d  etc                   lib   media  opt  product_name  root          sbin  sys  usr
+root@nginx:/# curl 127.0.0.1
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, nginx is successfully installed and working.
+Further configuration is required for the web server, reverse proxy,
+API gateway, load balancer, content cache, or other features.</p>
+
+<p>For online documentation and support please refer to
+<a href="https://nginx.org/">nginx.org</a>.<br/>
+To engage with the community please visit
+<a href="https://community.nginx.org/">community.nginx.org</a>.<br/>
+For enterprise grade support, professional services, additional
+security features and capabilities please refer to
+<a href="https://f5.com/nginx">f5.com/nginx</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+root@nginx:/# kubectl get pod -n nginx
+bash: kubectl: command not found
+root@nginx:/# exit
+exit
+command terminated with exit code 127
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          6m15s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl describe pod/nginx -n nginx
+Name:             nginx
+Namespace:        nginx
+Priority:         0
+Service Account:  default
+Node:             mini-cluster-worker/172.18.0.3
+Start Time:       Thu, 21 May 2026 08:32:25 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.1.3
+IPs:
+  IP:  10.244.1.3
+Containers:
+  nginx:
+    Container ID:   containerd://4837ead81ea9d42faf7bd9668ea0004ec8231263bc76d1b767967a6591025721
+    Image:          nginx:latest
+    Image ID:       docker.io/library/nginx@sha256:800e7c98538c6bf725f5177e841aa720ae0ed1c378bbea368b6330bfe18a36b3
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Thu, 21 May 2026 08:32:26 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-98mjm (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-98mjm:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  7m10s  default-scheduler  Successfully assigned nginx/nginx to mini-cluster-worker
+  Normal  Pulling    7m9s   kubelet            Pulling image "nginx:latest"
+  Normal  Pulled     7m9s   kubelet            Successfully pulled image "nginx:latest" in 125ms (125ms including waiting). Image size: 63119942 bytes.
+  Normal  Created    7m9s   kubelet            Created container: nginx
+  Normal  Started    7m9s   kubelet            Started container nginx
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi deployment.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat deployment.yml
+kind: Depolyment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replica: 2
+  selector:
+    metchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-dep-pod
+      lables:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          27m
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl delete -f pod.yml
+pod "nginx" deleted
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+No resources found in nginx namespace.
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f  deployment.yml
+error: resource mapping not found for name: "nginx-deployment" namespace: "nginx" from "deployment.yml": no matches for kind "Depolyment" in version "apps/v1"
+ensure CRDs are installed first
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi deployment.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f  deployment.yml
+error: resource mapping not found for name: "nginx-deployment" namespace: "nginx" from "deployment.yml": no matches for kind "Depolyment" in version "apps/v1"
+ensure CRDs are installed first
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat deployment.yml
+kind: Depolyment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    metchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-dep-pod
+      lables:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi deployment.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-dep-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f  deployment.yml
+deployment.apps/nginx-deployment created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get deployment -n nginx
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   2/2     2            2           7s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-86c7596b69-5xrdp   1/1     Running   0          49s
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   0          49s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=3
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-86c7596b69-5xrdp   1/1     Running   0          2m30s
+nginx-deployment-86c7596b69-lcdf2   1/1     Running   0          14s
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   0          2m30s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=3
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-86c7596b69-5xrdp   1/1     Running   0          2m30s
+nginx-deployment-86c7596b69-lcdf2   1/1     Running   0          14s
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   0          2m30s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=1
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=10
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-86c7596b69-6z558   1/1     Running   0          5s
+nginx-deployment-86c7596b69-7jvgq   1/1     Running   0          5s
+nginx-deployment-86c7596b69-8r8mf   1/1     Running   0          5s
+nginx-deployment-86c7596b69-bt2pd   1/1     Running   0          5s
+nginx-deployment-86c7596b69-hwj79   1/1     Running   0          5s
+nginx-deployment-86c7596b69-nrcwl   1/1     Running   0          5s
+nginx-deployment-86c7596b69-qh8h4   1/1     Running   0          5s
+nginx-deployment-86c7596b69-rvkgd   1/1     Running   0          5s
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   0          3m6s
+nginx-deployment-86c7596b69-xfdq8   1/1     Running   0          5s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=1
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   0          3m13s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ ls
+deployment.yml  namespace.yml  pod.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS      AGE
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   1 (71s ago)   22m
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=5
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS      AGE
+nginx-deployment-86c7596b69-7fzgc   1/1     Running   0             4s
+nginx-deployment-86c7596b69-gz854   1/1     Running   0             4s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running   0             4s
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   1 (84s ago)   22m
+nginx-deployment-86c7596b69-vzcz6   1/1     Running   0             4s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx -o wide
+NAME                                READY   STATUS    RESTARTS       AGE   IP           NODE                  NOMINATED NODE   READINESS GATES
+nginx-deployment-86c7596b69-7fzgc   1/1     Running   0              32s   10.244.1.6   mini-cluster-worker   <none>           <none>
+nginx-deployment-86c7596b69-gz854   1/1     Running   0              32s   10.244.1.5   mini-cluster-worker   <none>           <none>
+nginx-deployment-86c7596b69-ll2wt   1/1     Running   0              32s   10.244.1.4   mini-cluster-worker   <none>           <none>
+nginx-deployment-86c7596b69-vhgp2   1/1     Running   1 (112s ago)   23m   10.244.1.2   mini-cluster-worker   <none>           <none>
+nginx-deployment-86c7596b69-vzcz6   1/1     Running   0              32s   10.244.1.3   mini-cluster-worker   <none>           <none>
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl set imges deployment/nginx-deployment -n nginx nginx=1.30.1-alpine-slim
+error: unknown command "imges deployment/nginx-deployment nginx=1.30.1-alpine-slim"
+See 'kubectl set -h' for help and examples
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl set image deployment/nginx-deployment -n nginx nginx=1.30.1-alpine-slim
+deployment.apps/nginx-deployment image updated
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS             RESTARTS   AGE
+nginx-deployment-76bfcddcf9-98lzl   0/1     ImagePullBackOff   0          19s
+nginx-deployment-76bfcddcf9-gnz4b   0/1     ImagePullBackOff   0          19s
+nginx-deployment-76bfcddcf9-nz447   0/1     ImagePullBackOff   0          19s
+nginx-deployment-86c7596b69-7fzgc   1/1     Running            0          6m11s
+nginx-deployment-86c7596b69-gz854   1/1     Running            0          6m11s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running            0          6m11s
+nginx-deployment-86c7596b69-vzcz6   1/1     Running            0          6m11s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl set image deployment/nginx-deployment -n nginx nginx=1.31.0-alpine
+deployment.apps/nginx-deployment image updated
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS         RESTARTS   AGE
+nginx-deployment-86488b4d99-7gqj2   0/1     ErrImagePull   0          4s
+nginx-deployment-86488b4d99-l476h   0/1     ErrImagePull   0          4s
+nginx-deployment-86488b4d99-xmt9d   0/1     ErrImagePull   0          4s
+nginx-deployment-86c7596b69-7fzgc   1/1     Running        0          7m56s
+nginx-deployment-86c7596b69-gz854   1/1     Running        0          7m56s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running        0          7m56s
+nginx-deployment-86c7596b69-vzcz6   1/1     Running        0          7m56s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS         RESTARTS   AGE
+nginx-deployment-86488b4d99-7gqj2   0/1     ErrImagePull   0          10s
+nginx-deployment-86488b4d99-l476h   0/1     ErrImagePull   0          10s
+nginx-deployment-86488b4d99-xmt9d   0/1     ErrImagePull   0          10s
+nginx-deployment-86c7596b69-7fzgc   1/1     Running        0          8m2s
+nginx-deployment-86c7596b69-gz854   1/1     Running        0          8m2s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running        0          8m2s
+nginx-deployment-86c7596b69-vzcz6   1/1     Running        0          8m2s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl set image deployment/nginx-deployment -n nginx nginx=nginx1.31.0-alpine
+deployment.apps/nginx-deployment image updated
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS         RESTARTS   AGE
+nginx-deployment-5b748895-bxvfj     0/1     ErrImagePull   0          4s
+nginx-deployment-5b748895-w5mb2     0/1     ErrImagePull   0          4s
+nginx-deployment-5b748895-zx22c     0/1     ErrImagePull   0          4s
+nginx-deployment-86c7596b69-7fzgc   1/1     Running        0          9m4s
+nginx-deployment-86c7596b69-gz854   1/1     Running        0          9m4s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running        0          9m4s
+nginx-deployment-86c7596b69-vzcz6   1/1     Running        0          9m4s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS         RESTARTS   AGE
+nginx-deployment-5b748895-bxvfj     0/1     ErrImagePull   0          8s
+nginx-deployment-5b748895-w5mb2     0/1     ErrImagePull   0          8s
+nginx-deployment-5b748895-zx22c     0/1     ErrImagePull   0          8s
+nginx-deployment-86c7596b69-7fzgc   1/1     Running        0          9m8s
+nginx-deployment-86c7596b69-gz854   1/1     Running        0          9m8s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running        0          9m8s
+nginx-deployment-86c7596b69-vzcz6   1/1     Running        0          9m8s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS             RESTARTS   AGE
+nginx-deployment-5b748895-bxvfj     0/1     ErrImagePull       0          40s
+nginx-deployment-5b748895-w5mb2     0/1     ImagePullBackOff   0          40s
+nginx-deployment-5b748895-zx22c     0/1     ImagePullBackOff   0          40s
+nginx-deployment-86c7596b69-7fzgc   1/1     Running            0          9m40s
+nginx-deployment-86c7596b69-gz854   1/1     Running            0          9m40s
+nginx-deployment-86c7596b69-ll2wt   1/1     Running            0          9m40s
+nginx-deployment-86c7596b69-vzcz6   1/1     Running            0          9m40s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl set image deployment/nginx-deployment -n nginx nginx=nginx:1.31.0-alpine
+deployment.apps/nginx-deployment image updated
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS              RESTARTS   AGE
+nginx-deployment-86c7596b69-7fzgc   1/1     Running             0          10m
+nginx-deployment-86c7596b69-gz854   1/1     Running             0          10m
+nginx-deployment-86c7596b69-ll2wt   1/1     Running             0          10m
+nginx-deployment-86c7596b69-vzcz6   1/1     Running             0          10m
+nginx-deployment-f4bd5f69-6cjsw     0/1     ContainerCreating   0          3s
+nginx-deployment-f4bd5f69-956kx     0/1     ContainerCreating   0          3s
+nginx-deployment-f4bd5f69-l4d9g     0/1     ContainerCreating   0          3s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                              READY   STATUS    RESTARTS   AGE
+nginx-deployment-f4bd5f69-25wlc   1/1     Running   0          33s
+nginx-deployment-f4bd5f69-6cjsw   1/1     Running   0          36s
+nginx-deployment-f4bd5f69-956kx   1/1     Running   0          36s
+nginx-deployment-f4bd5f69-bpr8h   1/1     Running   0          32s
+nginx-deployment-f4bd5f69-l4d9g   1/1     Running   0          36s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl scale deployment/nginx-deployment -n nginx --replicas=1
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-86c7596b69-9vpn6   1/1     Running   0          29s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ ls
+deployment.yml  namespace.yml  pod.yml  replicasets.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi replicasets.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat replicasets.yml
+kind: ReplicaSet
+apiVersion: apps/v1
+metadata:
+  name: nginx-replicsets
+  namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-replic-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f replicasets.yml
+replicaset.apps/nginx-replicsets created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get repilcasets -n nginx
+error: the server doesn't have a resource type "repilcasets"
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get replicasets -n nginx
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-replicsets   2         2         2       2m8s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get replicasets -n nginx
+NAME               DESIRED   CURRENT   READY   AGE
+nginx-replicsets   2         2         2       4m26s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-replicsets-ssnrj   1/1     Running   0          4m53s
+nginx-replicsets-xqzl7   1/1     Running   0          4m53s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx -o wide
+NAME                     READY   STATUS    RESTARTS   AGE     IP            NODE                  NOMINATED NODE   READINESS GATES
+nginx-replicsets-ssnrj   1/1     Running   0          5m20s   10.244.1.21   mini-cluster-worker   <none>           <none>
+nginx-replicsets-xqzl7   1/1     Running   0          5m20s   10.244.1.22   mini-cluster-worker   <none>           <none>
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi daemonsets.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat daemonsets.yml
+kind: DaemonSet
+apiVersion: apps/v1
+metadata:
+  name: nginx-daemonsets
+  namespace: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-daemon-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f daemonsets.yml
+daemonset.apps/nginx-daemonsets created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME                     READY   STATUS    RESTARTS   AGE
+nginx-daemonsets-lhv4r   1/1     Running   0          31s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx -o wide
+NAME                     READY   STATUS    RESTARTS   AGE   IP            NODE                  NOMINATED NODE   READINESS GATES
+nginx-daemonsets-lhv4r   1/1     Running   0          42s   10.244.1.23   mini-cluster-worker   <none>           <none>
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi job.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat job.yml
+kind: Job
+apiVersion: batch/v1
+metadata:
+  name: demo-job
+  namespace: nginx
+spec:
+  completions: 1
+  parallelism: 1
+  template:
+    metadata:
+      name: demo-job-pod
+      labels:
+        app: batch-task
+    spec:
+      containers:
+      - name: batch-container
+        image: busybox:latest
+        command: ["sh", "-c" ,"echo Hello Good Evening! && sleep 10"]
+      restartPolicy: Never
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f job.yml
+job.batch/demo-job created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get job -n nginx
+NAME       STATUS     COMPLETIONS   DURATION   AGE
+demo-job   Complete   1/1           14s        24s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pods -n nginx
+NAME             READY   STATUS      RESTARTS   AGE
+demo-job-nrlfq   0/1     Completed   0          38s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl logs pod/demo-job-nrlfq
+error: error from server (NotFound): pods "demo-job-nrlfq" not found in namespace "default"
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl logs pod/demo-job-nrlfq -n nginx
+Hello Good Evening!
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ ls
+daemonsets.yml  deployment.yml  job.yml  namespace.yml  pod.yml  replicasets.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ vi cron-job.yml
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ cat cron-job.yml
+apiVersion: batch/v1
+kind: CronJob
+
+metadata:
+  name: minute-backup
+  namespace: nginx
+
+spec:
+  schedule: "* * * * *"
+
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: minute-backup
+
+        spec:
+          containers:
+          - name: backup-container
+            image: busybox
+
+            command:
+            - sh
+            - -c
+            - >
+              echo "Backup Started";
+              mkdir -p /backups &&
+              mkdir -p /demo-data &&
+              cp -r /demo-data /backups &&
+              echo "Backup Completed";
+
+            volumeMounts:
+            - name: data-volume
+              mountPath: /demo-data
+
+            - name: backup-volume
+              mountPath: /backups
+
+          restartPolicy: OnFailure
+
+          volumes:
+          - name: data-volume
+            hostPath:
+              path: /demo-data
+              type: DirectoryOrCreate
+
+          - name: backup-volume
+            hostPath:
+              path: /backup
+              type: DirectoryOrCreate
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl apply -f cron-job.yml
+cronjob.batch/minute-backup created
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get cj -n nginx
+NAME            SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+minute-backup   * * * * *   <none>     False     0        <none>          11s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get jobs -n nginx -w
+
+
+NAME                     STATUS    COMPLETIONS   DURATION   AGE
+minute-backup-29656006   Running   0/1                      0s
+minute-backup-29656006   Running   0/1           0s         0s
+minute-backup-29656006   Running   0/1           3s         3s
+minute-backup-29656006   Complete   1/1           3s         4s
+^Z
+[1]+  Stopped                    kubectl get jobs -n nginx -w
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get cronjob -n nginx
+NAME            SCHEDULE    TIMEZONE   SUSPEND   ACTIVE   LAST SCHEDULE   AGE
+minute-backup   * * * * *   <none>     False     1        2s              3m52s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl get pod -n nginx
+NAME                           READY   STATUS      RESTARTS   AGE
+minute-backup-29656007-hhzrw   0/1     Completed   0          2m25s
+minute-backup-29656008-vddbs   0/1     Completed   0          85s
+minute-backup-29656009-bx6hm   0/1     Completed   0          25s
+ubuntu@ip-172-31-95-166:~/kubernetes-2$ kubectl logs minute-backup-29656009-bx6hm -n nginx
+Backup Started
+Backup Completed
+ubuntu@ip-172-31-95-166:~/kubernetes-2$
+
+
+
