@@ -321,12 +321,18 @@ kubectl get jobs -n nginx -w
 
 ## 📊 Kubernetes Progress
 
-| Day | Topic | Status |
-|-----|-------|--------|
-| Day 38 | Architecture + KIND + Minikube + Pods + Namespaces | ✅ |
-| Day 39 | Deployments + ReplicaSets + DaemonSets + Jobs + CronJobs | ✅ |
-| Day 40 | Services + Ingress + Networking | ⬜ |
-| Day 41 | PV + PVC + ConfigMaps + Secrets | ⬜ |
-| Day 42 | HPA + VPA + Taints + Probes | ⬜ |
+| Day | Date | Topics | Timestamp | Status |
+|-----|------|--------|-----------|--------|
+| Day 38 | 20 May | Architecture + KIND + Minikube + Kubeadm + Namespaces | 00:00 – 01:35 | ✅ Done |
+| Day 39 | 21 May | Pods + Deployments + Labels + Rolling Update + ReplicaSets + DaemonSets + Jobs + CronJobs | 01:35 – 02:39 | ✅ Done |
+| Day 40 | 22 May | Storage + PV + StorageClasses + PVC + Services + Ingress + Annotations | 02:39 – 03:47 | ⬜ Tomorrow |
+| Day 41 | 23 May | StatefulSets + ConfigMaps + Secrets + Resource Quotas & Limits | 03:47 – 04:40 | ⬜ Upcoming |
+| Day 42 | 24 May | Probes + Taints/Tolerations + HPA + VPA + Node Affinity | 04:40 – 06:11 | ⬜ Upcoming |
+| Day 43 | 25 May | RBAC + Monitoring + CRDs + Operators + Helm + K8s API | 06:11 – 07:37 | ⬜ Upcoming |
+| Day 44 | 26 May | SideCar/Init Containers + Istio Service Mesh | 08:13 – 09:09 | ⬜ Upcoming |
+| Day 45 | 27 May | Project 1: Chat App (Minikube) + Project 2: Three-tier (KIND) + EKS Mega Project | 09:09 – End | ⬜ Upcoming |
+
+---
 
 🔗 **GitHub:** https://github.com/RB5437/Devops_90-Days
+📺 **Video:** Kubernetes In One Shot — TrainWithShubham
