@@ -204,18 +204,18 @@ kubectl get pods -n kube-system
 
 ---
 
-## 📊 Kubernetes Series Progress
+## 📊 Kubernetes Progress
 
-| Day | Date | Topic | Status |
-|-----|------|-------|--------|
-| Day 38 | 20 May | Core Concepts + Architecture + KIND + Minikube | ✅ Done |
-| Day 39 | 21 May | Workloads — Deployments, ReplicaSets, StatefulSets | ⬜ |
-| Day 40 | 22 May | Networking — Services, Ingress | ⬜ |
-| Day 41 | 23 May | Storage — PV, PVC, ConfigMaps, Secrets | ⬜ |
-| Day 42 | 24 May | Scaling — HPA, VPA, Taints, Probes | ⬜ |
-| Day 43 | 25 May | RBAC + Security + Monitoring | ⬜ |
-| Day 44 | 26 May | Advanced + Helm + Debugging | ⬜ |
-| Day 45 | 27 May | Projects — Jenkins + ArgoCD + MongoDB | ⬜ |
+| Day | Date | Topics | Timestamp | Status |
+|-----|------|--------|-----------|--------|
+| Day 38 | 20 May | Architecture + KIND + Minikube + Kubeadm + Namespaces | 00:00 – 01:35 | ✅ Done |
+| Day 39 | 21 May | Pods + Deployments + Labels + Rolling Update + ReplicaSets + DaemonSets + Jobs + CronJobs | 01:35 – 02:39 | ✅ Done |
+| Day 40 | 22 May | Storage + PV + StorageClasses + PVC + Services + Ingress + Annotations | 02:39 – 03:47 | ⬜ Tomorrow |
+| Day 41 | 23 May | StatefulSets + ConfigMaps + Secrets + Resource Quotas & Limits | 03:47 – 04:40 | ⬜ Upcoming |
+| Day 42 | 24 May | Probes + Taints/Tolerations + HPA + VPA + Node Affinity | 04:40 – 06:11 | ⬜ Upcoming |
+| Day 43 | 25 May | RBAC + Monitoring + CRDs + Operators + Helm + K8s API | 06:11 – 07:37 | ⬜ Upcoming |
+| Day 44 | 26 May | SideCar/Init Containers + Istio Service Mesh | 08:13 – 09:09 | ⬜ Upcoming |
+| Day 45 | 27 May | Project 1: Chat App (Minikube) + Project 2: Three-tier (KIND) + EKS Mega Project | 09:09 – End | ⬜ Upcoming |
 
 ---
 
