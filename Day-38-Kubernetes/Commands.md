@@ -46,7 +46,7 @@ docker --version     # Docker version 29.1.3
 
 ```bash
 # config.yml
-cat > config.yml << 'YAML'
+
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
