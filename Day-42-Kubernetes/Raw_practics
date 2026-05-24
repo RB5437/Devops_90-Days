@@ -1,0 +1,1489 @@
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ ls
+config.yml  install_kind.sh  kind  mysql
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ ls
+config.yml  install_kind.sh  kind  mysql
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ cd mysql/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ ls
+configMap.yml  namespace.yml  service.yml  statefulsets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ ls
+configMap.yml  namespace.yml  service.yml  statefulsets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f namespace.yml
+namespace/mysql created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   14m
+kube-node-lease      Active   14m
+kube-public          Active   14m
+kube-system          Active   14m
+local-path-storage   Active   14m
+mysql                Active   8s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get ns -n mysql
+NAME                 STATUS   AGE
+default              Active   15m
+kube-node-lease      Active   15m
+kube-public          Active   15m
+kube-system          Active   15m
+local-path-storage   Active   15m
+mysql                Active   20s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubeclt apply -f service.yml
+Command 'kubeclt' not found, did you mean:
+  command 'kubectl' from snap kubectl (1.35.5)
+See 'snap info <snapname>' for additional versions.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f service.yml
+service/mysql-service created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get svc -n mysql
+NAME            TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+mysql-service   ClusterIP   None         <none>        3306/TCP   14s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f statefulsets.yml
+statefulset.apps/mysql-statefulset created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get pods -n mysql
+NAME                  READY   STATUS    RESTARTS   AGE
+mysql-statefulset-0   1/1     Running   0          30s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubeclt get svc -n mysql
+Command 'kubeclt' not found, did you mean:
+  command 'kubectl' from snap kubectl (1.35.5)
+See 'snap info <snapname>' for additional versions.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get svc -n mysql
+NAME            TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)    AGE
+mysql-service   ClusterIP   None         <none>        3306/TCP   95s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$vi configMap.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ cat configMap.yml
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: mysql-config-map
+  namespace: mysql
+data:
+  MYSQL_DATABASE: devops
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f configMap.yml
+configmap/mysql-config-map created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get configmap -n mysql
+NAME               DATA   AGE
+kube-root-ca.crt   1      19m
+mysql-config-map   1      17s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi statefulsets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ cat statefulsets.yml
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: mysql-statefulset
+  namespace: mysql
+
+spec:
+  serviceName: mysql-service
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: mysql
+
+  template:
+    metadata:
+      labels:
+        app: mysql
+
+    spec:
+      containers:
+        - name: mysql
+          image: mariadb:10.6
+
+          ports:
+            - containerPort: 3306
+
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyref:
+                name: mysql-config-map
+                key: MYSQL_DATABASE
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "384Mi"
+              cpu: "250m"
+
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+
+      spec:
+        accessModes:
+          - ReadWriteOnce
+
+        resources:
+          requests:
+            storage: 1Gi
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f statefulsets.yml
+The request is invalid: patch: Invalid value: "map[metadata:map[annotations:map[kubectl.kubernetes.io/last-applied-configuration:{\"apiVersion\":\"apps/v1\",\"kind\":\"StatefulSet\",\"metadata\":{\"annotations\":{},\"name\":\"mysql-statefulset\",\"namespace\":\"mysql\"},\"spec\":{\"replicas\":1,\"selector\":{\"matchLabels\":{\"app\":\"mysql\"}},\"serviceName\":\"mysql-service\",\"template\":{\"metadata\":{\"labels\":{\"app\":\"mysql\"}},\"spec\":{\"containers\":[{\"env\":[{\"name\":\"MYSQL_ROOT_PASSWORD\",\"value\":\"root\"},{\"name\":\"MYSQL_DATABASE\",\"valueFrom\":{\"configMapKeyref\":null,\"key\":\"MYSQL_DATABASE\",\"name\":\"mysql-config-map\"}}],\"image\":\"mariadb:10.6\",\"name\":\"mysql\",\"ports\":[{\"containerPort\":3306}],\"resources\":{\"limits\":{\"cpu\":\"250m\",\"memory\":\"384Mi\"},\"requests\":{\"cpu\":\"100m\",\"memory\":\"128Mi\"}},\"volumeMounts\":[{\"mountPath\":\"/var/lib/mysql\",\"name\":\"mysql-data\"}]}]}},\"volumeClaimTemplates\":[{\"metadata\":{\"name\":\"mysql-data\"},\"spec\":{\"accessModes\":[\"ReadWriteOnce\"],\"resources\":{\"requests\":{\"storage\":\"1Gi\"}}}}]}}\n]] spec:map[template:map[spec:map[]] volumeClaimTemplates:[map[metadata:map[name:mysql-data] spec:map[accessModes:[ReadWriteOnce] resources:map[requests:map[storage:1Gi]]]]]]]": strict decoding error: unknown field "spec.template.spec.containers[0].env[1].valueFrom.key", unknown field "spec.template.spec.containers[0].env[1].valueFrom.name"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get statefulset -n mysql
+NAME                READY   AGE
+mysql-statefulset   1/1     22m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl delete statefulset/mysql-statefulset -n mysql
+statefulset.apps "mysql-statefulset" deleted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f statefulsets.yml
+Error from server (BadRequest): error when creating "statefulsets.yml": StatefulSet in version "v1" cannot be handled as a StatefulSet: strict decoding error: unknown field "spec.template.spec.containers[0].env[1].valueFrom.configMapKeyref", unknown field "spec.template.spec.containers[0].env[1].valueFrom.key", unknown field "spec.template.spec.containers[0].env[1].valueFrom.name"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi statefulsets.yml
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f statefulsets.yml
+Error from server (BadRequest): error when creating "statefulsets.yml": StatefulSet in version "v1" cannot be handled as a StatefulSet: strict decoding error: unknown field "spec.template.spec.containers[0].env[1].valueFrom.key", unknown field "spec.template.spec.containers[0].env[1].valueFrom.name"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ cat statefulsets.yml
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: mysql-statefulset
+  namespace: mysql
+
+spec:
+  serviceName: mysql-service
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: mysql
+
+  template:
+    metadata:
+      labels:
+        app: mysql
+
+    spec:
+      containers:
+        - name: mysql
+          image: mariadb:10.6
+
+          ports:
+            - containerPort: 3306
+
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                name: mysql-config-map
+                key: MYSQL_DATABASE
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "384Mi"
+              cpu: "250m"
+
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+
+      spec:
+        accessModes:
+          - ReadWriteOnce
+
+        resources:
+          requests:
+            storage: 1Gi
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi statefulsets.yml
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f statefulsets.yml
+statefulset.apps/mysql-statefulset created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get pods -n mysql
+NAME                  READY   STATUS    RESTARTS   AGE
+mysql-statefulset-0   1/1     Running   0          7s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get pods -n mysql
+NAME                  READY   STATUS    RESTARTS   AGE
+mysql-statefulset-0   1/1     Running   0          59s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi secrets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ echo "root" | base64
+cm9vdAo=
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ echo "rootpassword" | base64
+cm9vdHBhc3N3b3JkCg==
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ ls
+configMap.yml  namespace.yml  secrets.yml  service.yml  statefulsets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi secrets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi secrets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ cat secrets.yml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysql-secret
+  namespace: mysql
+data:
+  MYSQL_ROOT_PASSWORD: cm9vdAo=   #base64 encoded for "root"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ vi statefulsets.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ cat statefulsets.yml
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: mysql-statefulset
+  namespace: mysql
+
+spec:
+  serviceName: mysql-service
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: mysql
+
+  template:
+    metadata:
+      labels:
+        app: mysql
+
+    spec:
+      containers:
+        - name: mysql
+          image: mariadb:10.6
+
+          ports:
+            - containerPort: 3306
+
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_ROOT_PASSWORD
+
+            - name: MYSQL_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                 name: mysql-config-map
+                 key: MYSQL_DATABASE
+
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+
+            limits:
+              memory: "384Mi"
+              cpu: "250m"
+
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+
+      spec:
+        accessModes:
+          - ReadWriteOnce
+
+        resources:
+          requests:
+            storage: 1Gi
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f secrets.yml
+secret/mysql-secret created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get secret -n mysql
+NAME           TYPE     DATA   AGE
+mysql-secret   Opaque   1      24s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl apply -f statefulsets.yml
+statefulset.apps/mysql-statefulset configured
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl get pods -n mysql
+NAME                  READY   STATUS    RESTARTS   AGE
+mysql-statefulset-0   1/1     Running   0          16s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl exec -it mysql-statefulset-0 -n mysql -- bash
+root@mysql-statefulset-0:/# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 3
+Server version: 10.6.26-MariaDB-ubu2204 mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| devops             |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.010 sec)
+
+MariaDB [(none)]> exit
+Bye
+root@mysql-statefulset-0:/# exit
+exit
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/mysql$ kubectl delete -f namespace.yml
+namespace "mysql" deleted
+========Resource Quotas=========================
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ ls
+config.yml  install_kind.sh  kind  mysql  nginx
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ cd nginx/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi deployment.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-dep-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+          resources:
+            request:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+
+          volumeMounts:
+          - mountPath: /var/www/html
+            name: my-local-volume
+      volumes:
+        - name: my-local-volume
+          persistentVolumeClaim:
+           claimName: local-pvc
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi namespace.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat namespace.yml
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: nginx
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi persistentVolume.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat persistentVolume.yml
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: local-pv
+  namespace: nginx
+  labels:
+    app: local
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  hostPath:
+    path: /mnt/data
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi PersistentVolumeClaim.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ ls
+PersistentVolumeClaim.yml  deployment.yml  namespace.yml  persistentVolume.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat PersistentVolumeClaim.yml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: local-pvc
+  namespace: nginx
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 900Mi
+  storageClassName: local-storage
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f namespace.yml
+namespace/nginx created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   81m
+kube-node-lease      Active   81m
+kube-public          Active   81m
+kube-system          Active   81m
+local-path-storage   Active   81m
+nginx                Active   10s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f persistentVolume.yml
+persistentvolume/local-pv created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pv -n nginx
+NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS      CLAIM   STORAGECLASS    VOLUMEATTRIBUTESCLASS   REASON   AGE
+local-pv   1Gi        RWO            Retain           Available           local-storage   <unset>                          15s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f PersistentVolumeClaim.yml
+persistentvolumeclaim/local-pvc created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pvc -n nginx
+NAME        STATUS   VOLUME     CAPACITY   ACCESS MODES   STORAGECLASS    VOLUMEATTRIBUTESCLASS   AGE
+local-pvc   Bound    local-pv   1Gi        RWO            local-storage   <unset>                 11s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+No resources found in nginx namespace.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f deployment.yml
+Error from server (BadRequest): error when creating "deployment.yml": Deployment in version "v1" cannot be handled as a Deployment: strict decoding error: unknown field "spec.template.spec.containers[0].resources.request"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-dep-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+          resources:
+            request:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+
+          volumeMounts:
+          - mountPath: /var/www/html
+            name: my-local-volume
+      volumes:
+        - name: my-local-volume
+          persistentVolumeClaim:
+           claimName: local-pvc
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi deployment.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: nginx-deployment
+  namespace: nginx
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+
+  template:
+    metadata:
+      name: nginx-dep-pod
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+          - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+
+          volumeMounts:
+          - mountPath: /var/www/html
+            name: my-local-volume
+      volumes:
+        - name: my-local-volume
+          persistentVolumeClaim:
+           claimName: local-pvc
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f deployment.yml
+deployment.apps/nginx-deployment created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-6b5c9dcbd9-bz9vc   1/1     Running   0          7s
+nginx-deployment-6b5c9dcbd9-wdkbq   1/1     Running   0          7s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-6b5c9dcbd9-bz9vc   1/1     Running   0          114s
+nginx-deployment-6b5c9dcbd9-wdkbq   1/1     Running   0          114s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl describe pod nginx-deployment-6b5c9dcbd9-bz9vc -n nginx
+Name:             nginx-deployment-6b5c9dcbd9-bz9vc
+Namespace:        nginx
+Priority:         0
+Service Account:  default
+Node:             rbb-cluster-worker/172.18.0.2
+Start Time:       Sun, 24 May 2026 06:18:50 +0000
+Labels:           app=nginx
+                  pod-template-hash=6b5c9dcbd9
+Annotations:      <none>
+Status:           Running
+IP:               10.244.1.6
+IPs:
+  IP:           10.244.1.6
+Controlled By:  ReplicaSet/nginx-deployment-6b5c9dcbd9
+Containers:
+  nginx:
+    Container ID:   containerd://77dc359d2d06613f78a631b16c472593be574e6860cb2741c132601ec1c34575
+    Image:          nginx:latest
+    Image ID:       docker.io/library/nginx@sha256:5aca99593157f4ae539a5dec1092a0ad8762f8e2eb1789085a13a0f5622369f6
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 24 May 2026 06:18:55 +0000
+    Ready:          True
+    Restart Count:  0
+    Limits:
+      cpu:     200m
+      memory:  256Mi
+    Requests:
+      cpu:        100m
+      memory:     128Mi
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-pvxtq (ro)
+      /var/www/html from my-local-volume (rw)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  my-local-volume:
+    Type:       PersistentVolumeClaim (a reference to a PersistentVolumeClaim in the same namespace)
+    ClaimName:  local-pvc
+    ReadOnly:   false
+  kube-api-access-pvxtq:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age    From               Message
+  ----    ------     ----   ----               -------
+  Normal  Scheduled  2m27s  default-scheduler  Successfully assigned nginx/nginx-deployment-6b5c9dcbd9-bz9vc to rbb-cluster-worker
+  Normal  Pulling    2m26s  kubelet            Pulling image "nginx:latest"
+  Normal  Pulled     2m22s  kubelet            Successfully pulled image "nginx:latest" in 3.609s (3.609s including waiting). Image size: 63120520 bytes.
+  Normal  Created    2m22s  kubelet            Created container: nginx
+  Normal  Started    2m22s  kubelet            Started container nginx
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       1.0Gi       183Mi        21Mi       855Mi       838Mi
+Swap:             0B          0B          0B
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ df -h
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/root         23G  6.6G   16G  30% /
+tmpfs            953M     0  953M   0% /dev/shm
+tmpfs            382M  1.1M  380M   1% /run
+efivarfs         128K  3.3K  120K   3% /sys/firmware/efi/efivars
+tmpfs            953M     0  953M   0% /tmp
+none             1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none             1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+/dev/nvme0n1p13  989M   95M  828M  11% /boot
+/dev/nvme0n1p15  105M  6.3M   99M   7% /boot/efi
+none             1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
+none             1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+none             1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+tmpfs            191M  8.0K  191M   1% /run/user/1000
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+rbb-cluster-control-plane   Ready    control-plane   90m   v1.33.1
+rbb-cluster-worker          Ready    <none>          90m   v1.33.1
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -A
+NAMESPACE            NAME                                                READY   STATUS    RESTARTS      AGE
+kube-system          coredns-674b8bbfcf-lrhxg                            1/1     Running   1 (58m ago)   90m
+kube-system          coredns-674b8bbfcf-m7fh8                            1/1     Running   1 (58m ago)   90m
+kube-system          etcd-rbb-cluster-control-plane                      1/1     Running   1 (58m ago)   90m
+kube-system          kindnet-c4gcw                                       1/1     Running   1 (58m ago)   90m
+kube-system          kindnet-kqfgt                                       1/1     Running   1 (58m ago)   90m
+kube-system          kube-apiserver-rbb-cluster-control-plane            1/1     Running   1 (58m ago)   90m
+kube-system          kube-controller-manager-rbb-cluster-control-plane   1/1     Running   1 (58m ago)   90m
+kube-system          kube-proxy-nbnws                                    1/1     Running   1 (58m ago)   90m
+kube-system          kube-proxy-p72vc                                    1/1     Running   1 (58m ago)   90m
+kube-system          kube-scheduler-rbb-cluster-control-plane            1/1     Running   1 (58m ago)   90m
+local-path-storage   local-path-provisioner-7dc846544d-76ls7             1/1     Running   2 (58m ago)   90m
+nginx                nginx-deployment-6b5c9dcbd9-bz9vc                   1/1     Running   0             5m15s
+nginx                nginx-deployment-6b5c9dcbd9-wdkbq                   1/1     Running   0             5m15s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n mysql
+kubectl get pods -n nginx
+No resources found in mysql namespace.
+NAME                                READY   STATUS    RESTARTS   AGE
+nginx-deployment-6b5c9dcbd9-bz9vc   1/1     Running   0          5m22s
+nginx-deployment-6b5c9dcbd9-wdkbq   1/1     Running   0          5m22s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get deployments -A
+NAMESPACE            NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+kube-system          coredns                  2/2     2            2           90m
+local-path-storage   local-path-provisioner   1/1     1            1           90m
+nginx                nginx-deployment         2/2     2            2           5m29s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get statefulsets -A
+No resources found
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get svc -A
+NAMESPACE     NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)                  AGE
+default       kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP                  90m
+kube-system   kube-dns     ClusterIP   10.96.0.10   <none>        53/UDP,53/TCP,9153/TCP   90m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ docker ps
+CONTAINER ID   IMAGE                  COMMAND                  CREATED       STATUS          PORTS                                      NAMES
+bfec1f8533a7   kindest/node:v1.33.1   "/usr/local/bin/entr…"   2 hours ago   Up 59 minutes   127.0.0.1:40407->6443/tcp                  rbb-cluster-control-plane
+aaacceaff909   kindest/node:v1.33.1   "/usr/local/bin/entr…"   2 hours ago   Up 59 minutes   0.0.0.0:80->80/tcp, 0.0.0.0:443->443/tcp   rbb-cluster-worker
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ ls
+config.yml  install_kind.sh  kind  mysql  nginx  project
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ cd project/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project$ ls
+Dockerfile  Jenkinsfile  Procfile  README.md  api  db.sqlite3  docker-compose.yml  k8s  manage.py  mynotes  nginx  notesapp  requirements.txt  staticfiles
+=========Probe=====================================================
+
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ ls
+127.0.0.1:41016:  deployment.yml  namespace.yml  service.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ vi deployment.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: notes-app-deployment
+  labels:
+    app: notes-app
+  namespace: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notes-app
+
+  template:
+    metadata:
+      name: notes
+      labels:
+        app: notes-app
+    spec:
+      containers:
+        - name: notes-app
+          image: ritik2909/notes-app-k8s
+          ports:
+          - containerPort: 8000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+
+
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ ls
+127.0.0.1:41016:  deployment.yml  namespace.yml  service.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ vi namespace.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ kubectl apply -f namespace.yml
+namespace/nginx created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ kubectl apply -f service.yml
+service/notes-app-services created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ kubectl apply -f deployment.yml
+deployment.apps/notes-app-deployment created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ kubectl get pods -n nginx
+NAME                                    READY   STATUS    RESTARTS   AGE
+notes-app-deployment-78cfbfdc7c-2qd86   1/1     Running   0          13s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/project/k8s$ kubectl describe pod notes-app-deployment-78cfbfdc7c-2qd86 -n nginx
+Name:             notes-app-deployment-78cfbfdc7c-2qd86
+Namespace:        nginx
+Priority:         0
+Service Account:  default
+Node:             rbb-cluster-worker/172.18.0.2
+Start Time:       Sun, 24 May 2026 07:08:56 +0000
+Labels:           app=notes-app
+                  pod-template-hash=78cfbfdc7c
+Annotations:      <none>
+Status:           Running
+IP:               10.244.1.2
+IPs:
+  IP:           10.244.1.2
+Controlled By:  ReplicaSet/notes-app-deployment-78cfbfdc7c
+Containers:
+  notes-app:
+    Container ID:   containerd://977f657fa02d5d5e116f81e1daf5af82d2588d9e51df742a4c283b5cbbfb8c59
+    Image:          ritik2909/notes-app-k8s
+    Image ID:       docker.io/ritik2909/notes-app-k8s@sha256:918322038f9fad39000c289536fa4bafe03b087fed466bb622c4444e25fbbeee
+    Port:           8000/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 24 May 2026 07:09:06 +0000
+    Ready:          True
+    Restart Count:  0
+    Liveness:       http-get http://:8000/ delay=0s timeout=1s period=10s #success=1 #failure=3
+    Readiness:      http-get http://:8000/ delay=0s timeout=1s period=10s #success=1 #failure=3
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-b956m (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-b956m:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+  Normal  Scheduled  71s   default-scheduler  Successfully assigned nginx/notes-app-deployment-78cfbfdc7c-2qd86 to rbb-cluster-worker
+  Normal  Pulling    71s   kubelet            Pulling image "ritik2909/notes-app-k8s"
+  Normal  Pulled     62s   kubelet            Successfully pulled image "ritik2909/notes-app-k8s" in 9.409s (9.409s including waiting). Image size: 151778629 bytes.
+  Normal  Created    62s   kubelet            Created container: notes-app
+  Normal  Started    62s   kubelet            Started container notes-app
+============Taint & Tolerations=================================================
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   2m30s
+kube-node-lease      Active   2m30s
+kube-public          Active   2m30s
+kube-system          Active   2m30s
+local-path-storage   Active   2m26s
+nginx                Active   16s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE     VERSION
+rbb-cluster-control-plane   Ready    control-plane   2m44s   v1.33.1
+rbb-cluster-worker          Ready    <none>          2m31s   v1.33.1
+rbb-cluster-worker2         Ready    <none>          2m31s   v1.33.1
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl taint node rbb-cluster-worker  prod=true:NoSchedule
+node/rbb-cluster-worker tainted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl taint node rbb-cluster-worker2  prod=true:NoSchedule
+node/rbb-cluster-worker2 tainted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi pod.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat pod.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f pod.yml
+pod/nginx created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   0/1     Pending   0          19s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl describe pod nginx-pod -n nginx
+Error from server (NotFound): pods "nginx-pod" not found
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl describe pod nginx -n nginx
+Name:             nginx
+Namespace:        nginx
+Priority:         0
+Service Account:  default
+Node:             <none>
+Labels:           <none>
+Annotations:      <none>
+Status:           Pending
+IP:
+IPs:              <none>
+Containers:
+  nginx:
+    Image:        nginx:latest
+    Port:         80/TCP
+    Host Port:    0/TCP
+    Environment:  <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-ppsl6 (ro)
+Conditions:
+  Type           Status
+  PodScheduled   False
+Volumes:
+  kube-api-access-ppsl6:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age   From               Message
+  ----     ------            ----  ----               -------
+  Warning  FailedScheduling  70s   default-scheduler  0/3 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 2 node(s) had untolerated taint {prod: true}. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   0/1     Pending   0          105s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl taint node rbb-cluster-worker2  prod=true:NoSchedule-
+node/rbb-cluster-worker2 untainted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME    READY   STATUS              RESTARTS   AGE
+nginx   0/1     ContainerCreating   0          2m4s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          2m9s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl describe pod nginx -n nginx
+Name:             nginx
+Namespace:        nginx
+Priority:         0
+Service Account:  default
+Node:             rbb-cluster-worker2/172.18.0.2
+Start Time:       Sun, 24 May 2026 07:36:45 +0000
+Labels:           <none>
+Annotations:      <none>
+Status:           Running
+IP:               10.244.1.2
+IPs:
+  IP:  10.244.1.2
+Containers:
+  nginx:
+    Container ID:   containerd://2ef77ecd1b91396e2454dfa22284927ed0346807254aa4cf6cc86e7d667e0cbe
+    Image:          nginx:latest
+    Image ID:       docker.io/library/nginx@sha256:5aca99593157f4ae539a5dec1092a0ad8762f8e2eb1789085a13a0f5622369f6
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Running
+      Started:      Sun, 24 May 2026 07:36:50 +0000
+    Ready:          True
+    Restart Count:  0
+    Environment:    <none>
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-ppsl6 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       True
+  ContainersReady             True
+  PodScheduled                True
+Volumes:
+  kube-api-access-ppsl6:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    ConfigMapOptional:       <nil>
+    DownwardAPI:             true
+QoS Class:                   BestEffort
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason            Age    From               Message
+  ----     ------            ----   ----               -------
+  Warning  FailedScheduling  2m13s  default-scheduler  0/3 nodes are available: 1 node(s) had untolerated taint {node-role.kubernetes.io/control-plane: }, 2 node(s) had untolerated taint {prod: true}. preemption: 0/3 nodes are available: 3 Preemption is not helpful for scheduling.
+  Normal   Scheduled         13s    default-scheduler  Successfully assigned nginx/nginx to rbb-cluster-worker2
+  Normal   Pulling           12s    kubelet            Pulling image "nginx:latest"
+  Normal   Pulled            9s     kubelet            Successfully pulled image "nginx:latest" in 3.506s (3.506s including waiting). Image size: 63120520 bytes.
+  Normal   Created           9s     kubelet            Created container: nginx
+  Normal   Started           8s     kubelet            Started container nginx
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl taint node rbb-cluster-worker2  prod=true:NoSchedule
+node/rbb-cluster-worker2 tainted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ vi pod.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cat pod.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  namespace: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80
+  tolerations:
+    - key: "prod"
+      operator: "Equal"
+      value: "true"
+      effect: "NoSchedule"
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+rbb-cluster-control-plane   Ready    control-plane   13m   v1.33.1
+rbb-cluster-worker          Ready    <none>          12m   v1.33.1
+rbb-cluster-worker2         Ready    <none>          12m   v1.33.1
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f pod.yml
+pod/nginx created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n nginx
+NAME    READY   STATUS    RESTARTS   AGE
+nginx   1/1     Running   0          38s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$
+=====Horizontal Pod AutoScaler==================================================
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+rbb-cluster-control-plane   Ready    control-plane   22m   v1.33.1
+rbb-cluster-worker          Ready    <none>          22m   v1.33.1
+rbb-cluster-worker2         Ready    <none>          22m   v1.33.1
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl top node
+error: Metrics API not available
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl top pod
+error: Metrics API not available
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   22m
+kube-node-lease      Active   22m
+kube-public          Active   22m
+kube-system          Active   22m
+local-path-storage   Active   22m
+nginx                Active   20m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+serviceaccount/metrics-server created
+clusterrole.rbac.authorization.k8s.io/system:aggregated-metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:metrics-server created
+rolebinding.rbac.authorization.k8s.io/metrics-server-auth-reader created
+clusterrolebinding.rbac.authorization.k8s.io/metrics-server:system:auth-delegator created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-server created
+service/metrics-server created
+deployment.apps/metrics-server created
+apiservice.apiregistration.k8s.io/v1beta1.metrics.k8s.io created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl -n kube-system edit deployment metrics-server
+deployment.apps/metrics-server edited2L, 4983B written
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl -n kube-system rollout restart deployment metrics-server
+deployment.apps/metrics-server restarted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n kube-system
+NAME                                                READY   STATUS    RESTARTS   AGE
+coredns-674b8bbfcf-7qsq4                            1/1     Running   0          29m
+coredns-674b8bbfcf-xssk8                            1/1     Running   0          29m
+etcd-rbb-cluster-control-plane                      1/1     Running   0          29m
+kindnet-8c2gc                                       1/1     Running   0          29m
+kindnet-8vq8r                                       1/1     Running   0          29m
+kindnet-dp6z9                                       1/1     Running   0          29m
+kube-apiserver-rbb-cluster-control-plane            1/1     Running   0          29m
+kube-controller-manager-rbb-cluster-control-plane   1/1     Running   0          29m
+kube-proxy-2zfqx                                    1/1     Running   0          29m
+kube-proxy-btglt                                    1/1     Running   0          29m
+kube-proxy-vmqvn                                    1/1     Running   0          29m
+kube-scheduler-rbb-cluster-control-plane            1/1     Running   0          29m
+metrics-server-5649544f44-w522h                     0/1     Pending   0          77s
+metrics-server-5f65f69cc5-sgbbg                     0/1     Pending   0          21s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n kube-system
+NAME                                                READY   STATUS    RESTARTS   AGE
+coredns-674b8bbfcf-7qsq4                            1/1     Running   0          29m
+coredns-674b8bbfcf-xssk8                            1/1     Running   0          29m
+etcd-rbb-cluster-control-plane                      1/1     Running   0          29m
+kindnet-8c2gc                                       1/1     Running   0          29m
+kindnet-8vq8r                                       1/1     Running   0          29m
+kindnet-dp6z9                                       1/1     Running   0          29m
+kube-apiserver-rbb-cluster-control-plane            1/1     Running   0          29m
+kube-controller-manager-rbb-cluster-control-plane   1/1     Running   0          29m
+kube-proxy-2zfqx                                    1/1     Running   0          29m
+kube-proxy-btglt                                    1/1     Running   0          29m
+kube-proxy-vmqvn                                    1/1     Running   0          29m
+kube-scheduler-rbb-cluster-control-plane            1/1     Running   0          29m
+metrics-server-5649544f44-w522h                     0/1     Pending   0          94s
+metrics-server-5f65f69cc5-sgbbg                     0/1     Pending   0          38s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl taint node rbb-cluster-worker2  prod=true:NoSchedule-
+node/rbb-cluster-worker2 untainted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl taint node rbb-cluster-worker  prod=true:NoSchedule-
+node/rbb-cluster-worker untainted
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl get pods -n kube-system
+NAME                                                READY   STATUS    RESTARTS   AGE
+coredns-674b8bbfcf-7qsq4                            1/1     Running   0          30m
+coredns-674b8bbfcf-xssk8                            1/1     Running   0          30m
+etcd-rbb-cluster-control-plane                      1/1     Running   0          31m
+kindnet-8c2gc                                       1/1     Running   0          30m
+kindnet-8vq8r                                       1/1     Running   0          30m
+kindnet-dp6z9                                       1/1     Running   0          30m
+kube-apiserver-rbb-cluster-control-plane            1/1     Running   0          31m
+kube-controller-manager-rbb-cluster-control-plane   1/1     Running   0          31m
+kube-proxy-2zfqx                                    1/1     Running   0          30m
+kube-proxy-btglt                                    1/1     Running   0          30m
+kube-proxy-vmqvn                                    1/1     Running   0          30m
+kube-scheduler-rbb-cluster-control-plane            1/1     Running   0          31m
+metrics-server-5649544f44-w522h                     0/1     Running   0          2m41s
+metrics-server-5f65f69cc5-sgbbg                     0/1     Running   0          105s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl top node
+NAME                        CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%
+rbb-cluster-control-plane   99m          4%     607Mi           31%
+rbb-cluster-worker          13m          0%     120Mi           6%
+rbb-cluster-worker2         17m          0%     194Mi           10%
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl top pod
+No resources found in default namespace.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ kubectl top pod -n nginx
+No resources found in nginx namespace.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/nginx$ cd ..
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ mkdir apache
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ ls
+apache  config.yml  install_kind.sh  kind  mysql  nginx  project
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ cd apache/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi namespace.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat namespace.yml
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: apache
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f namespace.yml
+namespace/apache created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi deployment.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: apache-deployment
+  namespace:  apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apache
+
+  template:
+    metadata:
+      name: apache
+
+    spec:
+      containers:
+        - name: apache
+          image: httpd:latest
+          ports:
+          - containerPort: 80
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
+
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f deployment.yml
+The Deployment "apache-deployment" is invalid: spec.template.metadata.labels: Invalid value: map[string]string(nil): `selector` does not match template `labels`
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi deployment.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f deployment.yml
+The Deployment "apache-deployment" is invalid: spec.template.metadata.labels: Invalid value: map[string]string(nil): `selector` does not match template `labels`
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi deployment.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f deployment.yml
+deployment.apps/apache-deployment created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat deployment.yml
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: apache-deployment
+  namespace:  apache
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apache
+
+  template:
+    metadata:
+      name: apache
+      labels:
+        app: apache
+
+    spec:
+      containers:
+      - name: apache
+        image: httpd:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
+
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-z9gc6   1/1     Running   0          39s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi service.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f service.yml
+service/apache-service created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat service.yml
+kind: Service
+apiVersion: v1
+metadata:
+  name: apache-service
+  namespace: apache
+spec:
+  selector:
+     app: apache
+  ports:
+  - name: apache
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get svc -n  apache
+NAME             TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+apache-service   ClusterIP   10.96.40.29   <none>        80/TCP    27s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get all -n apache
+NAME                                     READY   STATUS    RESTARTS   AGE
+pod/apache-deployment-7784586dff-z9gc6   1/1     Running   0          5m41s
+
+NAME                     TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)   AGE
+service/apache-service   ClusterIP   10.96.40.29   <none>        80/TCP    60s
+
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/apache-deployment   1/1     1            1           5m41s
+
+NAME                                           DESIRED   CURRENT   READY   AGE
+replicaset.apps/apache-deployment-7784586dff   1         1         1       5m41s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl describe svc apache-service -n apache
+Warning: v1 Endpoints is deprecated in v1.33+; use discovery.k8s.io/v1 EndpointSlice
+Name:              apache-service
+Namespace:         apache
+Labels:            <none>
+Annotations:       <none>
+Selector:          app=apache
+Type:              ClusterIP
+IP Family Policy:  SingleStack
+IP Families:       IPv4
+IP:                10.96.40.29
+IPs:               10.96.40.29
+Port:              apache  80/TCP
+TargetPort:        80/TCP
+Endpoints:         10.244.2.2:80
+Session Affinity:  None
+Events:            <none>
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ ls
+deployment.yml  namespace.yml  service.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl port-forward service -n apache 82:80 --address=0.0.0.0
+Error from server (NotFound): pods "service" not found
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl port-forward svc/apache-service -n apache 82:80 --address=0.0.0.0
+Unable to listen on port 82: Listeners failed to create with the following errors: [unable to create listener: Error listen tcp4 0.0.0.0:82: bind: permission denied]
+error: unable to listen on any of the requested ports: [{82 80}]
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+Forwarding from 0.0.0.0:8082 -> 80
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+^Z
+[1]+  Stopped                    kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-z9gc6   1/1     Running   0          13m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl scale deployment apache-deployment -n apache --replicas=2
+deployment.apps/apache-deployment scaled
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-4j7mj   1/1     Running   0          3s
+apache-deployment-7784586dff-z9gc6   1/1     Running   0          14m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl scale deployment apache-deployment -n apache --replicas=3
+deployment.apps/apache-deployment scaled
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-4j7mj   1/1     Running   0          15s
+apache-deployment-7784586dff-72m7t   1/1     Running   0          7s
+apache-deployment-7784586dff-z9gc6   1/1     Running   0          14m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl scale deployment apache-deployment -n apache --replicas=1
+deployment.apps/apache-deployment scaled
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi hpa.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat hpa.yml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: apache-hpa
+  namespace: apache
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: apache-deployment
+    apiVersion: apps/v1
+
+  minReplicas: 1
+  maxReplicas: 3
+
+  metrics:
+    - type: Resource
+     resource:
+       name: cpu
+       target:
+          type: Utilization
+          averageUtilization: 3
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-4j7mj   1/1     Running   0          8m39s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+Unable to listen on port 8082: Listeners failed to create with the following errors: [unable to create listener: Error listen tcp4 0.0.0.0:8082: bind: address already in use]
+error: unable to listen on any of the requested ports: [{8082 80}]
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ sudo lsof -i :8082
+COMMAND   PID   USER FD   TYPE DEVICE SIZE/OFF NODE NAME
+kubectl 14109 ubuntu  8u  IPv4 153790      0t0  TCP *:8082 (LISTEN)
+kubectl 14109 ubuntu 10u  IPv4 155277      0t0  TCP ip-172-31-13-63.ec2.internal:8082->223.185.42.64:21494 (CLOSE_WAIT)
+kubectl 14109 ubuntu 11u  IPv4 155282      0t0  TCP ip-172-31-13-63.ec2.internal:8082->223.185.42.64:25132 (CLOSE_WAIT)
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kill -9 14109
+[1]+  Killed                     kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ sudo lsof -i :8082
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+Forwarding from 0.0.0.0:8082 -> 80
+Handling connection for 8082
+Handling connection for 8082
+Handling connection for 8082
+^Z
+[1]+  Stopped                    kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ sudo lsof -i :8082
+COMMAND   PID   USER FD   TYPE DEVICE SIZE/OFF NODE NAME
+kubectl 15453 ubuntu 8u  IPv4 174829      0t0  TCP *:8082 (LISTEN)
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kill -9 15453
+[1]+  Killed                     kubectl port-forward svc/apache-service -n apache 8082:80 --address=0.0.0.0
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f hpa.yml
+error: error parsing hpa.yml: error converting YAML to JSON: yaml: line 16: did not find expected '-' indicator
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat hpa.yml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: apache-hpa
+  namespace: apache
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: apache-deployment
+    apiVersion: apps/v1
+
+  minReplicas: 1
+  maxReplicas: 3
+
+  metrics:
+    - type: Resource
+     resource:
+       name: cpu
+       target:
+          type: Utilization
+          averageUtilization: 3
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi hpa.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat hpa.yml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: apache-hpa
+  namespace: apache
+spec:
+  scaleTargetRef:
+    kind: Deployment
+    name: apache-deployment
+    apiVersion: apps/v1
+
+  minReplicas: 1
+  maxReplicas: 3
+
+  metrics:
+    - type: Resource
+      resource:
+       name: cpu
+       target:
+          type: Utilization
+          averageUtilization: 3
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f hpa.yml
+horizontalpodautoscaler.autoscaling/apache-hpa created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         1          48s
+ubuntu@ip-172-31-13-63:~$ kubectl get hap -n apache
+error: the server doesn't have a resource type "hap"
+ubuntu@ip-172-31-13-63:~$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         3          11m
+ubuntu@ip-172-31-13-63:~$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         3          11m
+ubuntu@ip-172-31-13-63:~$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         3          11m
+ubuntu@ip-172-31-13-63:~$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         3          11m
+ubuntu@ip-172-31-13-63:~$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         3          11m
+ubuntu@ip-172-31-13-63:~$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-4hgsk   1/1     Running   0          4m32s
+apache-deployment-7784586dff-4j7mj   1/1     Running   0          27m
+apache-deployment-7784586dff-pphxf   1/1     Running   0          4m32s
+load-generator                       1/1     Running   0          6m6s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes$ cd apache/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ ls
+deployment.yml  hpa.yml  namespace.yml  service.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-4j7mj   1/1     Running   0          32m
+apache-deployment-7784586dff-55qh9   1/1     Running   0          2m34s
+apache-deployment-7784586dff-pmd8q   1/1     Running   0          2m34s
+load-generator                       1/1     Running   0          11m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get hpa -n apache
+NAME         REFERENCE                      TARGETS      MINPODS   MAXPODS   REPLICAS   AGE
+apache-hpa   Deployment/apache-deployment   cpu: 1%/3%   1         3         3          17m
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$
+======================================Vertical Pod Autoscaler===============================
+
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ git clone https://github.com/kubernetes/autoscaler.git
+Cloning into 'autoscaler'...
+remote: Enumerating objects: 243331, done.
+remote: Counting objects: 100% (1745/1745), done.
+remote: Compressing objects: 100% (1210/1210), done.
+remote: Total 243331 (delta 1116), reused 535 (delta 535), pack-reused 241586 (from 2)
+Receiving objects: 100% (243331/243331), 259.88 MiB | 25.54 MiB/s, done.
+Resolving deltas: 100% (158614/158614), done.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ ls
+autoscaler  deployment.yml  hpa.yml  namespace.yml  service.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cd autoscaler/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache/autoscaler$ cd vertical-pod-autoscaler/
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache/autoscaler/vertical-pod-autoscaler$ ./hack/vpa-up.sh
+HEAD is now at 9196162ba Update VPA default version to 1.6.0
+customresourcedefinition.apiextensions.k8s.io/verticalpodautoscalercheckpoints.autoscaling.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/verticalpodautoscalers.autoscaling.k8s.io created
+clusterrole.rbac.authorization.k8s.io/system:metrics-reader created
+clusterrole.rbac.authorization.k8s.io/system:vpa-actor created
+clusterrole.rbac.authorization.k8s.io/system:vpa-status-actor created
+clusterrole.rbac.authorization.k8s.io/system:vpa-checkpoint-actor created
+clusterrole.rbac.authorization.k8s.io/system:evictioner created
+clusterrole.rbac.authorization.k8s.io/system:vpa-updater-in-place created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-updater-in-place-binding created
+clusterrolebinding.rbac.authorization.k8s.io/system:metrics-reader created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-actor created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-status-actor created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-checkpoint-actor created
+clusterrole.rbac.authorization.k8s.io/system:vpa-target-reader created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-target-reader-binding created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-evictioner-binding created
+serviceaccount/vpa-admission-controller created
+serviceaccount/vpa-recommender created
+serviceaccount/vpa-updater created
+clusterrole.rbac.authorization.k8s.io/system:vpa-admission-controller created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-admission-controller created
+clusterrole.rbac.authorization.k8s.io/system:vpa-status-reader created
+clusterrolebinding.rbac.authorization.k8s.io/system:vpa-status-reader-binding created
+role.rbac.authorization.k8s.io/system:leader-locking-vpa-updater created
+rolebinding.rbac.authorization.k8s.io/system:leader-locking-vpa-updater created
+role.rbac.authorization.k8s.io/system:leader-locking-vpa-recommender created
+rolebinding.rbac.authorization.k8s.io/system:leader-locking-vpa-recommender created
+deployment.apps/vpa-updater created
+deployment.apps/vpa-recommender created
+Generating certs for the VPA Admission Controller in /tmp/vpa-certs.
+Certificate request self-signature ok
+subject=CN=vpa-webhook.kube-system.svc
+Uploading certs to the cluster.
+secret/vpa-tls-certs created
+Deleting /tmp/vpa-certs.
+service/vpa-webhook created
+deployment.apps/vpa-admission-controller created
+service/vpa-webhook unchanged
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache/autoscaler/vertical-pod-autoscaler$ cd ..
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache/autoscaler$ cd ..
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ vi vpa.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat vpa.yml
+kind: VerticalPodAutoscaler
+apiVersion: autoscaling.k8s.io/v1
+metadata:
+  name: apache-vpa
+  namespace: apache
+
+spec:
+  targetRef:
+    name: apache-deployment
+    apiVersion: apps/v1
+    kind: Deployment
+  updatePolicy:
+    updateMode: "Auto"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n pache
+No resources found in pache namespace.
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get pods -n apache
+NAME                                 READY   STATUS    RESTARTS   AGE
+apache-deployment-7784586dff-4j7mj   1/1     Running   0          48
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ ls
+autoscaler  deployment.yml  hpa.yml  namespace.yml  service.yml  vpa.yml
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl apply -f vpa.yml
+Warning: UpdateMode "Auto" is deprecated and will be removed in a future API version. Use explicit update modes like "Recreate", "Initial", or "InPlaceOrRecreate" instead. See https://github.com/kubernetes/autoscaler/issues/8424 for more details.
+verticalpodautoscaler.autoscaling.k8s.io/apache-vpa created
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ cat vpa.yml
+kind: VerticalPodAutoscaler
+apiVersion: autoscaling.k8s.io/v1
+metadata:
+  name: apache-vpa
+  namespace: apache
+
+spec:
+  targetRef:
+    name: apache-deployment
+    apiVersion: apps/v1
+    kind: Deployment
+  updatePolicy:
+    updateMode: "Auto"
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl get vpa -n apache
+NAME         MODE   CPU   MEM     PROVIDED   AGE
+apache-vpa   Auto   25m   250Mi   True       73s
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$ kubectl describe vpa apache-vpa -n apache
+Name:         apache-vpa
+Namespace:    apache
+Labels:       <none>
+Annotations:  <none>
+API Version:  autoscaling.k8s.io/v1
+Kind:         VerticalPodAutoscaler
+Metadata:
+  Creation Timestamp:  2026-05-24T09:16:04Z
+  Generation:          1
+  Resource Version:    11964
+  UID:                 db79cd15-d221-4a9c-8e22-c7ce319cabf2
+Spec:
+  Target Ref:
+    API Version:  apps/v1
+    Kind:         Deployment
+    Name:         apache-deployment
+  Update Policy:
+    Update Mode:  Auto
+Status:
+  Conditions:
+    Last Transition Time:  2026-05-24T09:16:08Z
+    Status:                True
+    Type:                  RecommendationProvided
+  Recommendation:
+    Container Recommendations:
+      Container Name:  apache
+      Lower Bound:
+        Cpu:     25m
+        Memory:  250Mi
+      Target:
+        Cpu:     25m
+        Memory:  250Mi
+      Uncapped Target:
+        Cpu:     25m
+        Memory:  250Mi
+      Upper Bound:
+        Cpu:     1991m
+        Memory:  4267074638
+Events:          <none>
+ubuntu@ip-172-31-13-63:~/Devops_90-Days/Day-42-Kubernetes/apache$
+
