@@ -1,0 +1,1045 @@
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ vi config.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ kind create cluster --name rbb-cluster --config=config.yml
+Creating cluster "rbb-cluster" ...
+ ✓ Ensuring node image (kindest/node:v1.30.0) 🖼
+ ✓ Preparing nodes 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-rbb-cluster"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-rbb-cluster
+
+Have a nice day! 👋
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ kubectl cluster-info --context kind-rbb-cluster
+Kubernetes control plane is running at https://127.0.0.1:43793
+CoreDNS is running at https://127.0.0.1:43793/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+rbb-cluster-control-plane   Ready    control-plane   40s   v1.30.0
+rbb-cluster-worker          Ready    <none>          17s   v1.30.0
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ kind get clusters
+rbb-cluster
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       999Mi        64Mi        20Mi       1.0Gi       905Mi
+Swap:             0B          0B          0B
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ df -h
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/root         24G  5.7G   18G  25% /
+tmpfs            953M     0  953M   0% /dev/shm
+tmpfs            382M  1.1M  380M   1% /run
+efivarfs         128K  3.1K  120K   3% /sys/firmware/efi/efivars
+tmpfs            953M     0  953M   0% /tmp
+none             1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none             1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+/dev/nvme0n1p13  989M   96M  826M  11% /boot
+/dev/nvme0n1p15  105M  6.3M   99M   7% /boot/efi
+none             1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
+none             1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+none             1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+tmpfs            191M  8.0K  191M   1% /run/user/1000
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ docker images
+                                                                                                                                        i Info →   U  In Use
+IMAGE                  ID             DISK USAGE   CONTENT SIZE   EXTRA
+kindest/node:v1.30.0   047357ac0cfe       1.41GB          416MB    U
+======================RBAC=========================================================
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ ls
+autoscaler  deployment.yml  hpa.yml  namespace.yml  service.yml  vpa.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth whoami
+ATTRIBUTE   VALUE
+Username    kubernetes-admin
+Groups      [kubeadm:cluster-admins system:authenticated]
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f namespace.yml
+namespace/apache created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods -n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat role.yml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: apache-manager
+  namespace: apache
+rules:
+  - apiGroups: ["","apps","rbac.authorization.k8s.io","batch"]
+    resources: ["deployment","pod","service"]
+    verbs: ["get","apply","delete","watch","create","patch"]
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f role.yml
+role.rbac.authorization.k8s.io/apache-manager configured
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl get role -n apache
+NAME             CREATED AT
+apache-manager   2026-05-25T06:15:23Z
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ vim service-account.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f service-account.yml
+serviceaccount/apache-user created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat service-account.yml
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: apache-user
+  namespace: apache
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl get serviceaccount -n apache
+NAME          SECRETS   AGE
+apache-user   0         27s
+default       0         13m
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods -n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods -n apache --as=apacher-user
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ vi role-binding.yml
+
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f role-binding.yml
+rolebinding.rbac.authorization.k8s.io/apache-manager-rolebinding created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat role-binding.yml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: apache-manager-rolebinding
+  namespace: apache
+subjects:
+- kind: User
+  name: apache-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: apache-manager
+  apiGroup: rbac.authorization.k8s.io
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl get rolbinding -n apache
+error: the server doesn't have a resource type "rolbinding"
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl get rolebinding -n apache
+NAME                         ROLE                  AGE
+apache-manager-rolebinding   Role/apache-manager   45s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods -n apache --as=apacher-user
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods -n apache --as=apacher-user
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ vi role-binding.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat role-binding.yml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: apache-manager-rolebinding
+  namespace: apache
+subjects:
+- kind: User
+  name: apache-user
+  apiGroup: rbac.authorization.k8s.io
+roleRef:
+  kind: Role
+  name: apache-manager
+  apiGroup: rbac.authorization.k8s.io
+
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f role-binding.yml
+rolebinding.rbac.authorization.k8s.io/apache-manager-rolebinding configured
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl authcan-i get deployment -n apache
+error: unknown command "authcan-i" for "kubectl"
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get deployment -n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat role-binding.yml
+# role-binding.yml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+  name: apache-manager-rolebinding
+  namespace: apache
+
+subjects:
+- kind: ServiceAccount
+  name: apache-user
+  namespace: apache
+
+roleRef:
+  kind: Role
+  name: apache-manager
+  apiGroup: rbac.authorization.k8s.io
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat service-account.yml
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: apache-user
+  namespace: apache
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ vi role.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f service-account.yml
+kubectl apply -f role.yml
+kubectl apply -f role-binding.yml
+serviceaccount/apache-user unchanged
+role.rbac.authorization.k8s.io/apache-manager configured
+rolebinding.rbac.authorization.k8s.io/apache-manager-rolebinding configured
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat role.yml
+# role.yml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+  name: apache-manager
+  namespace: apache
+
+rules:
+- apiGroups: ["", "apps"]
+  resources:
+    - pods
+    - services
+    - deployments
+  verbs:
+    - get
+    - list
+    - watch
+    - create
+    - patch
+    - delete
+
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods --as=apache-user -n apache
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods \
+--as=system:serviceaccount:apache:apache-user \
+-n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods --as=apache-user -n apache
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods \
+--as=system:serviceaccount:apache:apache-user \
+-n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get deployment --as=apacher-user -n apache
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get deployment --as=apache-user -n apache
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get deployments \
+--as=system:serviceaccount:apache:apache-user \
+-n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ vi role.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods --as=system:serviceaccount:apache:apache-user -n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get deployment --as=system:serviceaccount:apache:apache-user -n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl apply -f role.yml
+role.rbac.authorization.k8s.io/apache-manager configured
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get deployment --as=system:serviceaccount:apache:apache-user -n apache
+no
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ kubectl auth can-i get pods --as=system:serviceaccount:apache:apache-user -n apache
+yes
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/apache$ cat role.yml
+# role.yml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+
+metadata:
+  name: apache-manager
+  namespace: apache
+
+rules:
+- apiGroups: [""] #["apps"]
+  resources:
+    - pods
+    #- services
+    #- deployments
+  verbs:
+    - get
+    #- list
+    #- watch
+    #- create
+    #- patch
+    #- delete
+
+
+
+#kind: Role
+#apiVersion: rbac.authorization.k8s.io/v1
+#metadata:
+ # name: apache-manager
+  #namespace: apache
+#rules:
+ # - apiGroups: ["*"]                                     #["apps","rbac.authorization.k8s.io","batch"]
+  #  resources: ["*"]                                        #[deployment","pod","service"]
+   # verbs: ["*"]                                                         #[get","apply","delete","watch","create","patch"]
+=============================Monitoring and logging using Kubernetes Dashboard======================================
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ ls
+RBAC  apache  config.yml  install_kind.sh  kind
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ mkdir dashboard
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ cd dashboard/
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+namespace/kubernetes-dashboard created
+serviceaccount/kubernetes-dashboard created
+service/kubernetes-dashboard created
+secret/kubernetes-dashboard-certs created
+secret/kubernetes-dashboard-csrf created
+secret/kubernetes-dashboard-key-holder created
+configmap/kubernetes-dashboard-settings created
+role.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrole.rbac.authorization.k8s.io/kubernetes-dashboard created
+rolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+clusterrolebinding.rbac.authorization.k8s.io/kubernetes-dashboard created
+deployment.apps/kubernetes-dashboard created
+service/dashboard-metrics-scraper created
+deployment.apps/dashboard-metrics-scraper created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ ls
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ vi dashboard-admin-user.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ ls
+dashboard-admin-user.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ kubectl get ns
+NAME                   STATUS   AGE
+apache                 Active   106m
+default                Active   116m
+kube-node-lease        Active   116m
+kube-public            Active   116m
+kube-system            Active   116m
+kubernetes-dashboard   Active   5m13s
+local-path-storage     Active   116m
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ vi dashboard-admin-user.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ vi dashboard-admin-user.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ kubectl get clusterrole -n kubernetes-dashboard
+NAME                                                                   CREATED AT
+admin                                                                  2026-05-25T05:54:59Z
+cluster-admin                                                          2026-05-25T05:54:59Z
+edit                                                                   2026-05-25T05:54:59Z
+kindnet                                                                2026-05-25T05:55:02Z
+kubeadm:get-nodes                                                      2026-05-25T05:55:00Z
+kubernetes-dashboard                                                   2026-05-25T07:46:18Z
+local-path-provisioner-role                                            2026-05-25T05:55:03Z
+system:aggregate-to-admin                                              2026-05-25T05:54:59Z
+system:aggregate-to-edit                                               2026-05-25T05:54:59Z
+system:aggregate-to-view                                               2026-05-25T05:54:59Z
+system:auth-delegator                                                  2026-05-25T05:54:59Z
+system:basic-user                                                      2026-05-25T05:54:59Z
+system:certificates.k8s.io:certificatesigningrequests:nodeclient       2026-05-25T05:54:59Z
+system:certificates.k8s.io:certificatesigningrequests:selfnodeclient   2026-05-25T05:54:59Z
+system:certificates.k8s.io:kube-apiserver-client-approver              2026-05-25T05:54:59Z
+system:certificates.k8s.io:kube-apiserver-client-kubelet-approver      2026-05-25T05:54:59Z
+system:certificates.k8s.io:kubelet-serving-approver                    2026-05-25T05:54:59Z
+system:certificates.k8s.io:legacy-unknown-approver                     2026-05-25T05:54:59Z
+system:controller:attachdetach-controller                              2026-05-25T05:54:59Z
+system:controller:certificate-controller                               2026-05-25T05:54:59Z
+system:controller:clusterrole-aggregation-controller                   2026-05-25T05:54:59Z
+system:controller:cronjob-controller                                   2026-05-25T05:54:59Z
+system:controller:daemon-set-controller                                2026-05-25T05:54:59Z
+system:controller:deployment-controller                                2026-05-25T05:54:59Z
+system:controller:disruption-controller                                2026-05-25T05:54:59Z
+system:controller:endpoint-controller                                  2026-05-25T05:54:59Z
+system:controller:endpointslice-controller                             2026-05-25T05:54:59Z
+system:controller:endpointslicemirroring-controller                    2026-05-25T05:54:59Z
+system:controller:ephemeral-volume-controller                          2026-05-25T05:54:59Z
+system:controller:expand-controller                                    2026-05-25T05:54:59Z
+system:controller:generic-garbage-collector                            2026-05-25T05:54:59Z
+system:controller:horizontal-pod-autoscaler                            2026-05-25T05:54:59Z
+system:controller:job-controller                                       2026-05-25T05:54:59Z
+system:controller:legacy-service-account-token-cleaner                 2026-05-25T05:54:59Z
+system:controller:namespace-controller                                 2026-05-25T05:54:59Z
+system:controller:node-controller                                      2026-05-25T05:54:59Z
+system:controller:persistent-volume-binder                             2026-05-25T05:54:59Z
+system:controller:pod-garbage-collector                                2026-05-25T05:54:59Z
+system:controller:pv-protection-controller                             2026-05-25T05:54:59Z
+system:controller:pvc-protection-controller                            2026-05-25T05:54:59Z
+system:controller:replicaset-controller                                2026-05-25T05:54:59Z
+system:controller:replication-controller                               2026-05-25T05:54:59Z
+system:controller:resourcequota-controller                             2026-05-25T05:54:59Z
+system:controller:root-ca-cert-publisher                               2026-05-25T05:54:59Z
+system:controller:route-controller                                     2026-05-25T05:54:59Z
+system:controller:service-account-controller                           2026-05-25T05:54:59Z
+system:controller:service-controller                                   2026-05-25T05:54:59Z
+system:controller:statefulset-controller                               2026-05-25T05:54:59Z
+system:controller:ttl-after-finished-controller                        2026-05-25T05:54:59Z
+system:controller:ttl-controller                                       2026-05-25T05:54:59Z
+system:controller:validatingadmissionpolicy-status-controller          2026-05-25T05:54:59Z
+system:coredns                                                         2026-05-25T05:55:01Z
+system:discovery                                                       2026-05-25T05:54:59Z
+system:heapster                                                        2026-05-25T05:54:59Z
+system:kube-aggregator                                                 2026-05-25T05:54:59Z
+system:kube-controller-manager                                         2026-05-25T05:54:59Z
+system:kube-dns                                                        2026-05-25T05:54:59Z
+system:kube-scheduler                                                  2026-05-25T05:54:59Z
+system:kubelet-api-admin                                               2026-05-25T05:54:59Z
+system:monitoring                                                      2026-05-25T05:54:59Z
+system:node                                                            2026-05-25T05:54:59Z
+system:node-bootstrapper                                               2026-05-25T05:54:59Z
+system:node-problem-detector                                           2026-05-25T05:54:59Z
+system:node-proxier                                                    2026-05-25T05:54:59Z
+system:persistent-volume-provisioner                                   2026-05-25T05:54:59Z
+system:public-info-viewer                                              2026-05-25T05:54:59Z
+system:service-account-issuer-discovery                                2026-05-25T05:54:59Z
+system:volume-scheduler                                                2026-05-25T05:54:59Z
+view                                                                   2026-05-25T05:54:59Z
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ vi dashboard-admin-user.yml
+ 19L, 374B written
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ cat dashboard-admin-user.yml
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: admin-user
+  namespace: kubernetes-dashboard
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ kubectl apply -f dashboard-admin-user.yml
+serviceaccount/admin-user created
+clusterrolebinding.rbac.authorization.k8s.io/admin-user created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$
+kubectl -n kubernetes-dashboard create token admin-user
+eyJhbGciOiJSUzI1NiIsImtpZCI6IjdzTi0wT0kweVRnNVViRUxaQzRJQUI3RVlTcXRHR0cxaTVXS09vODB6cmsifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNzc5Njk5ODgyLCJpYXQiOjE3Nzk2OTYyODIsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwianRpIjoiMzE2YmI0NjctZjhkNi00Y2EwLTk2Y2YtYjAwZTYwODRkZTQwIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJrdWJlcm5ldGVzLWRhc2hib2FyZCIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJhZG1pbi11c2VyIiwidWlkIjoiYTA5MzNiYmUtYTFlYS00NDNjLThiYzUtOGIxNWU0NTQ0OGFlIn19LCJuYmYiOjE3Nzk2OTYyODIsInN1YiI6InN5c3RlbTpzZXJ2aWNlYWNjb3VudDprdWJlcm5ldGVzLWRhc2hib2FyZDphZG1pbi11c2VyIn0.T6Rb7xz6MKZ-TWOpd2SaMMixnOdWmTaMb7zopSWJUb5XyZYs2tCFM4CiDcQ7cLyOkjaBvKqf61odet4Yz-bXVbhf9oKen3P-WpJtozdi0zrJgEp094VGB-2cjIID60Gy4DFnCVySbKHIDoP__8IVhz1USRZhMwpb1dMi16b9khYhh8ZOt4qoCA0yt3Jr0jFoHrqJgIJ2m7LMRLvTwovKTV3KnXgl7yIsSfHh179VJwzt1HwO2PkY_3lfmX7h4Ree_XcSfP2RdnmqKsfc-eqIlIu8zMfyME1PMshEFKhczsBe-BTnGYBl2loEiEOKjTcFiz3W-JecMg5mMcOLrjQgCw
+http://3.210.185.100:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login    =================search on browser======
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/dashboard$ kubectl proxy --address=0.0.0.0 --accept-hosts='.*'
+Starting to serve on [::]:8001
+
+== if not runec2 machine this dashboard try this======
+PS C:\Users\HP\Desktop> ssh -i "DevOps_Key.pem" -L 8001:localhost:8001 ubuntu@ec2-3-210-185-100.compute-1.amazonaws.com
+Welcome to Ubuntu 26.04 LTS (GNU/Linux 7.0.0-1004-aws x86_64)
+
+ * Documentation:  https://docs.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon May 25 08:21:25 UTC 2026
+
+  System load:  0.13               Temperature:           -273.1 C
+  Usage of /:   26.5% of 23.10GB   Processes:             173
+  Memory usage: 47%                Users logged in:       0
+  Swap usage:   0%                 IPv4 address for ens5: 172.31.7.198
+
+ * Ubuntu Pro delivers the most comprehensive open source security and
+   compliance features.
+
+   https://ubuntu.com/aws/pro
+
+Expanded Security Maintenance for Applications is not enabled.
+
+4 updates can be applied immediately.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+Last login: Mon May 25 07:42:48 2026 from 223.185.37.204
+ubuntu@ip-172-31-7-198:~$ kubectl proxy
+error: listen tcp 127.0.0.1:8001: bind: address already in use
+ubuntu@ip-172-31-7-198:~$ sudo lsof -i :8001
+COMMAND  PID   USER FD   TYPE DEVICE SIZE/OFF NODE NAME
+kubectl 4868 ubuntu 3u  IPv6 214612      0t0  TCP *:8001 (LISTEN)
+ubuntu@ip-172-31-7-198:~$ kill - 4868
+-bash: kill: : invalid signal specification
+ubuntu@ip-172-31-7-198:~$ kill -9 4868
+ubuntu@ip-172-31-7-198:~$ kubectl proxy
+Starting to serve on 127.0.0.1:8001
+
+ubuntu@ip-172-31-7-198:~$ kubectl proxy &
+[1] 5509
+ubuntu@ip-172-31-7-198:~$ Starting to serve on 127.0.0.1:8001
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/workloads?namespace=default ------on browser
+
+=========================================Custom Resource Definition==========================================
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ mkdir crd
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ cd crd
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ vi devops-crd.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ cat devops-crd.yml
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: devopsbatches.trainwithritik.com
+spec:
+  group: trainwithritik.com
+  names:
+    plural: devopsbatches
+    singular: devopsbatch
+    kind: DevOpsBatch
+    shortNames:
+      - junoon
+      - batches
+      - twr
+  scope: Namespaced
+  versions:
+  - name: v1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              name:
+                type: string
+                description: "This is the name of the DevOps Batch"
+              duration:
+                type: string
+                description: "This is the duration of the DevOps Batch"
+              mode:
+                type: string
+                description: "This is the mode of the batch eg. Live/Recorded"
+              platform:
+                type: string
+                description: "This is the platform of the batch"
+
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl apply -f devops-crd.yml
+customresourcedefinition.apiextensions.k8s.io/devopsbatches.trainwithritik.com created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl get crd
+NAME                               CREATED AT
+devopsbatches.trainwithritik.com   2026-05-25T08:52:01Z
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ vi devops-cr.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl apply -f devops-cr.yml
+devopsbatch.trainwithritik.com/junoon-batch-9 created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl get devopsbatches
+NAME             AGE
+junoon-batch-9   32s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ cp devops-cr.yml  devops-cr2.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ vi devops-cr2.yml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kuberctl apply -f devops-cr2.yml
+Command 'kuberctl' not found, did you mean:
+  command 'kubectl' from snap kubectl (1.35.5)
+See 'snap info <snapname>' for additional versions.
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl apply -f devops-cr2.yml
+devopsbatch.trainwithritik.com/junoon-batch-12 created
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl get crd
+NAME                               CREATED AT
+devopsbatches.trainwithritik.com   2026-05-25T08:52:01Z
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl get devopsbatches
+NAME              AGE
+junoon-batch-12   22s
+junoon-batch-9    2m9s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/crd$ kubectl describe devopsbatch
+Name:         junoon-batch-12
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+API Version:  trainwithritik.com/v1
+Kind:         DevOpsBatch
+Metadata:
+  Creation Timestamp:  2026-05-25T08:56:58Z
+  Generation:          1
+  Resource Version:    14187
+  UID:                 b4aa41c1-65f8-443c-82ba-e9cb32479644
+Spec:
+  Duration:  3 months from 25th May 2026
+  Mode:      Live as always
+  Name:      DevOps-Zero To hero Junoon Batch 9
+  Platform:  trainwithritik.com
+Events:      <none>
+
+
+Name:         junoon-batch-9
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+API Version:  trainwithritik.com/v1
+Kind:         DevOpsBatch
+Metadata:
+  Creation Timestamp:  2026-05-25T08:55:11Z
+  Generation:          1
+  Resource Version:    14039
+  UID:                 76208ba4-88a7-4a6b-b1c0-d98d50b40e18
+Spec:
+  Duration:  3 months from 25th May 2026
+  Mode:      Live as always
+  Name:      DevOps-Zero To hero Junoon Batch 9
+  Platform:  trainwithritik.com
+Events:      <none>
+=================================================Helm==============================================================
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ ls
+RBAC  apache  config.yml  crd  dashboard  install_kind.sh  kind
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ mkdir helm
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes$ cd helm
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ ls
+get_helm.sh
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ cat get_helm.sh
+#!/usr/bin/env bash
+
+# Copyright The Helm Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# The install script is based off of the MIT-licensed script from glide,
+# the package manager for Go: https://github.com/Masterminds/glide.sh/blob/master/get
+
+: ${BINARY_NAME:="helm"}
+: ${USE_SUDO:="true"}
+: ${DEBUG:="false"}
+: ${VERIFY_CHECKSUM:="true"}
+: ${VERIFY_SIGNATURES:="false"}
+: ${HELM_INSTALL_DIR:="/usr/local/bin"}
+: ${GPG_PUBRING:="pubring.kbx"}
+
+HAS_CURL="$(type "curl" &> /dev/null && echo true || echo false)"
+HAS_WGET="$(type "wget" &> /dev/null && echo true || echo false)"
+HAS_OPENSSL="$(type "openssl" &> /dev/null && echo true || echo false)"
+HAS_GPG="$(type "gpg" &> /dev/null && echo true || echo false)"
+HAS_GIT="$(type "git" &> /dev/null && echo true || echo false)"
+HAS_TAR="$(type "tar" &> /dev/null && echo true || echo false)"
+
+# initArch discovers the architecture for this system.
+initArch() {
+  ARCH=$(uname -m)
+  case $ARCH in
+    armv5*) ARCH="armv5";;
+    armv6*) ARCH="armv6";;
+    armv7*) ARCH="arm";;
+    aarch64) ARCH="arm64";;
+    x86) ARCH="386";;
+    x86_64) ARCH="amd64";;
+    i686) ARCH="386";;
+    i386) ARCH="386";;
+  esac
+}
+
+# initOS discovers the operating system for this system.
+initOS() {
+  OS=$(echo `uname`|tr '[:upper:]' '[:lower:]')
+
+  case "$OS" in
+    # Minimalist GNU for Windows
+    mingw*|cygwin*) OS='windows';;
+  esac
+}
+
+# runs the given command as root (detects if we are root already)
+runAsRoot() {
+  if [ $EUID -ne 0 -a "$USE_SUDO" = "true" ]; then
+    sudo "${@}"
+  else
+    "${@}"
+  fi
+}
+
+# verifySupported checks that the os/arch combination is supported for
+# binary builds, as well whether or not necessary tools are present.
+verifySupported() {
+  local supported="darwin-amd64\ndarwin-arm64\nlinux-386\nlinux-amd64\nlinux-arm\nlinux-arm64\nlinux-loong64\nlinux-ppc64le\nlinux-s390x\nlinux-riscv64\nwindows-amd64\nwindows-arm64"
+  if ! echo "${supported}" | grep -q "${OS}-${ARCH}"; then
+    echo "No prebuilt binary for ${OS}-${ARCH}."
+    echo "To build from source, go to https://github.com/helm/helm"
+    exit 1
+  fi
+
+  if [ "${HAS_CURL}" != "true" ] && [ "${HAS_WGET}" != "true" ]; then
+    echo "Either curl or wget is required"
+    exit 1
+  fi
+
+  if [ "${VERIFY_CHECKSUM}" == "true" ] && [ "${HAS_OPENSSL}" != "true" ]; then
+    echo "In order to verify checksum, openssl must first be installed."
+    echo "Please install openssl or set VERIFY_CHECKSUM=false in your environment."
+    exit 1
+  fi
+
+  if [ "${VERIFY_SIGNATURES}" == "true" ]; then
+    if [ "${HAS_GPG}" != "true" ]; then
+      echo "In order to verify signatures, gpg must first be installed."
+      echo "Please install gpg or set VERIFY_SIGNATURES=false in your environment."
+      exit 1
+    fi
+    if [ "${OS}" != "linux" ]; then
+      echo "Signature verification is currently only supported on Linux."
+      echo "Please set VERIFY_SIGNATURES=false or verify the signatures manually."
+      exit 1
+    fi
+  fi
+
+  if [ "${HAS_GIT}" != "true" ]; then
+    echo "[WARNING] Could not find git. It is required for plugin installation."
+  fi
+
+  if [ "${HAS_TAR}" != "true" ]; then
+    echo "[ERROR] Could not find tar. It is required to extract the helm binary archive."
+    exit 1
+  fi
+}
+
+# checkDesiredVersion checks if the desired version is available.
+checkDesiredVersion() {
+  if [ "x$DESIRED_VERSION" == "x" ]; then
+    # Get tag from release URL
+    local latest_release_url="https://get.helm.sh/helm4-latest-version"
+    local latest_release_response=""
+    if [ "${HAS_CURL}" == "true" ]; then
+      latest_release_response=$( curl -L --silent --show-error --fail "$latest_release_url" 2>&1 || true )
+    elif [ "${HAS_WGET}" == "true" ]; then
+      latest_release_response=$( wget "$latest_release_url" -q -O - 2>&1 || true )
+    fi
+    TAG=$( echo "$latest_release_response" | grep '^v[0-9]' )
+    if [ "x$TAG" == "x" ]; then
+      printf "Could not retrieve the latest release tag information from %s: %s\n" "${latest_release_url}" "${latest_release_response}"
+      exit 1
+    fi
+  else
+    TAG=$DESIRED_VERSION
+  fi
+}
+
+# checkHelmInstalledVersion checks which version of helm is installed and
+# if it needs to be changed.
+checkHelmInstalledVersion() {
+  if [[ -f "${HELM_INSTALL_DIR}/${BINARY_NAME}" ]]; then
+    local version=$("${HELM_INSTALL_DIR}/${BINARY_NAME}" version --template="{{ .Version }}")
+    if [[ "$version" == "$TAG" ]]; then
+      echo "Helm ${version} is already ${DESIRED_VERSION:-latest}"
+      return 0
+    else
+      echo "Helm ${TAG} is available. Changing from version ${version}."
+      return 1
+    fi
+  else
+    return 1
+  fi
+}
+
+# downloadFile downloads the latest binary package and also the checksum
+# for that binary.
+downloadFile() {
+  HELM_DIST="helm-$TAG-$OS-$ARCH.tar.gz"
+  DOWNLOAD_URL="https://get.helm.sh/$HELM_DIST"
+  CHECKSUM_URL="$DOWNLOAD_URL.sha256"
+  HELM_TMP_ROOT="$(mktemp -dt helm-installer-XXXXXX)"
+  HELM_TMP_FILE="$HELM_TMP_ROOT/$HELM_DIST"
+  HELM_SUM_FILE="$HELM_TMP_ROOT/$HELM_DIST.sha256"
+  echo "Downloading $DOWNLOAD_URL"
+  if [ "${HAS_CURL}" == "true" ]; then
+    curl -SsL "$CHECKSUM_URL" -o "$HELM_SUM_FILE"
+    curl -SsL "$DOWNLOAD_URL" -o "$HELM_TMP_FILE"
+  elif [ "${HAS_WGET}" == "true" ]; then
+    wget -q -O "$HELM_SUM_FILE" "$CHECKSUM_URL"
+    wget -q -O "$HELM_TMP_FILE" "$DOWNLOAD_URL"
+  fi
+}
+
+# verifyFile verifies the SHA256 checksum of the binary package
+# and the GPG signatures for both the package and checksum file
+# (depending on settings in environment).
+verifyFile() {
+  if [ "${VERIFY_CHECKSUM}" == "true" ]; then
+    verifyChecksum
+  fi
+  if [ "${VERIFY_SIGNATURES}" == "true" ]; then
+    verifySignatures
+  fi
+}
+
+# installFile installs the Helm binary.
+installFile() {
+  HELM_TMP="$HELM_TMP_ROOT/$BINARY_NAME"
+  mkdir -p "$HELM_TMP"
+  tar xf "$HELM_TMP_FILE" -C "$HELM_TMP"
+  HELM_TMP_BIN="$HELM_TMP/$OS-$ARCH/helm"
+  echo "Preparing to install $BINARY_NAME into ${HELM_INSTALL_DIR}"
+  runAsRoot cp "$HELM_TMP_BIN" "$HELM_INSTALL_DIR/$BINARY_NAME"
+  echo "$BINARY_NAME installed into $HELM_INSTALL_DIR/$BINARY_NAME"
+}
+
+# verifyChecksum verifies the SHA256 checksum of the binary package.
+verifyChecksum() {
+  printf "Verifying checksum... "
+  local sum=$(openssl sha1 -sha256 ${HELM_TMP_FILE} | awk '{print $2}')
+  local expected_sum=$(cat ${HELM_SUM_FILE})
+  if [ "$sum" != "$expected_sum" ]; then
+    echo "SHA sum of ${HELM_TMP_FILE} does not match. Aborting."
+    exit 1
+  fi
+  echo "Done."
+}
+
+# verifySignatures obtains the latest KEYS file from GitHub main branch
+# as well as the signature .asc files from the specific GitHub release,
+# then verifies that the release artifacts were signed by a maintainer's key.
+verifySignatures() {
+  printf "Verifying signatures... "
+  local keys_filename="KEYS"
+  local github_keys_url="https://raw.githubusercontent.com/helm/helm/main/${keys_filename}"
+  if [ "${HAS_CURL}" == "true" ]; then
+    curl -SsL "${github_keys_url}" -o "${HELM_TMP_ROOT}/${keys_filename}"
+  elif [ "${HAS_WGET}" == "true" ]; then
+    wget -q -O "${HELM_TMP_ROOT}/${keys_filename}" "${github_keys_url}"
+  fi
+  local gpg_keyring="${HELM_TMP_ROOT}/keyring.gpg"
+  local gpg_homedir="${HELM_TMP_ROOT}/gnupg"
+  mkdir -p -m 0700 "${gpg_homedir}"
+  local gpg_stderr_device="/dev/null"
+  if [ "${DEBUG}" == "true" ]; then
+    gpg_stderr_device="/dev/stderr"
+  fi
+  gpg --batch --quiet --homedir="${gpg_homedir}" --import "${HELM_TMP_ROOT}/${keys_filename}" 2> "${gpg_stderr_device}"
+  gpg --batch --no-default-keyring --keyring "${gpg_homedir}/${GPG_PUBRING}" --export > "${gpg_keyring}"
+  local github_release_url="https://github.com/helm/helm/releases/download/${TAG}"
+  if [ "${HAS_CURL}" == "true" ]; then
+    curl -SsL "${github_release_url}/helm-${TAG}-${OS}-${ARCH}.tar.gz.sha256.asc" -o "${HELM_TMP_ROOT}/helm-${TAG}-${OS}-${ARCH}.tar.gz.sha256.asc"
+    curl -SsL "${github_release_url}/helm-${TAG}-${OS}-${ARCH}.tar.gz.asc" -o "${HELM_TMP_ROOT}/helm-${TAG}-${OS}-${ARCH}.tar.gz.asc"
+  elif [ "${HAS_WGET}" == "true" ]; then
+    wget -q -O "${HELM_TMP_ROOT}/helm-${TAG}-${OS}-${ARCH}.tar.gz.sha256.asc" "${github_release_url}/helm-${TAG}-${OS}-${ARCH}.tar.gz.sha256.asc"
+    wget -q -O "${HELM_TMP_ROOT}/helm-${TAG}-${OS}-${ARCH}.tar.gz.asc" "${github_release_url}/helm-${TAG}-${OS}-${ARCH}.tar.gz.asc"
+  fi
+  local error_text="If you think this might be a potential security issue,"
+  error_text="${error_text}\nplease see here: https://github.com/helm/community/blob/master/SECURITY.md"
+  local num_goodlines_sha=$(gpg --verify --keyring="${gpg_keyring}" --status-fd=1 "${HELM_TMP_ROOT}/helm-${TAG}-${OS}-${ARCH}.tar.gz.sha256.asc" 2> "${gpg_stderr_device}" | grep -c -E '^\[GNUPG:\] (GOODSIG|VALIDSIG)')
+  if [[ ${num_goodlines_sha} -lt 2 ]]; then
+    echo "Unable to verify the signature of helm-${TAG}-${OS}-${ARCH}.tar.gz.sha256!"
+    echo -e "${error_text}"
+    exit 1
+  fi
+  local num_goodlines_tar=$(gpg --verify --keyring="${gpg_keyring}" --status-fd=1 "${HELM_TMP_ROOT}/helm-${TAG}-${OS}-${ARCH}.tar.gz.asc" 2> "${gpg_stderr_device}" | grep -c -E '^\[GNUPG:\] (GOODSIG|VALIDSIG)')
+  if [[ ${num_goodlines_tar} -lt 2 ]]; then
+    echo "Unable to verify the signature of helm-${TAG}-${OS}-${ARCH}.tar.gz!"
+    echo -e "${error_text}"
+    exit 1
+  fi
+  echo "Done."
+}
+
+# fail_trap is executed if an error occurs.
+fail_trap() {
+  result=$?
+  if [ "$result" != "0" ]; then
+    if [[ -n "$INPUT_ARGUMENTS" ]]; then
+      echo "Failed to install $BINARY_NAME with the arguments provided: $INPUT_ARGUMENTS"
+      help
+    else
+      echo "Failed to install $BINARY_NAME"
+    fi
+    echo -e "\tFor support, go to https://github.com/helm/helm."
+  fi
+  cleanup
+  exit $result
+}
+
+# testVersion tests the installed client to make sure it is working.
+testVersion() {
+  set +e
+  HELM="$(command -v $BINARY_NAME)"
+  if [ "$?" = "1" ]; then
+    echo "$BINARY_NAME not found. Is $HELM_INSTALL_DIR on your "'$PATH?'
+    exit 1
+  fi
+  set -e
+}
+
+# help provides possible cli installation arguments
+help () {
+  echo "Accepted cli arguments are:"
+  echo -e "\t[--help|-h ] ->> prints this help"
+  echo -e "\t[--version|-v <desired_version>] . When not defined it fetches the latest release tag from the Helm CDN"
+  echo -e "\te.g. --version v4.0.0 or -v canary"
+  echo -e "\t[--no-sudo]  ->> install without sudo"
+}
+
+# cleanup temporary files to avoid https://github.com/helm/helm/issues/2977
+cleanup() {
+  if [[ -d "${HELM_TMP_ROOT:-}" ]]; then
+    rm -rf "$HELM_TMP_ROOT"
+  fi
+}
+
+# Execution
+
+#Stop execution on any error
+trap "fail_trap" EXIT
+set -e
+
+# Set debug if desired
+if [ "${DEBUG}" == "true" ]; then
+  set -x
+fi
+
+# Parsing input arguments (if any)
+export INPUT_ARGUMENTS="${@}"
+set -u
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    '--version'|-v)
+       shift
+       if [[ $# -ne 0 ]]; then
+           export DESIRED_VERSION="${1}"
+           if [[ "$1" != "v"* ]]; then
+               echo "Expected version arg ('${DESIRED_VERSION}') to begin with 'v', fixing..."
+               export DESIRED_VERSION="v${1}"
+           fi
+       else
+           echo -e "Please provide the desired version. e.g. --version v4.0.0 or -v canary"
+           exit 0
+       fi
+       ;;
+    '--no-sudo')
+       USE_SUDO="false"
+       ;;
+    '--help'|-h)
+       help
+       exit 0
+       ;;
+    *) exit 1
+       ;;
+  esac
+  shift
+done
+set +u
+
+initArch
+initOS
+verifySupported
+checkDesiredVersion
+if ! checkHelmInstalledVersion; then
+  downloadFile
+  verifyFile
+  installFile
+fi
+testVersion
+cleanup
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ chmod 700 get_helm.s
+chmod: cannot access 'get_helm.s': No such file or directory
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ chmod 700 get_helm.ss
+chmod: cannot access 'get_helm.ss': No such file or directory
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ chmod 700 get_helm.sh
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ ./get_helm.sh
+Downloading https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm version
+version.BuildInfo{Version:"v4.2.0", GitCommit:"06468084e85c244c712834933d25ea232a4c2093", GitTreeState:"clean", GoVersion:"go1.26.3", KubeClientVersion:"v1.36"}
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ ls
+get_helm.sh
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm create apache-helm
+Creating apache-helm
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ ls
+apache-helm  get_helm.sh
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ cd apache-helm/
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm$ ls
+Chart.yaml  charts  templates  values.yaml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm$ sudo apt-get install tree
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Solving dependencies... Done
+The following NEW packages will be installed:
+  tree
+0 upgraded, 1 newly installed, 0 to remove and 4 not upgraded.
+Need to get 53.7 kB of archives.
+After this operation, 125 kB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 tree amd64 2.3.1-1 [53.7 kB]
+Fetched 53.7 kB in 0s (1594 kB/s)
+Selecting previously unselected package tree.
+(Reading database ... 85677 files and directories currently installed.)
+Preparing to unpack .../tree_2.3.1-1_amd64v3.deb ...
+Unpacking tree (2.3.1-1) ...
+Setting up tree (2.3.1-1) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm$ tree
+.
+├── Chart.yaml
+├── charts
+├── templates
+│   ├── NOTES.txt
+│   ├── _helpers.tpl
+│   ├── deployment.yaml
+│   ├── hpa.yaml
+│   ├── httproute.yaml
+│   ├── ingress.yaml
+│   ├── service.yaml
+│   ├── serviceaccount.yaml
+│   └── tests
+│       └── test-connection.yaml
+└── values.yaml
+
+4 directories, 11 files
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm$ cd templates/
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm/templates$ ls
+NOTES.txt  _helpers.tpl  deployment.yaml  hpa.yaml  httproute.yaml  ingress.yaml  service.yaml  serviceaccount.yaml  tests
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm/templates$ vi deployment.yaml
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm$ cd ..
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm package apache-helm/
+Successfully packaged chart and saved it to: /home/ubuntu/Devops_90-Days/Day-43-Kubernetes/helm/apache-helm-0.1.0.tgz
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ ls
+apache-helm  apache-helm-0.1.0.tgz  get_helm.sh
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm install dev-apache apache-helm
+NAME: dev-apache
+LAST DEPLOYED: Mon May 25 12:38:27 2026
+NAMESPACE: default
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace default -l "app.kubernetes.io/name=apache-helm,app.kubernetes.io/instance=dev-apache" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace default $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace default port-forward $POD_NAME 8080:$CONTAINER_PORT
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ kubectl get pods
+NAME                                      READY   STATUS    RESTARTS   AGE
+dev-apache-apache-helm-686bcfd5cd-2tlwx   1/1     Running   0          21s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ kubectl get svc
+NAME                     TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+dev-apache-apache-helm   ClusterIP   10.96.80.0   <none>        80/TCP    28s
+kubernetes               ClusterIP   10.96.0.1    <none>        443/TCP   6h43m
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ kubectl get deployment
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+dev-apache-apache-helm   1/1     1            1           41s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm uninstall dev-apache
+release "dev-apache" uninstalled
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm install dev-apache apache-helm -n dev-apache --create-namespace
+NAME: dev-apache
+LAST DEPLOYED: Mon May 25 12:41:58 2026
+NAMESPACE: dev-apache
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace dev-apache -l "app.kubernetes.io/name=apache-helm,app.kubernetes.io/instance=dev-apache" -o jsonpath="{.items[0].metadata.name}")
+  export CONTAINER_PORT=$(kubectl get pod --namespace dev-apache $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl --namespace dev-apache port-forward $POD_NAME 8080:$CONTAINER_PORT
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ kubectl get pods -n dev-apache
+NAME                                      READY   STATUS    RESTARTS   AGE
+dev-apache-apache-helm-686bcfd5cd-rwzlw   1/1     Running   0          27s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ kubectl get svc -n dev-apache
+NAME                     TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+dev-apache-apache-helm   ClusterIP   10.96.163.82   <none>        80/TCP    38s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ kubectl get  deployment -n dev-apache
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+dev-apache-apache-helm   1/1     1            1           47s
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm uninstall dev-apache -n dev-apache
+release "dev-apache" uninstalled
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm upgrade prod-apache apache-helm
+ubuntu@ip-172-31-7-198:~/Devops_90-Days/Day-43-Kubernetes/helm$ helm rollback pro-apache 1 -n prod-apache
+
+
+
