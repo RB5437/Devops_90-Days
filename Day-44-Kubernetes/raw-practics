@@ -1,0 +1,627 @@
+ubuntu@ip-172-31-15-91:~$ ls
+Devops_90-Days
+ubuntu@ip-172-31-15-91:~$ cd Devops_90-Days/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days$ ls
+Day-01-Linux       Day-07-Networking       Day-13-DevOps-Fundamentals  Day-19-AWS  Day-25-AWS     Day-31-Docker   Day-37-Jenkins     Day-43-Kubernetes
+Day-02-Linux       Day-08-Shell_Scripting  Day-14-Git_Github           Day-20-AWS  Day-26-AWS     Day-32-Docker   Day-38-Kubernetes  Day-44-Kubernetes
+Day-03-Linux       Day-09-Shell_Scripting  Day-15-Git_Github           Day-21-AWS  Day-27-Docker  Day-33-Jenkins  Day-39-Kubernetes  README.md
+Day-04-Linux       Day-10-Shell_Scripting  Day-16-Git-Github           Day-22-AWS  Day-28-Docker  Day-34-Jenkins  Day-40-Kubernetes
+Day-05-Linux       Day-11-Shell_Scripting  Day-17-Git-Github           Day-23-AWS  Day-29-Docker  Day-35-Jenkins  Day-41-Kubernetes
+Day-06-Networking  Day-12-Shell_Scripting  Day-18-AWS                  Day-24-AWS  Day-30-Docker  Day-36-Jenkins  Day-42-Kubernetes
+ubuntu@ip-172-31-15-91:~/Devops_90-Days$ cd Day-44-Kubernetes/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ ls
+install_kind.sh  kind
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ df -h
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/root         24G  2.2G   21G  10% /
+tmpfs            953M     0  953M   0% /dev/shm
+tmpfs            382M  888K  381M   1% /run
+efivarfs         128K  3.3K  120K   3% /sys/firmware/efi/efivars
+tmpfs            953M     0  953M   0% /tmp
+none             1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none             1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+/dev/nvme0n1p13  989M   96M  826M  11% /boot
+/dev/nvme0n1p15  105M  6.3M   99M   7% /boot/efi
+none             1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
+none             1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+none             1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+tmpfs            191M  8.0K  191M   1% /run/user/1000
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       380Mi       1.4Gi       2.7Mi       267Mi       1.5Gi
+Swap:             0B          0B          0B
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ vi config.yml
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ kind create cluster --name rbb-cluster --config=config.yml
+ERROR: failed to create cluster: failed to get docker info: command "docker info --format '{{json .}}'" failed with error: exec: "docker": executable file not found in $PATH
+Command Output:
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ sudo apt-get install docker.io
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Package docker.io is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+
+E: Package 'docker.io' has no installation candidate
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ sudo apt-get update
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute InRelease [136 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates InRelease [136 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-backports InRelease [136 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 Packages [1483 kB]
+Get:5 http://security.ubuntu.com/ubuntu resolute-security InRelease [136 kB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main Translation-en [524 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64 Components [395 kB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64 c-n-f Metadata [32.4 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 Packages [16.3 MB]
+Get:10 http://security.ubuntu.com/ubuntu resolute-security/main amd64v3 Packages [85.4 kB]
+Get:11 http://security.ubuntu.com/ubuntu resolute-security/main Translation-en [27.7 kB]
+Get:12 http://security.ubuntu.com/ubuntu resolute-security/main amd64 Components [2844 B]
+Get:13 http://security.ubuntu.com/ubuntu resolute-security/main amd64 c-n-f Metadata [968 B]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe Translation-en [6329 kB]
+Get:15 http://security.ubuntu.com/ubuntu resolute-security/universe amd64v3 Packages [48.7 kB]
+Get:16 http://security.ubuntu.com/ubuntu resolute-security/universe Translation-en [16.5 kB]
+
+Fetched 31.9 MB in 4s (8057 kB/s)
+Reading package lists... Done
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ sudo apt-get install docker.io
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Solving dependencies... Done
+The following additional packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base pigz runc ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-buildx docker-compose-v2 docker-doc rinse rootlesskit zfs-fuse | zfsutils
+The following NEW packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base docker.io pigz runc ubuntu-fan
+0 upgraded, 8 newly installed, 0 to remove and 34 not upgraded.
+Need to get 74.0 MB of archives.
+After this operation, 281 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 pigz amd64 2.8-1build1 [68.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 bridge-utils amd64 1.7.1-4ubuntu3 [34.8 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 runc amd64 1.4.0-0ubuntu1 [9829 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 containerd amd64 2.2.2-0ubuntu1 [28.0 MB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 dns-root-data all 2025080400build1 [6022 B]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 dnsmasq-base amd64 2.92-1ubuntu0.2 [441 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 docker.io amd64 29.1.3-0ubuntu4.1 [35.5 MB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 ubuntu-fan all 0.12.17 [34.3 kB]
+Fetched 74.0 MB in 1s (88.3 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... 85301 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.8-1build1_amd64v3.deb ...
+Unpacking pigz (2.8-1build1) ...
+Setting up containerd (2.2.2-0ubuntu1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/containerd.service' → '/usr/lib/systemd/system/containerd.service'.
+Setting up ubuntu-fan (0.12.17) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/ubuntu-fan.service' → '/usr/lib/systemd/system/ubuntu-fan.service'.
+Setting up docker.io (29.1.3-0ubuntu4.1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/docker.service' → '/usr/lib/systemd/system/docker.service'.
+Created symlink '/etc/systemd/system/sockets.target.wants/docker.socket' → '/usr/lib/systemd/system/docker.socket'.
+Processing triggers for dbus (1.16.2-2ubuntu4) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ sudo systemctl enable docker
+sudo systemctl start docker
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ sudo usermod -aG docker $USER
+newgrp docker
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ docker --version
+Docker version 29.1.3, build 29.1.3-0ubuntu4.1
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ ls
+config.yml  install_kind.sh  kind
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ kind create cluster --name rbb-cluster --config=config.yml
+Creating cluster "rbb-cluster" ...
+ ✓ Ensuring node image (kindest/node:v1.28.9) 🖼
+ ✓ Preparing nodes 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-rbb-cluster"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-rbb-cluster
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ kind create cluster --config kind-config.yaml
+ERROR: failed to create cluster: error reading file: open kind-config.yaml: no such file or directory
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ kubectl cluster-info --context kind-rbb-cluster
+Kubernetes control plane is running at https://127.0.0.1:36173
+CoreDNS is running at https://127.0.0.1:36173/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ kubectl get nodes
+NAME                        STATUS   ROLES           AGE   VERSION
+rbb-cluster-control-plane   Ready    control-plane   41s   v1.28.9
+rbb-cluster-worker          Ready    <none>          20s   v1.28.9
+========================Init Container=========================================
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ mkdir pods
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes$ cd pods/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ vi init-conatiner.yml
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl apply -f init-conatiner.yml
+pod/init-test created
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl get pods
+NAME        READY   STATUS     RESTARTS   AGE
+init-test   0/1     Init:0/1   0          8s
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl log init-test -c main-container
+error: unknown command "log" for "kubectl"
+
+Did you mean this?
+        top
+        logs
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl logs init-test -c main-container
+Main container started
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ cat init-conatiner.yml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: init-test
+
+spec:
+  initContainers:
+  - name: init-container
+    image: busybox:latest
+    command: ["sh","-c", "echo 'Initalization started ...'; sleep 10; echo 'Initization completed.'"]
+
+  containers:
+  - name: main-container
+    image: busybox:latest
+    command: ["sh","-c", "echo 'Main container started'"]
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl delete pod init-test
+pod "init-test" deleted
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ vi sidecar-container.yml
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ cat sidecar-container.yml
+kind: Pod
+apiVersion: v1
+metadata:
+  name: sidecar-test
+
+spec:
+
+  volumes:
+  - name: shared-logs
+    emptyDir: {}
+
+  containers:
+  # produce logs
+  - name: main-container
+    image: busybox
+    command: ["sh","-c", "while true; do echo 'Hello Dosto' >> /var/log/app.log; sleep 5; done"]
+    volumeMounts:
+    - name: shared-logs
+      mountPath:  /var/log/
+
+  # display logs
+  - name: sidecar-container
+    image: busybox
+    command: ["sh","-c", "tail -f /var/log/app.log"]
+    volumeMounts:
+    - name: shared-logs
+      mountPath:  /var/log/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl apply -f sidecar-container.yml
+pod/sidecar-test created
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl get pods
+NAME           READY   STATUS    RESTARTS   AGE
+sidecar-test   2/2     Running   0          7s
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl logs sidecar-test -c main-container
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ kubectl logs sidecar-test -c sidecar-container
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+Hello Dosto
+===========================Istio mesh service=======================================================
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ mkdir istio
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods$ cd istio/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ kind create cluster --name istio-testing
+Creating cluster "istio-testing" ...
+ ✓ Ensuring node image (kindest/node:v1.35.0) 🖼
+ ✓ Preparing nodes 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+Set kubectl context to "kind-istio-testing"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-istio-testing
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ kubectl cluster-info --context kind-istio-testing
+Kubernetes control plane is running at https://127.0.0.1:37519
+CoreDNS is running at https://127.0.0.1:37519/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ kubectl get nodes
+NAME                          STATUS   ROLES           AGE   VERSION
+istio-testing-control-plane   Ready    control-plane   26s   v1.35.0
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ curl -L https://istio.io/downloadIstio | sh -
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100    101 100    101   0      0    907      0                              0
+100   5124 100   5124   0      0  38510      0                              0
+
+Downloading istio-1.30.0 from https://github.com/istio/istio/releases/download/1.30.0/istio-1.30.0-linux-amd64.tar.gz ...
+
+Istio 1.30.0 download complete!
+
+The Istio release archive has been downloaded to the istio-1.30.0 directory.
+
+To configure the istioctl client tool for your workstation,
+add the /home/ubuntu/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin directory to your environment path variable with:
+         export PATH="$PATH:/home/ubuntu/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin"
+
+Begin the Istio pre-installation check by running:
+         istioctl x precheck
+
+Try Istio in ambient mode
+        https://istio.io/latest/docs/ambient/getting-started/
+Try Istio in sidecar mode
+        https://istio.io/latest/docs/setup/getting-started/
+Install guides for ambient mode
+        https://istio.io/latest/docs/ambient/install/
+Install guides for sidecar mode
+        https://istio.io/latest/docs/setup/install/
+
+Need more information? Visit https://istio.io/latest/docs/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   6m19s
+kube-node-lease      Active   6m19s
+kube-public          Active   6m19s
+kube-system          Active   6m19s
+local-path-storage   Active   6m12s
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ docker images
+                                                                                                                                                                        i Info →   U  In Use
+IMAGE                                                                                  ID             DISK USAGE   CONTENT SIZE   EXTRA
+kindest/node:v1.28.9                                                                   dca54bc6a607       1.38GB          409MB    U
+kindest/node@sha256:452d707d4862f52530247495d180205e029056831160e22870e37e3f6c1ac31f   452d707d4862       1.35GB          397MB    U
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ ls
+istio-1.30.0
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio$ cd istio-1.30.0/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ ls
+LICENSE  README.md  bin  manifest.yaml  manifests  samples  tools
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ cat README.md
+# Istio
+
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1395/badge)](https://bestpractices.coreinfrastructure.org/projects/1395)
+[![Go Report Card](https://goreportcard.com/badge/github.com/istio/istio)](https://goreportcard.com/report/github.com/istio/istio)
+[![GoDoc](https://godoc.org/istio.io/istio?status.svg)](https://godoc.org/istio.io/istio)
+
+<a href="https://istio.io/">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/cncf/artwork/refs/heads/main/projects/istio/icon/color/istio-icon-color.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://github.com/istio/istio/raw/master/logo/istio-bluelogo-whitebackground-unframed.svg">
+      <img title="Istio" height="100" width="100" alt="Istio logo" src="https://github.com/istio/istio/raw/master/logo/istio-bluelogo-whitebackground-unframed.svg">
+    </picture>
+</a>
+
+---
+
+Istio is an open source service mesh that layers transparently onto existing distributed applications. Istio’s powerful features provide a uniform and more efficient way to secure, connect, and monitor services. Istio is the path to load balancing, service-to-service authentication, and monitoring – with few or no service code changes.
+
+- For in-depth information about how to use Istio, visit [istio.io](https://istio.io)
+- To ask questions and get assistance from our community, visit [GitHub Discussions](https://github.com/istio/istio/discussions)
+- To learn how to participate in our overall community, visit [our community page](https://istio.io/about/community)
+
+In this README:
+
+- [Introduction](#introduction)
+- [Repositories](#repositories)
+- [Issue management](#issue-management)
+
+In addition, here are some other documents you may wish to read:
+
+- [Istio Community](https://github.com/istio/community#istio-community) - describes how to get involved and contribute to the Istio project
+- [Istio Developer's Guide](https://github.com/istio/istio/wiki/Preparing-for-Development) - explains how to set up and use an Istio development environment
+- [Project Conventions](https://github.com/istio/istio/wiki/Development-Conventions) - describes the conventions we use within the code base
+- [Creating Fast and Lean Code](https://github.com/istio/istio/wiki/Writing-Fast-and-Lean-Code) - performance-oriented advice and guidelines for the code base
+
+You'll find many other useful documents on our [Wiki](https://github.com/istio/istio/wiki).
+
+## Introduction
+
+[Istio](https://istio.io/latest/docs/concepts/what-is-istio/) is an open platform for providing a uniform way to [integrate
+microservices](https://istio.io/latest/docs/examples/microservices-istio/), manage [traffic flow](https://istio.io/latest/docs/concepts/traffic-management/) across microservices, enforce policies
+and aggregate telemetry data. Istio's control plane provides an abstraction
+layer over the underlying cluster management platform, such as Kubernetes.
+
+Istio is composed of these components:
+
+- **Envoy** - Sidecar proxies per microservice to handle ingress/egress traffic
+   between services in the cluster and from a service to external
+   services. The proxies form a _secure microservice mesh_ providing a rich
+   set of functions like discovery, rich layer-7 routing, circuit breakers,
+   policy enforcement and telemetry recording/reporting
+   functions.
+
+  > Note: The service mesh is not an overlay network. It
+  > simplifies and enhances how microservices in an application talk to each
+  > other over the network provided by the underlying platform.
+
+* **Ztunnel** - A lightweight data plane proxy written in Rust,
+    used in Ambient mesh mode to provide secure connectivity and observability for workloads without sidecar proxies.
+
+- **Istiod** - The Istio control plane. It provides service discovery, configuration and certificate management.
+
+## Repositories
+
+The Istio project is divided across a few GitHub repositories:
+
+- [istio/api](https://github.com/istio/api). This repository defines
+component-level APIs and common configuration formats for the Istio platform.
+
+- [istio/community](https://github.com/istio/community). This repository contains
+information on the Istio community, including the various documents that govern
+the Istio open source project.
+
+- [istio/istio](README.md). This is the main code repository. It hosts Istio's
+core components, install artifacts, and sample programs. It includes:
+
+    - [istioctl](istioctl/). This directory contains code for the
+[_istioctl_](https://istio.io/latest/docs/reference/commands/istioctl/) command line utility.
+
+    - [pilot](pilot/). This directory
+contains platform-specific code to populate the
+[abstract service model](https://istio.io/docs/concepts/traffic-management/#pilot), dynamically reconfigure the proxies
+when the application topology changes, as well as translate
+[routing rules](https://istio.io/latest/docs/reference/config/networking/) into proxy specific configuration.
+
+    - [security](security/). This directory contains [security](https://istio.io/latest/docs/concepts/security/) related code.
+
+- [istio/proxy](https://github.com/istio/proxy). The Istio proxy contains
+extensions to the [Envoy proxy](https://github.com/envoyproxy/envoy) (in the form of
+Envoy filters) that support authentication, authorization, and telemetry collection.
+
+- [istio/ztunnel](https://github.com/istio/ztunnel). The repository contains the Rust implementation of the ztunnel
+component of Ambient mesh.
+
+- [istio/client-go](https://github.com/istio/client-go). This repository defines
+  auto-generated Kubernetes clients for interacting with Istio resources programmatically.
+
+> [!NOTE]
+> Only the `istio/api` and `istio/client-go` repositories expose stable interfaces intended for direct usage as libraries.
+
+## Issue management
+
+We use GitHub to track all of our bugs and feature requests. Each issue we track has a variety of metadata:
+
+- **Epic**. An epic represents a feature area for Istio as a whole. Epics are fairly broad in scope and are basically product-level things.
+Each issue is ultimately part of an epic.
+
+- **Milestone**. Each issue is assigned a milestone. This is 0.1, 0.2, ..., or 'Nebulous Future'. The milestone indicates when we
+think the issue should get addressed.
+
+- **Priority**. Each issue has a priority which is represented by the column in the [Prioritization](https://github.com/orgs/istio/projects/6) project. Priority can be one of
+P0, P1, P2, or >P2. The priority indicates how important it is to address the issue within the milestone. P0 says that the
+milestone cannot be considered achieved if the issue isn't resolved.
+
+---
+
+<div align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/cncf/artwork/refs/heads/main/other/cncf/horizontal/color-whitetext/cncf-color-whitetext.svg">
+      <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/cncf/artwork/master/other/cncf/horizontal/color/cncf-color.svg">
+      <img width="300" alt="Cloud Native Computing Foundation logo" src="https://raw.githubusercontent.com/cncf/artwork/refs/heads/main/other/cncf/horizontal/color-whitetext/cncf-color-whitetext.svg">
+    </picture>
+    <p>Istio is a <a href="https://cncf.io">Cloud Native Computing Foundation</a> project.</p>
+</div>
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ ls
+LICENSE  README.md  bin  manifest.yaml  manifests  samples  tools
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ cd samples/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/samples$ ls
+README.md  ambient-argo  builder  cicd  custom-bootstrap  external   health-check  httpbin     kind-lb    multicluster    proxy-coredump  security  tcp-echo      websockets
+addons     bookinfo      certs    curl  extauthz          grpc-echo  helloworld    jwt-server  mtls-echo  open-telemetry  ratelimit       sleep     wasm_modules
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/samples$ cd ..
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ cd bin/
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin$ ls
+istioctl
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin$ ./istioctl
+Istio configuration command line utility for service operators to
+debug and diagnose their Istio mesh.
+
+Usage:
+  istioctl [command]
+
+Available Commands:
+  admin                Manage control plane (istiod) configuration
+  analyze              Analyze Istio configuration and print validation messages
+  authz                (authz is experimental. Use `istioctl experimental authz`)
+  bug-report           Cluster information and log capture support tool.
+  completion           Generate the autocompletion script for the specified shell
+  create-remote-secret Create a secret with credentials to allow Istio to access remote Kubernetes apiservers
+  dashboard            Access to Istio web UIs
+  experimental         Experimental commands that may be modified or deprecated
+  help                 Help about any command
+  install              Applies an Istio manifest, installing or reconfiguring Istio on a cluster.
+  kube-inject          Inject Istio sidecar into Kubernetes pod resources
+  manifest             Commands related to Istio manifests
+  proxy-config         Retrieve information about proxy configuration from Envoy [kube only]
+  proxy-status         Retrieves the synchronization status of each Envoy in the mesh
+  remote-clusters      Lists the remote clusters each istiod instance is connected to.
+  tag                  Command group used to interact with revision tags
+  uninstall            Uninstall Istio from a cluster
+  upgrade              Upgrade Istio control plane in-place
+  validate             Validate Istio policy and rules files
+  version              Prints out build version information
+  waypoint             Manage waypoint configuration
+  ztunnel-config       Update or retrieve current Ztunnel configuration.
+
+Flags:
+      --as string                   Username to impersonate for the operation. User could be a regular user or a service account in a namespace
+      --as-group stringArray        Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
+      --as-uid string               UID to impersonate for the operation.
+      --context string              Kubernetes configuration context
+  -h, --help                        help for istioctl
+  -i, --istioNamespace string       Istio system namespace (default "istio-system")
+      --kubeclient-timeout string   Kubernetes client timeout as a time.Duration string, defaults to 15 seconds. (default "15s")
+  -c, --kubeconfig string           Kubernetes configuration file
+  -n, --namespace string            Kubernetes namespace
+      --vklog Level                 number for the log level verbosity. Like -v flag. ex: --vklog=9
+
+Additional help topics:
+  istioctl options              Displays istioctl global options
+
+Use "istioctl [command] --help" for more information about a command.
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin$ ls
+istioctl
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin$  mv istioctl /usr/local/bin/
+mv: cannot move 'istioctl' to '/usr/local/bin/istioctl': Permission denied
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin$ sudo mv istioctl /usr/local/bin
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0/bin$ cd ..
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ istioctl
+Istio configuration command line utility for service operators to
+debug and diagnose their Istio mesh.
+
+Usage:
+  istioctl [command]
+
+Available Commands:
+  admin                Manage control plane (istiod) configuration
+  analyze              Analyze Istio configuration and print validation messages
+  authz                (authz is experimental. Use `istioctl experimental authz`)
+  bug-report           Cluster information and log capture support tool.
+  completion           Generate the autocompletion script for the specified shell
+  create-remote-secret Create a secret with credentials to allow Istio to access remote Kubernetes apiservers
+  dashboard            Access to Istio web UIs
+  experimental         Experimental commands that may be modified or deprecated
+  help                 Help about any command
+  install              Applies an Istio manifest, installing or reconfiguring Istio on a cluster.
+  kube-inject          Inject Istio sidecar into Kubernetes pod resources
+  manifest             Commands related to Istio manifests
+  proxy-config         Retrieve information about proxy configuration from Envoy [kube only]
+  proxy-status         Retrieves the synchronization status of each Envoy in the mesh
+  remote-clusters      Lists the remote clusters each istiod instance is connected to.
+  tag                  Command group used to interact with revision tags
+  uninstall            Uninstall Istio from a cluster
+  upgrade              Upgrade Istio control plane in-place
+  validate             Validate Istio policy and rules files
+  version              Prints out build version information
+  waypoint             Manage waypoint configuration
+  ztunnel-config       Update or retrieve current Ztunnel configuration.
+
+Flags:
+      --as string                   Username to impersonate for the operation. User could be a regular user or a service account in a namespace
+      --as-group stringArray        Group to impersonate for the operation, this flag can be repeated to specify multiple groups.
+      --as-uid string               UID to impersonate for the operation.
+      --context string              Kubernetes configuration context
+  -h, --help                        help for istioctl
+  -i, --istioNamespace string       Istio system namespace (default "istio-system")
+      --kubeclient-timeout string   Kubernetes client timeout as a time.Duration string, defaults to 15 seconds. (default "15s")
+  -c, --kubeconfig string           Kubernetes configuration file
+  -n, --namespace string            Kubernetes namespace
+      --vklog Level                 number for the log level verbosity. Like -v flag. ex: --vklog=9
+
+Additional help topics:
+  istioctl options              Displays istioctl global options
+
+Use "istioctl [command] --help" for more information about a command.
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ ls
+LICENSE  README.md  bin  manifest.yaml  manifests  samples  tools
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ istioctl install -f samples/bookinfo/demo-profile-no-gateways.yaml -y
+        |\
+        | \
+        |  \
+        |   \
+      /||    \
+     / ||     \
+    /  ||      \
+   /   ||       \
+  /    ||        \
+ /     ||         \
+/______||__________\
+____________________
+  \__       _____/
+     \_____/
+
+✔ Istio core installed ⛵️
+✔ Istiod installed 🧠
+✔ Installation complete
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ kubectl label namespace default istio-injection=enabled
+namespace/default labeled
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ kubectl get namspace -L istio-injection
+error: the server doesn't have a resource type "namspace"
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ kubectl get namespace -L istio-injection
+NAME                 STATUS   AGE     ISTIO-INJECTION
+default              Active   19m     enabled
+istio-system         Active   3m22s
+kube-node-lease      Active   19m
+kube-public          Active   19m
+kube-system          Active   19m
+local-path-storage   Active   19m
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ kubectl get crd gateways.gateway.networking.k8s.io &> /dev/null || \
+{ kubectl kustomize "github.com/kubernetes-sigs/gateway-api/config/crd?ref=v1.5.1" | kubectl apply -f -; }
+customresourcedefinition.apiextensions.k8s.io/backendtlspolicies.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/gatewayclasses.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/gateways.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/grpcroutes.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/httproutes.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/listenersets.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/referencegrants.gateway.networking.k8s.io created
+customresourcedefinition.apiextensions.k8s.io/tlsroutes.gateway.networking.k8s.io created
+validatingadmissionpolicy.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io created
+validatingadmissionpolicybinding.admissionregistration.k8s.io/safe-upgrades.gateway.networking.k8s.io created
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$  kubectl apply -f samples/bookinfo/platform/kube/bookinfo.yaml
+service/details created
+serviceaccount/bookinfo-details created
+deployment.apps/details-v1 created
+service/ratings created
+serviceaccount/bookinfo-ratings created
+deployment.apps/ratings-v1 created
+service/reviews created
+serviceaccount/bookinfo-reviews created
+deployment.apps/reviews-v1 created
+deployment.apps/reviews-v2 created
+deployment.apps/reviews-v3 created
+service/productpage created
+serviceaccount/bookinfo-productpage created
+deployment.apps/productpage-v1 created
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ kubectl get services
+NAME          TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)    AGE
+details       ClusterIP   10.96.182.220   <none>        9080/TCP   26s
+kubernetes    ClusterIP   10.96.0.1       <none>        443/TCP    22m
+productpage   ClusterIP   10.96.138.144   <none>        9080/TCP   26s
+ratings       ClusterIP   10.96.111.200   <none>        9080/TCP   26s
+reviews       ClusterIP   10.96.224.34    <none>        9080/TCP   26s
+ubuntu@ip-172-31-15-91:~/Devops_90-Days/Day-44-Kubernetes/pods/istio/istio-1.30.0$ kubectl exec "$(kubectl get pod -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -c ratings -- curl -sS productpage:9080/productpage | grep -o "<title>.*</title>"
+<title>Simple Bookstore App</title>
+$ kubectl apply -f samples/bookinfo/gateway-api/bookinfo-gateway.yaml
+gateway.gateway.networking.k8s.io/bookinfo-gateway created
+httproute.gateway.networking.k8s.io/bookinfo created
+kubectl annotate gateway bookinfo-gateway networking.istio.io/service-type=ClusterIP --namespace=default
+kubectl get gateway
+kubectl port-forward svc/bookinfo-gateway-istio 8080:80
+
+
+
+
+
+
+
+
