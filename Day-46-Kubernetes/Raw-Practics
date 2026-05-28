@@ -1,0 +1,1116 @@
+ubuntu@ip-172-31-20-13:~$ cd Kube_Starter/
+ubuntu@ip-172-31-20-13:~/Kube_Starter$ ls
+DaemonSet              Ingress                                         RBAC                      eks_cluster_setup.md        kubestarter
+Deployment_Strategies  Kubeadm_Installation_Scripts_and_Documentation  README.md                 examples                    minikube_installation.md
+HELM                   Minikube_Windows_Installation.md                Taints-and-Tolerations    kind-cluster                projectGuide
+HPA_VPA                PersistentVolumes                               ci_cd_with_kubernetes.md  kubernetes_architecture.md
+ubuntu@ip-172-31-20-13:~/Kube_Starter$ cd kind-cluster/
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ ls
+README.md  dashboard-admin-user.yml  install.sh  kind-config.yml
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ chmod 700 install.sh
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ ./install.sh
+🚀 Starting installation of Docker, Kind, and kubectl...
+📦 Installing Docker...
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute InRelease
+Hit:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu resolute-security InRelease
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Solving dependencies... Done
+The following additional packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base pigz runc ubuntu-fan
+Suggested packages:
+  ifupdown aufs-tools cgroupfs-mount | cgroup-lite debootstrap docker-buildx docker-compose-v2 docker-doc rinse rootlesskit zfs-fuse | zfsutils
+The following NEW packages will be installed:
+  bridge-utils containerd dns-root-data dnsmasq-base docker.io pigz runc ubuntu-fan
+0 upgraded, 8 newly installed, 0 to remove and 36 not upgraded.
+Need to get 74.0 MB of archives.
+After this operation, 281 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 pigz amd64 2.8-1build1 [68.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 bridge-utils amd64 1.7.1-4ubuntu3 [34.8 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 runc amd64 1.4.0-0ubuntu1 [9829 kB]
+Get:4 http://security.ubuntu.com/ubuntu resolute-security/main amd64v3 dnsmasq-base amd64 2.92-1ubuntu0.3 [441 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 containerd amd64 2.2.2-0ubuntu1 [28.0 MB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 dns-root-data all 2025080400build1 [6022 B]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 docker.io amd64 29.1.3-0ubuntu4.1 [35.5 MB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 ubuntu-fan all 0.12.17 [34.3 kB]
+Fetched 74.0 MB in 1s (92.2 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... 85301 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.8-1build1_amd64v3.deb ...
+Unpacking pigz (2.8-1build1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../1-bridge-utils_1.7.1-4ubuntu3_amd64v3.deb ...
+Unpacking bridge-utils (1.7.1-4ubuntu3) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../2-runc_1.4.0-0ubuntu1_amd64v3.deb ...
+Unpacking runc (1.4.0-0ubuntu1) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../3-containerd_2.2.2-0ubuntu1_amd64v3.deb ...
+Unpacking containerd (2.2.2-0ubuntu1) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../4-dns-root-data_2025080400build1_all.deb ...
+Unpacking dns-root-data (2025080400build1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../5-dnsmasq-base_2.92-1ubuntu0.3_amd64v3.deb ...
+Unpacking dnsmasq-base (2.92-1ubuntu0.3) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../6-docker.io_29.1.3-0ubuntu4.1_amd64v3.deb ...
+Unpacking docker.io (29.1.3-0ubuntu4.1) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../7-ubuntu-fan_0.12.17_all.deb ...
+Unpacking ubuntu-fan (0.12.17) ...
+Setting up dnsmasq-base (2.92-1ubuntu0.3) ...
+Setting up runc (1.4.0-0ubuntu1) ...
+Setting up dns-root-data (2025080400build1) ...
+Setting up bridge-utils (1.7.1-4ubuntu3) ...
+Setting up pigz (2.8-1build1) ...
+Setting up containerd (2.2.2-0ubuntu1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/containerd.service' → '/usr/lib/systemd/system/containerd.service'.
+Setting up ubuntu-fan (0.12.17) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/ubuntu-fan.service' → '/usr/lib/systemd/system/ubuntu-fan.service'.
+Setting up docker.io (29.1.3-0ubuntu4.1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/docker.service' → '/usr/lib/systemd/system/docker.service'.
+Created symlink '/etc/systemd/system/sockets.target.wants/docker.socket' → '/usr/lib/systemd/system/docker.socket'.
+Processing triggers for dbus (1.16.2-2ubuntu4) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+👤 Adding current user to docker group...
+✅ Docker installed and user added to docker group.
+📦 Installing Kind...
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100     97 100     97   0      0   4228      0                              0
+  0      0   0      0   0      0      0      0                              0
+100 10.54M 100 10.54M   0      0 47.34M      0                              0
+✅ Kind installed successfully.
+📦 Installing kubectl (latest stable version)...
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100 56.74M 100 56.74M   0      0 213.3M      0                              0
+✅ kubectl installed successfully.
+
+🔍 Installed Versions:
+Docker version 29.1.3, build 29.1.3-0ubuntu4.1
+kind version 0.29.0
+clientVersion:
+  buildDate: "2026-05-12T09:54:35Z"
+  compiler: gc
+  gitCommit: 756939600b9a7180fc2df6550a4585b638875e67
+  gitTreeState: clean
+  gitVersion: v1.36.1
+  goVersion: go1.26.2
+  major: "1"
+  minor: "36"
+  platform: linux/amd64
+kustomizeVersion: v5.8.1
+
+
+🎉 Docker, Kind, and kubectl installation complete!
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ sudo apt-get install docker.io -y
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+docker.io is already the newest version (29.1.3-0ubuntu4.1).
+Solving dependencies... Done
+0 upgraded, 0 newly installed, 0 to remove and 36 not upgraded.
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ sudo usermod -aG docker $USER && newgrp docker
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ ls
+README.md  dashboard-admin-user.yml  install.sh  kind-config.yml
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ cat kind-config.yml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: rbb-cluster
+
+nodes:
+- role: control-plane
+  image: kindest/node:v1.28.9
+
+- role: worker
+  image: kindest/node:v1.28.9
+
+- role: worker
+  image: kindest/node:v1.28.9
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ kind create cluster --name rbb-kind-cluster --config=kind-config.yml
+Creating cluster "rbb-kind-cluster" ...
+ ✓ Ensuring node image (kindest/node:v1.28.9) 🖼
+ ✓ Preparing nodes 📦 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-rbb-kind-cluster"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-rbb-kind-cluster
+
+Have a question, bug, or feature request? Let us know! https://kind.sigs.k8s.io/#community 🙂
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ kubectl cluster-info --context kind-rbb-kind-cluster
+Kubernetes control plane is running at https://127.0.0.1:39427
+CoreDNS is running at https://127.0.0.1:39427/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@ip-172-31-20-13:~/Kube_Starter/kind-cluster$ kubectl get nodes
+NAME                             STATUS   ROLES           AGE   VERSION
+rbb-kind-cluster-control-plane   Ready    control-plane   56s   v1.28.9
+rbb-kind-cluster-worker          Ready    <none>          29s   v1.28.9
+rbb-kind-cluster-worker2         Ready    <none>          29s   v1.28.9
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes$ kubectl get nodes
+NAME                             STATUS   ROLES           AGE   VERSION
+rbb-kind-cluster-control-plane   Ready    control-plane   13m   v1.28.9
+rbb-kind-cluster-worker          Ready    <none>          12m   v1.28.9
+rbb-kind-cluster-worker2         Ready    <none>          12m   v1.28.9
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes$ df -h
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/root         26G  9.2G   16G  37% /
+tmpfs            953M     0  953M   0% /dev/shm
+tmpfs            382M  1.2M  380M   1% /run
+efivarfs         128K  3.1K  120K   3% /sys/firmware/efi/efivars
+tmpfs            953M     0  953M   0% /tmp
+none             1.0M     0  1.0M   0% /run/credentials/systemd-journald.service
+none             1.0M     0  1.0M   0% /run/credentials/systemd-resolved.service
+/dev/nvme0n1p13  989M   96M  826M  11% /boot
+/dev/nvme0n1p15  105M  6.3M   99M   7% /boot/efi
+none             1.0M     0  1.0M   0% /run/credentials/systemd-networkd.service
+none             1.0M     0  1.0M   0% /run/credentials/serial-getty@ttyS0.service
+none             1.0M     0  1.0M   0% /run/credentials/getty@tty1.service
+tmpfs            191M  8.0K  191M   1% /run/user/1000
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes$  free -h
+               total        used        free      shared  buff/cache   available
+Mem:           1.9Gi       1.0Gi       128Mi       5.9Mi       954Mi       883Mi
+Swap:          3.0Gi       137Mi       2.9Gi
+ubuntu@ip-172-31-20-13:~$ ls
+Day-46-Kubernetes
+ubuntu@ip-172-31-20-13:~$ cd Day-46-Kubernetes/
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes$ ls
+Deployment_Strategies  kind-cluster
+========================================Recreate Deployment Strategy===================================
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes$ cd Deployment_Strategies/
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies$ ls
+Blue-green-deployment  README.md            Rolling-Update-Deployment  deployment-strategies-comparison.md
+Canary-deployment      Recreate-deployment  Simple-Canary-Example      kind-config.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies$ cd Recreate-deployment/
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ vi recreate-namespace.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ cat recreate-namespace.yml
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: recreate-ns
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl apply -f recreate-namespace.yml
+namespace/recreate-ns created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   21m
+kube-node-lease      Active   21m
+kube-public          Active   21m
+kube-system          Active   21m
+local-path-storage   Active   21m
+recreate-ns          Active   11s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ vi recreate-deployment.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ cat recreate-deployment.yml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: online-shop
+  namespace: recreate-ns
+  labels:
+    app: online-shop
+spec:
+  replicas: 3
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: online-shop
+  template:
+    metadata:
+      labels:
+        app: online-shop
+    spec:
+      containers:
+      - image: amitabhdevops/online_shop
+        name: online-shop
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl apply -f recreate-deployment.yml
+deployment.apps/online-shop created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl get pods -n recreate-ns
+NAME                          READY   STATUS    RESTARTS       AGE
+online-shop-8f8bbc9d9-l27xz   1/1     Running   1 (111s ago)   42m
+online-shop-8f8bbc9d9-lmb7w   1/1     Running   1 (111s ago)   42m
+online-shop-8f8bbc9d9-rp9qc   1/1     Running   1 (111s ago)   42m
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ ls
+README.md  recreate-deployment.yml  recreate-namespace.yml  recreate-svc.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl apply -f recreate-svc.yml
+service/recreate-service created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl get svc -n recreate-ns
+NAME               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+recreate-service   NodePort   10.96.38.235   <none>        3000:30000/TCP   29s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ l
+README.md  recreate-deployment.yml  recreate-namespace.yml  recreate-svc.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl get all -n recreate-ns
+NAME                              READY   STATUS    RESTARTS        AGE
+pod/online-shop-8f8bbc9d9-l27xz   1/1     Running   1 (3m47s ago)   44m
+pod/online-shop-8f8bbc9d9-lmb7w   1/1     Running   1 (3m47s ago)   44m
+pod/online-shop-8f8bbc9d9-rp9qc   1/1     Running   1 (3m47s ago)   44m
+
+NAME                       TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/recreate-service   NodePort   10.96.38.235   <none>        3000:30000/TCP   85s
+
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/online-shop   3/3     3            3           44m
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/online-shop-8f8bbc9d9   3         3         3       44m
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl port-forward --address 0.0.0.0 svc/recreate-service 3000:3000 -n recreate-ns &
+[1] 5036
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ Forwarding from 0.0.0.0:3000 -> 3000
+Handling connection for 3000
+Handling connection for 3000
+Handling connection for 3000
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Recreate-deployment$ kubectl set image deployment/online-shop online-shop=amitabhdevops/online_shop_without_footer -n recreate-ns
+deployment.apps/online-shop image updated
+Every 2.0s: kubectl get pods -...  ip-172-31-20-13: Thu May 28 08:40:34 2026
+
+NAME                           READY   STATUS    RESTARTS   AGE
+online-shop-599c9488fb-45rbg   1/1     Running   0          27s
+online-shop-599c9488fb-6blg8   1/1     Running   0          27s
+online-shop-599c9488fb-nflqn   1/1     Running   0          27s
+
+========================Rolling Update Deployment Strategy=====================================
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ ls
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ ls
+README.md  rolling-namespace.yml  rolling-update-deployment.yaml  rolling-update-svc.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl apply -f rolling-namespace.yml
+namespace/rolling-ns created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   85m
+kube-node-lease      Active   85m
+kube-public          Active   85m
+kube-system          Active   85m
+local-path-storage   Active   85m
+rolling-ns           Active   8s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ vi rolling-update-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ cat rolling-update-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: online-shop
+  name: online-shop
+  namespace: rolling-ns
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1             # Optional - 1 extra Pod can be created during update
+      maxUnavailable: 0       # Optional - 0 unavailable Pods ensure 0 Downtime
+  selector:
+    matchLabels:
+      app: online-shop
+  template:
+    metadata:
+      labels:
+        app: online-shop
+    spec:
+      containers:
+      - name: online-shop
+        image: amitabhdevops/online_shop
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl apply -f rolling-update-deployment.yaml
+deployment.apps/online-shop created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl get pods
+No resources found in default namespace.
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl get pods -n rolling-ns
+NAME                          READY   STATUS    RESTARTS   AGE
+online-shop-8f8bbc9d9-gfxbt   1/1     Running   0          24s
+online-shop-8f8bbc9d9-hhcdt   1/1     Running   0          24s
+online-shop-8f8bbc9d9-npxkr   1/1     Running   0          24s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ vi rolling-update-svc.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ cat rolling-update-svc.yml
+apiVersion: v1
+kind: Service
+metadata:
+  name: rolling-update-service
+  namespace: rolling-ns
+spec:
+  selector:
+    app: online-shop
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl apply -f rolling-update-svc.yml
+service/rolling-update-service created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl get all -n rolling-ns
+NAME                              READY   STATUS    RESTARTS   AGE
+pod/online-shop-8f8bbc9d9-gfxbt   1/1     Running   0          96s
+pod/online-shop-8f8bbc9d9-hhcdt   1/1     Running   0          96s
+pod/online-shop-8f8bbc9d9-npxkr   1/1     Running   0          96s
+
+NAME                             TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+service/rolling-update-service   NodePort   10.96.128.118   <none>        3000:30000/TCP   18s
+
+NAME                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/online-shop   3/3     3            3           96s
+
+NAME                                    DESIRED   CURRENT   READY   AGE
+replicaset.apps/online-shop-8f8bbc9d9   3         3         3       96s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ vi rolling-update-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ cat rolling-update-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: online-shop
+  name: online-shop
+  namespace: rolling-ns
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1             # Optional - 1 extra Pod can be created during update
+      maxUnavailable: 0       # Optional - 0 unavailable Pods ensure 0 Downtime
+  selector:
+    matchLabels:
+      app: online-shop
+  template:
+    metadata:
+      labels:
+        app: online-shop
+    spec:
+      containers:
+      - name: online-shop
+        image: amitabhdevops/online_shop_with_footer
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl apply -f rolling-update-deployment.yaml
+deployment.apps/online-shop configured
+Every 2.0s: kube...  ip-172-31-20-13: Thu May 28 08:56:11 2026
+
+NAME                           READY   STATUS             REST
+ARTS   AGE
+online-shop-6c7dcc9594-8vsh7   0/1     ImagePullBackOff   0
+       21s
+online-shop-8f8bbc9d9-gfxbt    1/1     Running            0
+       5m49s
+online-shop-8f8bbc9d9-hhcdt    1/1     Running            0
+       5m49s
+online-shop-8f8bbc9d9-npxkr    1/1     Running            0
+       5m49s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ vi rolling-update-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$"rolling-update-deployment.yaml" 32L, 749B written
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ cat rolling-update-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: online-shop
+  name: online-shop
+  namespace: rolling-ns
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1             # Optional - 1 extra Pod can be created during update
+      maxUnavailable: 0       # Optional - 0 unavailable Pods ensure 0 Downtime
+  selector:
+    matchLabels:
+      app: online-shop
+  template:
+    metadata:
+      labels:
+        app: online-shop
+    spec:
+      containers:
+      - name: online-shop
+        image: amitabhdevops/online_shop_without_footer
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl apply -f rolling-update-deployment.yaml
+deployment.apps/online-shop configured
+Every 2.0s: kube...  ip-172-31-20-13: Thu May 28 08:59:06 2026
+
+NAME                           READY   STATUS    RESTARTS   AG
+E
+online-shop-599c9488fb-n9xvk   1/1     Running   0          27
+s
+online-shop-599c9488fb-v5tk7   1/1     Running   0          28
+s
+online-shop-599c9488fb-xg6l5   1/1     Running   0          25
+s
+
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ kubectl port-forward --address 0.0.0.0 svc/rolling-update-service 3000:3000 -n rolling-ns
+&
+[1] 11119
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Rolling-Update-Deployment$ Forwarding from 0.0.0.0:3000 -> 3000
+====================Blue-Green-Deployment====================================
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ ls
+README.md          online-shop-green-deployment.yaml
+blue-green-ns.yml  online-shop-without-footer-blue-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ vi blue-green-ns.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ cat blue-green-ns.yml
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: blue-green-ns
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl apply -f blue-green-ns.yml
+namespace/blue-green-ns created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl get ns
+NAME                 STATUS   AGE
+blue-green-ns        Active   15s
+default              Active   103m
+kube-node-lease      Active   103m
+kube-public          Active   103m
+kube-system          Active   103m
+local-path-storage   Active   103m
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ vi online-shop-green-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ vi online-shop-without-footer-blue-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ cat online-shop-without-footer-blue-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: online-shop-blue
+  name: online-shop-blue
+  namespace: blue-green-ns
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: online-shop-blue
+  template:
+    metadata:
+      labels:
+        app: online-shop-blue
+    spec:
+      containers:
+      - image: amitabhdevops/online_shop_without_footer
+        name: online-shop-blue
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: online-shop-blue-deployment-service
+  namespace: blue-green-ns
+spec:
+  selector:
+    app: online-shop-blue
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3001
+      targetPort: 3000
+      nodePort: 30001
+
+
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ cat online-shop-green-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: online-shop-green
+  name: online-shop-green
+  namespace: blue-green-ns
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: online-shop-green
+  template:
+    metadata:
+      labels:
+        app: online-shop-green
+    spec:
+      containers:
+      - image: amitabhdevops/online_shop
+        name: online-shop-green
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: online-shop-green-deployment-service
+  namespace: blue-green-ns
+spec:
+  selector:
+    app: online-shop-green
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 30000
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl apply -f online-shop-without-footer-blue-deployment.yaml
+deployment.apps/online-shop-blue created
+service/online-shop-blue-deployment-service created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl get pods -n blue-green-ns
+NAME                                READY   STATUS    RESTARTS   AGE
+online-shop-blue-6b7f9c8756-7pnq2   1/1     Running   0          32s
+online-shop-blue-6b7f9c8756-9978d   1/1     Running   0          32s
+online-shop-blue-6b7f9c8756-bx8ks   1/1     Running   0          32s
+online-shop-blue-6b7f9c8756-vfn8m   1/1     Running   0          32s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl get all -n blue-green-ns
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/online-shop-blue-6b7f9c8756-7pnq2   1/1     Running   0          62s
+pod/online-shop-blue-6b7f9c8756-9978d   1/1     Running   0          62s
+pod/online-shop-blue-6b7f9c8756-bx8ks   1/1     Running   0          62s
+pod/online-shop-blue-6b7f9c8756-vfn8m   1/1     Running   0          62s
+
+NAME                                          TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/online-shop-blue-deployment-service   NodePort   10.96.52.238   <none>        3001:30001/TCP   62s
+
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/online-shop-blue   4/4     4            4           62s
+
+NAME                                          DESIRED   CURRENT   READY   AGE
+replicaset.apps/online-shop-blue-6b7f9c8756   4         4         4       62s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl port-forward --address 0.0.0.0 svc/online-shop-blue-deployment-service 30001:3001 -n blue-green-ns &
+[1] 13412
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ Forwarding from 0.0.0.0:30001 -> 3000
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl port-forward --address 0.0.0.0 svc/online-shop-blue-deployment-service 30001:3001 -n blue-green-ns &
+[1] 13412
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ Forwarding from 0.0.0.0:30001 -> 3000
+Handling connection for 30001
+Handling connection for 30001
+Handling connection for 30001
+
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl apply -f online-shop-green-deployment.yaml
+deployment.apps/online-shop-green created
+service/online-shop-green-deployment-service created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl get all -n blue-green-ns
+NAME                                    READY   STATUS    RESTARTS   AGE
+pod/online-shop-blue-6b7f9c8756-7pnq2   1/1     Running   0          10m
+pod/online-shop-blue-6b7f9c8756-9978d   1/1     Running   0          10m
+pod/online-shop-blue-6b7f9c8756-bx8ks   1/1     Running   0          10m
+pod/online-shop-blue-6b7f9c8756-vfn8m   1/1     Running   0          10m
+pod/online-shop-green-dcbbf6497-47mfm   1/1     Running   0          42s
+pod/online-shop-green-dcbbf6497-67wz5   1/1     Running   0          42s
+pod/online-shop-green-dcbbf6497-h2m2c   1/1     Running   0          42s
+pod/online-shop-green-dcbbf6497-zzdqh   1/1     Running   0          42s
+
+NAME                                           TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)          AGE
+service/online-shop-blue-deployment-service    NodePort   10.96.52.238   <none>        3001:30001/TCP   10m
+service/online-shop-green-deployment-service   NodePort   10.96.62.34    <none>        3000:30000/TCP   42s
+
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/online-shop-blue    4/4     4            4           10m
+deployment.apps/online-shop-green   4/4     4            4           42s
+
+NAME                                          DESIRED   CURRENT   READY   AGE
+replicaset.apps/online-shop-blue-6b7f9c8756   4         4         4       10m
+replicaset.apps/online-shop-green-dcbbf6497   4         4         4       42s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ kubectl port-forward --address 0.0.0.0 svc/online-shop-green-deployment-service 30000:3000 -n blue-green-ns &
+[2] 14076
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Blue-green-deployment$ Forwarding from 0.0.0.0:30000 -> 3000
+Handling connection for 30000
+Handling connection for 30000
+Handling connection for 30000
+Handling connection for 30000
+Handling connection for 30000
+Handling connection for 30000
+==================================Canary Deployment===============================
+
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Canary-deployment$ ls
+README.md  canary-combined-service.yaml  canary-namespace.yml  canary-v1-deployment.yaml  canary-v2-deployment.yaml  ingress.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Canary-deployment$ cd ..
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies$ ls
+Blue-green-deployment  Canary-deployment  README.md  Recreate-deployment  Rolling-Update-Deployment  Simple-Canary-Example  deployment-strategies-comparison.md  kind-config.yml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies$ cd Simple-Canary-Example/
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md  apache-configmap.yaml  apache-deployment.yaml  canary-service.yaml  ingress.yaml  namespace.yaml  nginx-configmap.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.8.2/deploy/static/provider/kind/deploy.yaml
+namespace/ingress-nginx created
+serviceaccount/ingress-nginx created
+serviceaccount/ingress-nginx-admission created
+role.rbac.authorization.k8s.io/ingress-nginx created
+role.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx created
+clusterrole.rbac.authorization.k8s.io/ingress-nginx-admission created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx created
+rolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx created
+clusterrolebinding.rbac.authorization.k8s.io/ingress-nginx-admission created
+configmap/ingress-nginx-controller created
+service/ingress-nginx-controller created
+service/ingress-nginx-controller-admission created
+deployment.apps/ingress-nginx-controller created
+job.batch/ingress-nginx-admission-create created
+job.batch/ingress-nginx-admission-patch created
+ingressclass.networking.k8s.io/nginx created
+validatingwebhookconfiguration.admissionregistration.k8s.io/ingress-nginx-admission created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n ingress-nginx
+NAME                                       READY   STATUS      RESTARTS   AGE
+ingress-nginx-admission-create-pt6nt       0/1     Completed   0          35s
+ingress-nginx-admission-patch-fk8t2        0/1     Completed   1          35s
+ingress-nginx-controller-75dbd5d9b-mcc2z   0/1     Pending     0          35s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl patch deployment ingress-nginx-controller -n ingress-nginx --type=json \
+  -p='[{"op": "remove", "path": "/spec/template/spec/nodeSelector"}]'
+deployment.apps/ingress-nginx-controller patched
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n ingress-nginx
+NAME                                        READY   STATUS              RESTARTS   AGE
+ingress-nginx-admission-create-pt6nt        0/1     Completed           0          80s
+ingress-nginx-admission-patch-fk8t2         0/1     Completed           1          80s
+ingress-nginx-controller-5c6497cb99-bqk7c   0/1     ContainerCreating   0          5s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n ingress-nginx
+NAME                                        READY   STATUS      RESTARTS   AGE
+ingress-nginx-admission-create-pt6nt        0/1     Completed   0          88s
+ingress-nginx-admission-patch-fk8t2         0/1     Completed   1          88s
+ingress-nginx-controller-5c6497cb99-bqk7c   0/1     Running     0          13s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f namespace.yaml
+namespace/simple-canary created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   137m
+ingress-nginx        Active   3m6s
+kube-node-lease      Active   137m
+kube-public          Active   137m
+kube-system          Active   137m
+local-path-storage   Active   137m
+simple-canary        Active   6s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md  apache-configmap.yaml  apache-deployment.yaml  canary-service.yaml  ingress.yaml  namespace.yaml  nginx-configmap.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: simple-canary
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ vi nginx-configmap.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat nginx-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: simple-canary
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>NGINX - Version 1</title>
+      <style>
+        body {
+          background-color: #f0f0f0;
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+        .container {
+          background-color: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 40px;
+          text-align: center;
+          max-width: 600px;
+        }
+        h1 {
+          color: #009639;
+          margin-bottom: 20px;
+        }
+        p {
+          color: #333;
+          font-size: 18px;
+          line-height: 1.6;
+        }
+        .version {
+          margin-top: 30px;
+          font-weight: bold;
+          font-size: 24px;
+          color: #009639;
+        }
+        .nginx-logo {
+          width: 150px;
+          margin-bottom: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <img src="https://nginx.org/nginx.png" alt="NGINX Logo" class="nginx-logo">
+        <h1>Welcome to NGINX!</h1>
+        <p>If you see this page, the NGINX web server is successfully installed and working.</p>
+        <div class="version">Version 1 (Stable)</div>
+      </div>
+    </body>
+    </html>
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f nginx-configmap.yaml
+configmap/nginx-config created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md  apache-configmap.yaml  apache-deployment.yaml  canary-service.yaml  ingress.yaml  namespace.yaml  nginx-configmap.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ vi apache-configmap.yaml
+"apache-configmap.yaml" 60L, 1510B written/Deployment_Strategies/Simple-Canary-Example$
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat apache-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: apache-config
+  namespace: simple-canary
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Apache - Version 2</title>
+      <style>
+        body {
+          background-color: #f0f0f0;
+          font-family: Arial, sans-serif;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+        .container {
+          background-color: white;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          padding: 40px;
+          text-align: center;
+          max-width: 600px;
+        }
+        h1 {
+          color: #d22128;
+          margin-bottom: 20px;
+        }
+        p {
+          color: #333;
+          font-size: 18px;
+          line-height: 1.6;
+        }
+        .version {
+          margin-top: 30px;
+          font-weight: bold;
+          font-size: 24px;
+          color: #d22128;
+        }
+        .apache-logo {
+          width: 180px;
+          margin-bottom: 20px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <img src="https://www.apache.org/img/ASF20thAnniversary.jpg" alt="Apache Logo" class="apache-logo">
+        <h1>Welcome to Apache!</h1>
+        <p>If you see this page, the Apache web server is successfully installed and working.</p>
+        <div class="version">Version 2 (Canary)</div>
+      </div>
+    </body>
+    </html>
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f apache-configmap.yaml
+configmap/apache-config created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n simple-canary
+No resources found in simple-canary namespace.
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n simple-canary
+No resources found in simple-canary namespace.
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get ns
+NAME                 STATUS   AGE
+default              Active   143m
+ingress-nginx        Active   8m51s
+kube-node-lease      Active   143m
+kube-public          Active   143m
+kube-system          Active   143m
+local-path-storage   Active   143m
+simple-canary        Active   5m51s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get configmap -n simple-canary
+NAME               DATA   AGE
+apache-config      1      2m40s
+kube-root-ca.crt   1      7m1s
+nginx-config       1      4m
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md  apache-configmap.yaml  apache-deployment.yaml  canary-service.yaml  ingress.yaml  namespace.yaml  nginx-configmap.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ vi nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat nginx-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  namespace: simple-canary
+  labels:
+    app: web
+    version: v1
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: web
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: web
+        version: v1
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.21
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "256Mi"
+          requests:
+            cpu: "0.2"
+            memory: "128Mi"
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /usr/share/nginx/html/index.html
+          subPath: index.html
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md  apache-configmap.yaml  apache-deployment.yaml  canary-service.yaml  ingress.yaml  namespace.yaml  nginx-configmap.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat apache-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache-deployment
+  namespace: simple-canary
+  labels:
+    app: web
+    version: v2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+      version: v2
+  template:
+    metadata:
+      labels:
+        app: web
+        version: v2
+    spec:
+      containers:
+      - name: apache
+        image: httpd:2.4
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "256Mi"
+          requests:
+            cpu: "0.2"
+            memory: "128Mi"
+        volumeMounts:
+        - name: apache-config
+          mountPath: /usr/local/apache2/htdocs/index.html
+          subPath: index.html
+      volumes:
+      - name: apache-config
+        configMap:
+          name: apache-config
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f nginx-deployment.yaml
+deployment.apps/nginx-deployment created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f apache-deployment.yaml
+deployment.apps/apache-deployment created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n simple-canary
+NAME                               READY   STATUS    RESTARTS   AGE
+apache-deployment-5ffccdb6-r57cn   1/1     Running   0          9s
+nginx-deployment-696b4c47-2lc7k    1/1     Running   0          19s
+nginx-deployment-696b4c47-p77dg    1/1     Running   0          19s
+nginx-deployment-696b4c47-t7sl8    1/1     Running   0          19s
+nginx-deployment-696b4c47-vlf9s    1/1     Running   0          19s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get pods -n simple-canary
+NAME                               READY   STATUS    RESTARTS   AGE
+apache-deployment-5ffccdb6-r57cn   1/1     Running   0          17s
+nginx-deployment-696b4c47-2lc7k    1/1     Running   0          27s
+nginx-deployment-696b4c47-p77dg    1/1     Running   0          27s
+nginx-deployment-696b4c47-t7sl8    1/1     Running   0          27s
+nginx-deployment-696b4c47-vlf9s    1/1     Running   0          27s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md  apache-configmap.yaml  apache-deployment.yaml  canary-service.yaml  ingress.yaml  namespace.yaml  nginx-configmap.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat canary-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  namespace: simple-canary
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 80
+    targetPort: 80
+  type: ClusterIP
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f canary-service.yaml
+service/web-service created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get all -n simple-canary
+NAME                                   READY   STATUS    RESTARTS   AGE
+pod/apache-deployment-5ffccdb6-r57cn   1/1     Running   0          4m36s
+pod/nginx-deployment-696b4c47-2lc7k    1/1     Running   0          4m46s
+pod/nginx-deployment-696b4c47-p77dg    1/1     Running   0          4m46s
+pod/nginx-deployment-696b4c47-t7sl8    1/1     Running   0          4m46s
+pod/nginx-deployment-696b4c47-vlf9s    1/1     Running   0          4m46s
+
+NAME                  TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)   AGE
+service/web-service   ClusterIP   10.96.217.51   <none>        80/TCP    16s
+
+NAME                                READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/apache-deployment   1/1     1            1           4m36s
+deployment.apps/nginx-deployment    4/4     4            4           4m46s
+
+NAME                                         DESIRED   CURRENT   READY   AGE
+replicaset.apps/apache-deployment-5ffccdb6   1         1         1       4m36s
+replicaset.apps/nginx-deployment-696b4c47    4         4         4       4m46s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ ls
+README.md              apache-deployment.yaml  ingress.yaml    nginx-configmap.yaml
+apache-configmap.yaml  canary-service.yaml     namespace.yaml  nginx-deployment.yaml
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ cat ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: web-ingress
+  namespace: simple-canary
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-service
+            port:
+              number: 80
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl apply -f ingress.yaml
+ingress.networking.k8s.io/web-ingress created
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl get ingress -n simple-canary
+NAME          CLASS   HOSTS   ADDRESS     PORTS   AGE
+web-ingress   nginx   *       localhost   80      94s
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80 --address 0.0.0.0 &
+[1] 19727
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ Forwarding from 0.0.0.0:8080 -> 80
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl scale deployment nginx-deployment -n simpleubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Examubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl scale deployment nginx-deployment -n simple-canary --replicas=5
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl scale deployment apache-deployment -n simple-canary --replicas=0
+deployment.apps/apache-deployment scaled
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ Handling connection for 8080
+Handling connection for 8080
+Handling connection for 8080
+
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl scale deployment apache-deployment -n simple-canary --replicas=1
+deployment.apps/apache-deployment scaled
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ kubectl scale deployment nginx-deployment -n simple-canary --replicas=4
+deployment.apps/nginx-deployment scaled
+ubuntu@ip-172-31-20-13:~/Day-46-Kubernetes/Deployment_Strategies/Simple-Canary-Example$ Handling connection for 8080
+Every 2.0s: ku...  ip-172-31-20-13: Thu May 28 10:05:04 2026
+
+NAME                                   READY   STATUS    RES
+TARTS   AGE
+pod/apache-deployment-5ffccdb6-4g8s2   1/1     Running   0
+        72s
+pod/nginx-deployment-696b4c47-2lc7k    1/1     Running   0
+        15m
+pod/nginx-deployment-696b4c47-p77dg    1/1     Running   0
+        15m
+pod/nginx-deployment-696b4c47-t7sl8    1/1     Running   0
+        15m
+pod/nginx-deployment-696b4c47-vlf9s    1/1     Running   0
+        15m
+
+NAME                  TYPE        CLUSTER-IP     EXTERNAL-IP
+   PORT(S)   AGE
+service/web-service   ClusterIP   10.96.217.51   <none>
+   80/TCP    10m
+
+NAME                                READY   UP-TO-DATE   AVA
+ILABLE   AGE
+deployment.apps/apache-deployment   1/1     1            1
+         15m
+deployment.apps/nginx-deployment    4/4     4            4
+         15m
+
+NAME                                         DESIRED   CURRE
+NT   READY   AGE
+replicaset.apps/apache-deployment-5ffccdb6   1         1
+     1       15m
+replicaset.apps/nginx-deployment-696b4c47    4         4
+     4       15m
+
+
+
+
+
+
+
+
+
+
