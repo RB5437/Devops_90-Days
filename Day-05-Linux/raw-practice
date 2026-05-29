@@ -1,0 +1,455 @@
+root@ip-172-31-46-211:/# find /var/ -type f -size +20M
+/var/lib/snapd/seed/snaps/snapd_25935.snap
+/var/lib/snapd/seed/snaps/core22_2339.snap
+/var/lib/snapd/snaps/amazon-ssm-agent_12322.snap
+/var/lib/apt/lists/ap-south-1.ec2.archive.ubuntu.com_ubuntu_dists_noble_universe_i18n_Translation-en
+/var/lib/apt/lists/ap-south-1.ec2.archive.ubuntu.com_ubuntu_dists_noble_universe_binary-amd64_Packages
+/var/cache/apt/srcpkgcache.bin
+/var/cache/apt/pkgcache.bin
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# ls
+bin                boot  etc   lib                lib64       media  opt   root  sbin                snap  sys  usr
+bin.usr-is-merged  dev   home  lib.usr-is-merged  lost+found  mnt    proc  run   sbin.usr-is-merged  srv   tmp  var
+root@ip-172-31-46-211:/# touch file
+root@ip-172-31-46-211:/# chmod 755 file
+root@ip-172-31-46-211:/# ls -la file
+-rwxr-xr-x 1 root root 0 Apr 17 06:00 file
+root@ip-172-31-46-211:/# find /var/log/ -name "*.log" -type f -delete
+root@ip-172-31-46-211:/# du -sh /var/
+579M    /var/
+root@ip-172-31-46-211:/# tar -czvf logs.tar.gz /var/log/
+tar: Removing leading `/' from member names
+/var/log/
+/var/log/btmp
+/var/log/dmesg
+/var/log/README
+/var/log/amazon/ssm/audits/
+/var/log/amazon/ssm/audits/amazon-ssm-agent-audit-2026-04-17
+root@ip-172-31-46-211:/# ls
+bin                boot  etc   home  lib.usr-is-merged  logs.tar.gz  media  opt   root  sbin                snap  sys  usr
+bin.usr-is-merged  dev   file  lib   lib64              lost+found   mnt    proc  run   sbin.usr-is-merged  srv   tmp  var
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# ping amazon.com
+PING amazon.com (98.87.170.74) 56(84) bytes of data.
+^Z
+[4]+  Stopped                 ping amazon.com
+root@ip-172-31-46-211:/# nslookup google.com
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+Non-authoritative answer:
+Name:   google.com
+Address: 142.250.194.238
+Name:   google.com
+Address: 2404:6800:4009:820::200e
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# ip route
+default via 172.31.32.1 dev ens5 proto dhcp src 172.31.46.211 metric 100
+172.31.0.2 via 172.31.32.1 dev ens5 proto dhcp src 172.31.46.211 metric 100
+172.31.32.0/20 dev ens5 proto kernel scope link src 172.31.46.211 metric 100
+172.31.32.1 dev ens5 proto dhcp scope link src 172.31.46.211 metric 100
+root@ip-172-31-46-211:/# iptables -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination
+chain FORWARD (policy ACCEPT)
+target     prot opt source               destination
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# nc -zv google.com 443
+Connection to google.com (142.250.195.78) 443 port [tcp/https] succeeded!
+root@ip-172-31-46-211:/# vi /etc/netplan/01-netcfg.yaml
+root@ip-172-31-46-211:/# systemctl restart network
+root@ip-172-31-46-211:/# apt install firewall
+Waiting for cache lock: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 2164 (unattended-upgr)
+Waiting for cache lock: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 2164 (unattended-upgr)
+Waiting for cache lock: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 2164 (unattended-upgr)
+^Ziting for cache lock: Could not get lock /var/lib/dpkg/lock-frontend. It is held by process 2164 (unattended-upgr)... 21s
+[5]+  Stopped                 apt install firewall
+root@ip-172-31-46-211:/# ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head
+    PID    PPID CMD                         %MEM %CPU
+   1126    1016 sshd: ubuntu@pts/0           0.8  0.1
+      1       0 /sbin/init                   1.4  0.0
+   1499    1129 sudo su -                    0.7  0.0
+    948       1 /snap/amazon-ssm-agent/1232  2.1  0.0
+    599       1 /usr/lib/snapd/snapd         3.8  0.0
+     12       2 [kworker/u8:0-events_power_  0.0  0.0
+   1502    1501 -bash                        0.6  0.0
+     54       2 [kswapd0]                    0.0  0.0
+     10       2 [kworker/0:1-events]         0.0  0.0
+root@ip-172-31-46-211:/# iostat -x 2
+Linux 6.17.0-1007-aws (ip-172-31-46-211)        04/17/26        _x86_64_        (2 CPU)
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.95    0.32    0.39    0.26    0.03   98.04
+
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+loop0            0.07      1.80     0.00   0.00    0.33    27.67    0.00      0.00     0.00   0.00    0.00     0.00    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.00   0.00
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.25    0.00    0.50    0.00    0.00   99.25
+^Z
+[6]+  Stopped                 iostat -x 2
+root@ip-172-31-46-211:/# kill nxm
+-bash: kill: nxm: arguments must be process or job IDs
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# systemctl list-units --type=service
+  UNIT                                           LOAD   ACTIVE SUB     DESCRIPTION
+  acpid.service                                  loaded active running ACPI event daemon
+  apparmor.service                               loaded active exited  Load AppArmor profiles
+  apport.service                                 loaded active exited  automatic crash report generation
+  blk-availability.service                       loaded active exited  Availability of block devices
+  chrony.service                                 loaded active running chrony, an NTP client/server
+  cloud-config.service                           loaded active exited  Cloud-init: Config Stage
+  cloud-final.service                            loaded active exited  Cloud-init: Final Stage
+  cloud-init-local.service                       loaded active exited  Cloud-init: Local Stage (pre-network)
+  cloud-init.service                             loaded active exited  Cloud-init: Network Stage
+  console-setup.service                          loaded active exited  Set console font and keymap
+  cron.service                                   loaded active running Regular background program processing daemon
+  systemd-fsck@dev-disk-by\x2dlabel-BOOT.service loaded active exited  File System Check on /dev/disk/by-label/BOOT
+  systemd-fsck@dev-disk-by\x2dlabel-UEFI.service loaded active exited  File System Check on /dev/disk/by-label/UEFI
+lines 1-40
+[7]+  Stopped                 systemctl list-units --type=service
+root@ip-172-31-46-211:/# ufw allow ssh
+Rules updated
+Rules updated (v6)
+root@ip-172-31-46-211:/#root@ip-172-31-46-211:/# ufw status
+Status: inactive
+root@ip-172-31-46-211:/# cd var/log/
+root@ip-172-31-46-211:/var/log# ls
+README  amazon  apt  btmp  chrony  dist-upgrade  dmesg  journal  landscape  lastlog  private  syslog  sysstat  unattended-upgrades  wtmp
+root@ip-172-31-46-211:/var/log# cd ../..
+root@ip-172-31-46-211:/# cat /var/log/auth.log | grep "Failed password"
+cat: /var/log/auth.log: No such file or directory
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# useradd -m -d /home/ubuntu/ ritik
+useradd: warning: the home directory /home/ubuntu/ already exists.
+useradd: Not copying any file from skel directory into it.
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# usermod -s /bin/ ritik
+usermod: Warning: missing or non-executable shell '/bin/'
+root@ip-172-31-46-211:/# usermod -s /sbin/ ritik
+usermod: Warning: missing or non-executable shell '/sbin/'
+root@ip-172-31-46-211:/# cat /etc/passwd | grep ritik
+ritik:x:1001:1001::/home/ubuntu/:/sbin/
+root@ip-172-31-46-211:/# usermod -s /bin/ ritik
+usermod: Warning: missing or non-executable shell '/bin/'
+root@ip-172-31-46-211:/# cat /etc/passwd | grep ritik
+ritik:x:1001:1001::/home/ubuntu/:/bin/
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# top
+top - 06:22:46 up 53 min,  1 user,  load average: 0.00, 0.00, 0.00
+Tasks: 121 total,   1 running, 112 sleeping,   8 stopped,   0 zombie
+%Cpu(s):  0.2 us,  0.2 sy,  0.0 ni, 99.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :    911.5 total,     74.9 free,    438.0 used,    601.9 buff/cache
+MiB Swap:      0.0 total,      0.0 free,      0.0 used.    473.5 avail Mem
+
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+      1 root      20   0   22648  13812   9548 S   0.0   1.5   0:01.87 systemd
+      2 root      20   0       0      0      0 S   0.0   0.0   0:00.01 kthreadd
+      3 root      20   0       0      0      0 S   0.0   0.0   0:00.00 pool_workqueue_release
+      4 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-rcu_gp
+      5 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-sync_wq
+      6 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-kvfree_rcu_reclaim
+      7 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-slub_flushwq
+      8 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/R-netns
+     10 root      20   0       0      0      0 I   0.0   0.0   0:00.65 kworker/0:1-events
+     11 root       0 -20       0      0      0 I   0.0   0.0   0:00.00 kworker/0:0H-events_highpri
+[8]+  Stopped                 top
+root@ip-172-31-46-211:/# htop
+
+[9]+  Stopped                 htop
+root@ip-172-31-46-211:/#
+ 
+
+[9]+  Stopped                 htop
+root@ip-172-31-46-211:/# df -h
+Filesystem       Size  Used Avail Use% Mounted on
+/dev/root        6.8G  2.2G  4.6G  32% /
+tmpfs            456M     0  456M   0% /dev/shm
+tmpfs            183M  884K  182M   1% /run
+tmpfs            5.0M     0  5.0M   0% /run/lock
+efivarfs         128K  3.6K  120K   3% /sys/firmware/efi/efivars
+/dev/nvme0n1p16  881M   94M  726M  12% /boot
+/dev/nvme0n1p15  105M  6.2M   99M   6% /boot/efi
+tmpfs             92M   12K   92M   1% /run/user/1000
+root@ip-172-31-46-211:/# ps -aux --sort=-%cpu | head
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root        2371  0.1  0.5   8892  4860 pts/1    T    06:22   0:00 htop
+ubuntu      1126  0.1  0.8  15496  7624 ?        S    05:31   0:04 sshd: ubuntu@pts/0
+root           1  0.0  1.4  22648 13812 ?        Ss   05:29   0:01 /sbin/init
+root        1499  0.0  0.7  17140  7008 pts/0    S+   05:35   0:01 sudo su -
+root         948  0.0  2.1 1830616 20120 ?       Ssl  05:29   0:01 /snap/amazon-ssm-agent/12322/amazon-ssm-agent
+root          10  0.0  0.0      0     0 ?        I    05:29   0:00 [kworker/0:1-events]
+root        1502  0.0  0.6   9664  6100 pts/1    S    05:35   0:00 -bash
+root         599  0.0  3.8 1996696 35968 ?       Ssl  05:29   0:00 /usr/lib/snapd/snapd
+root         149  0.0  0.0      0     0 ?        I    05:29   0:00 [kworker/1:2-events]
+root@ip-172-31-46-211:/# free -m
+               total        used        free      shared  buff/cache   available
+Mem:             911         437          74           2         603         474
+Swap:              0           0           0
+root@ip-172-31-46-211:/# ls
+bin                boot  etc   home  lib.usr-is-merged  logs.tar.gz  media  opt   root  sbin                snap  sys  usr
+bin.usr-is-merged  dev   file  lib   lib64              lost+found   mnt    proc  run   sbin.usr-is-merged  srv   tmp  var
+root@ip-172-31-46-211:/# vi script.sh
+root@ip-172-31-46-211:/# ls -l script.sh
+-rw-r--r-- 1 root root 10 Apr 17 06:24 script.sh
+root@ip-172-31-46-211:/# chmod +x script.sh
+root@ip-172-31-46-211:/# rsync -av /var/log/ /home/backup
+sending incremental file list
+README -> ../../usr/share/doc/systemd/README.logs
+btmp
+dmesg
+lastlog
+syslog
+wtmp
+amazon/
+amazon/ssm/
+amazon/ssm/audits/
+amazon/ssm/audits/amazon-ssm-agent-audit-2026-04-17
+apt/
+apt/eipp.log.xz
+chrony/
+dist-upgrade/
+journal/
+journal/ec2582315450c10dd20c380664af546d/
+journal/ec2582315450c10dd20c380664af546d/system.journal
+journal/ec2582315450c10dd20c380664af546d/user-1000.journal
+sent 17,311,356 bytes  received 345 bytes  34,623,402.00 bytes/sec
+total size is 17,305,660  speedup is 1.00
+root@ip-172-31-46-211:/# ls
+bin                boot  etc   home  lib.usr-is-merged  logs.tar.gz  media  opt   root  sbin                script.sh  srv  tmp  var
+bin.usr-is-merged  dev   file  lib   lib64              lost+found   mnt    proc  run   sbin.usr-is-merged  snap       sys  usr
+root@ip-172-31-46-211:/# cd /
+root@ip-172-31-46-211:/# cd home/
+root@ip-172-31-46-211:/home# ls
+backup  ubuntu
+root@ip-172-31-46-211:/home# cd backup/
+root@ip-172-31-46-211:/home/backup# ls
+README  amazon  apt  btmp  chrony  dist-upgrade  dmesg  journal  landscape  lastlog  private  syslog  sysstat  unattended-upgrades  wtmp
+root@ip-172-31-46-211:/home# cd ..
+root@ip-172-31-46-211:/# ls
+bin                boot  etc   home  lib.usr-is-merged  logs.tar.gz  media  opt   root  sbin                script.sh  srv  tmp  var
+bin.usr-is-merged  dev   file  lib   lib64              lost+found   mnt    proc  run   sbin.usr-is-merged  snap       sys  usr
+root@ip-172-31-46-211:/# logrotate /etc/logrotate.conf  --force
+root@ip-172-31-46-211:/# tail -n 50 /var/log/syslog
+2026-04-17T06:31:29.391833+00:00 ip-172-31-46-211 rsyslogd: [origin software="rsyslogd" swVersion="8.2312.0" x-pid="768" x-info="https://www.rsyslog.com"] rsyslogd was HUPed
+2026-04-17T06:31:33.033391+00:00 ip-172-31-46-211 kernel: ena 0000:00:05.0: Type was not set for devlink port.
+root@ip-172-31-46-211:/# lsmod
+Module                  Size  Used by
+xt_recent              24576  0
+xt_conntrack           12288  0
+nft_compat             20480  0
+nf_tables             385024  1 nft_compat
+nfnetlink              20480  4 nft_compat,nf_tables
+ip_tables              32768  0
+x_tables               65536  4 xt_conntrack,nft_compat,xt_recent,ip_tables
+autofs4                57344  2
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# passwd -l ritik
+passwd: password changed.
+root@ip-172-31-46-211:/# lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 24.04.4 LTS
+Release:        24.04
+Codename:       noble
+root@ip-172-31-46-211:/# cat /etc/os-release
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.4 LTS (Noble Numbat)"
+VERSION_CODENAME=noble
+ID=ubuntu
+ID_LIKE=debian
+HOME_URL="https://www.ubuntu.com/"
+SUPPORT_URL="https://help.ubuntu.com/"
+BUG_REPORT_URL="https://bugs.launchpad.net/ubuntu/"
+PRIVACY_POLICY_URL="https://www.ubuntu.com/legal/terms-and-policies/privacy-policy"
+UBUNTU_CODENAME=noble
+LOGO=ubuntu-logo
+root@ip-172-31-46-211:/# pdkg --get-selections
+Command 'pdkg' not found, did you mean:
+  command 'dpkg' from deb dpkg (1.22.6ubuntu6.5)
+Try: apt install <deb name>
+root@ip-172-31-46-211:/# dpkg --get-selections
+acl                                             install
+acpid                                           install
+adduser                                         install
+amd64-microcode                                 install
+apparmor                                        install
+apport                                          install
+apport-core-dump-handler                        install
+apport-symptoms                                 install
+appstream                                       install
+apt                                             install
+apt-utils                                       install
+base-files                                      install
+xml-core                                        install
+xxd                                             install
+xz-utils                                        install
+zerofree                                        install
+zlib1g:amd64                                    install
+zstd                                            install
+root@ip-172-31-46-211:/# ps -aux --sort=-%mem
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root         599  0.0  3.8 1996696 35976 ?       Ssl  05:29   0:00 /usr/lib/snapd/snapd
+root         182  0.0  2.9 288960 27292 ?        SLsl 05:29   0:00 /sbin/multipathd -d -s
+root         738  0.0  2.3 110020 22344 ?        Ssl  05:29   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-si
+root         591  0.0  2.2  32424 20636 ?        Ss   05:29   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         589  0.0  0.4  82928  4604 ?        Ssl  05:29   0:00 /usr/sbin/irqbalance
+root        1501  0.0  0.4   9816  4416 pts/1    S    05:35   0:00 su -
+_chrony      709  0.0  0.4  19412  3860 ?        S    05:29   0:00 /usr/sbin/chronyd -F 1
+root        2319  0.0  0.0      0     0 ?        I    06:20   0:00 [kworker/0:0-events]
+root        2466  0.0  0.0      0     0 ?        I    06:30   0:00 [kworker/1:0]
+root        2468  0.0  0.0      0     0 ?        I    06:31   0:00 [kworker/u8:0]
+root@ip-172-31-46-211:/# ps -aux --sort=-%mem | head
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root        2525 22.8 18.2 613976 170708 ?       Ssl  06:34   0:01 /usr/libexec/fwupd/fwupd
+root         599  0.0  2.9 1996696 27396 ?       Ssl  05:29   0:00 /usr/lib/snapd/snapd
+root         182  0.0  2.9 288960 27292 ?        SLsl 05:29   0:00 /sbin/multipathd -d -s
+root         591  0.0  2.2  32424 20624 ?        Ss   05:29   0:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers
+root         738  0.0  2.1 110020 20184 ?        Ssl  05:29   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-signal
+root         948  0.0  2.1 1830616 19976 ?       Ssl  05:29   0:01 /snap/amazon-ssm-agent/12322/amazon-ssm-agent
+root         120  0.0  1.5  50504 14068 ?        S<s  05:29   0:00 /usr/lib/systemd/systemd-journald
+root           1  0.0  1.4  22648 13812 ?        Ss   05:29   0:01 /sbin/init
+root         610  0.0  1.4 469008 13092 ?        Ssl  05:29   0:00 /usr/libexec/udisks2/udisksd
+root@ip-172-31-46-211:/# tcpdump -i eth0
+tcpdump: eth0: No such device exists
+(No such device exists)
+root@ip-172-31-46-211:/# ps -aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  1.4  22648 13812 ?        Ss   05:29   0:01 /sbin/init
+root           2  0.0  0.0      0     0 ?        S    05:29   0:00 [kthreadd]
+root           3  0.0  0.0      0     0 ?        S    05:29   0:00 [pool_workqueue_release]
+root         713  0.0  0.2   6156  2228 ttyS0    Ss+  05:29   0:00 /sbin/agetty -o -p -- \u --keep-baud 115200,57600,38400,9600 - vt220
+_chrony      714  0.0  0.2  11084  2360 ?        S    05:29   0:00 /usr/sbin/chronyd -F 1
+root         738  0.0  2.1 110020 20184 ?        Ssl  05:29   0:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --wait-for-si
+syslog       768  0.0  0.6 222516  5800 ?        Ssl  05:29   0:00 /usr/sbin/rsyslogd -n -iNONE
+root         819  0.0  1.3 318156 12468 ?        Ssl  05:29   0:00 /usr/sbin/ModemManager
+root         824  0.0  0.2   6112  2096 tty1     Ss+  05:29   0:00 /sbin/agetty -o -p -- \u --noclear - linux
+root         948  0.0  2.1 1830616 19976 ?       Ssl  05:29   0:01 /snap/amazon-ssm-agent/12322/amazon-ssm-agent
+root        1015  0.0  0.8  12032  8028 ?        Ss   05:31   0:00 sshd: /usr/sbin/sshd -D -o AuthorizedKeysCommand /usr/share/ec2-instance-connect/eic_run_
+root        1016  0.0  1.0  14748  9972 ?        Ss   05:31   0:00 sshd: ubuntu [priv]
+root        1019  0.0  0.0      0     0 ?        S    05:31   0:00 [psimon]
+ubuntu      1021  0.0  1.2  20060 11256 ?        Ss   05:31   0:00 /usr/lib/systemd/systemd --user
+ubuntu      1022  0.0  0.3  21164  3508 ?        S    05:31   0:00 (sd-pam)
+ubuntu      1126  0.1  0.7  15496  7296 ?        S    05:31   0:05 sshd: ubuntu@pts/0
+ubuntu      1129  0.0  0.4   9068  4412 pts/0    Ss   05:31   0:00 -bash
+root        2370  0.0  0.6  12376  5752 pts/1    T    06:22   0:00 top
+root        2371  0.0  0.4   8892  4628 pts/1    T    06:22   0:00 htop
+root        2466  0.0  0.0      0     0 ?        I    06:30   0:00 [kworker/1:0-events]
+root        2468  0.0  0.0      0     0 ?        I    06:31   0:00 [kworker/u8:0-events_unbound]
+root        2525  2.8  3.9 613940 36464 ?        Ssl  06:34   0:01 /usr/libexec/fwupd/fwupd
+root        2550  0.0  0.3  81816  3028 ?        Ss   06:34   0:00 gpg-agent --homedir /var/lib/fwupd/gnupg --use-standard-socket --daemon
+root        2573  0.0  0.0      0     0 ?        I<   06:35   0:00 [kworker/R-ib-comp-wq]
+root        2574  0.0  0.0      0     0 ?        I<   06:35   0:00 [kworker/R-ib-comp-unb-wq]
+root        2575  0.0  0.0      0     0 ?        I<   06:35   0:00 [kworker/R-ib_mcast]
+root        2576  0.0  0.0      0     0 ?        I<   06:35   0:00 [kworker/R-ib_nl_sa_wq]
+root        2583  0.0  0.5  12760  5352 pts/1    R+   06:35   0:00 ps -aux
+root@ip-172-31-46-211:/# ip ad
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host noprefixroute
+       valid_lft forever preferred_lft forever
+2: ens5: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 9001 qdisc mq state UP group default qlen 1000
+    link/ether 02:74:16:36:eb:bb brd ff:ff:ff:ff:ff:ff
+    altname enp0s5
+    inet 172.31.46.211/20 metric 100 brd 172.31.47.255 scope global dynamic ens5
+       valid_lft 3269sec preferred_lft 3269sec
+    inet6 fe80::74:16ff:fe36:ebbb/64 scope link
+       valid_lft forever preferred_lft forever
+root@ip-172-31-46-211:/# tcpdump -i ens5
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on ens5, link-type EN10MB (Ethernet), snapshot length 262144 bytes
+06:35:30.612789 IP ip-172-31-46-211.ap-south-1.compute.internal.ssh > 223.185.37.66.7278: Flags [P.], seq 3257616770:3257616958, ack 1713440573, win 835, length 188
+06:35:30.620016 IP 223.185.37.66.7278 > ip-172-31-46-211.ap-south-1.compute.internal.ssh: Flags [.], ack 0, win 1022, length 0
+06:35:32.444731 IP 223.185.37.66.7278 > ip-172-31-46-211.ap-south-1.compute.internal.ssh: Flags [P.], seq 1945:1981, ack 26400, win 1023, length 36
+06:35:32.444861 IP ip-172-31-46-211.ap-south-1.compute.internal.ssh > 223.185.37.66.7278: Flags [P.], seq 26400:26436, ack 1981, win 835, length 36
+06:35:32.475197 IP 223.185.37.66.7278 > ip-172-31-46-211.ap-south-1.compute.internal.ssh: Flags [P.], seq 1981:2017, ack 26436, win 1023, length 36
+06:35:32.475327 IP ip-172-31-46-211.ap-south-1.compute.internal.ssh > 223.185.37.66.7278: 
+06:35:33.208763 IP ip-172-31-46-211.ap-south-1.compute.internal.ssh > 223.185.37.66.7278: Flags [P.], seq 32636:32952, ack 2161, win 835, length 316
+06:35:33.267573 IP 223.185.37.66.7278 > ip-172-31-46-211.ap-south-1.compute.internal.ssh: Flags [.], ack 32952, win 1022, length 0
+^Z
+[10]+  Stopped                 tcpdump -i ens5
+root@ip-172-31-46-211:/# lsmod
+Module                  Size  Used by
+ib_core               524288  0
+xt_recent              24576  0
+xt_conntrack           12288  0
+nft_compat             20480  0
+nf_tables             385024  1 nft_compat
+tcp_diag               12288  0
+udp_diag               12288  0
+inet_diag              28672  2 tcp_diag,udp_diag
+tls                   155648  0
+8021q                  45056  0
+garp                   20480  1 8021q
+mrp                    20480  1 8021q
+stp                    12288  1 garp
+llc                    16384  2 stp,garp
+binfmt_misc            24576  1
+nls_iso8859_1          12288  1
+ppdev                  24576  0
+polyval_clmulni        12288  0
+ghash_clmulni_intel    12288  0
+aesni_intel            98304  0
+psmouse               217088  0
+ena                   167936  0
+parport_pc             53248  0
+parport                73728  2 parport_pc,ppdev
+input_leds             12288  0
+serio_raw              20480  0
+sch_fq_codel           24576  3
+nf_conntrack          192512  1 xt_conntrack
+nf_defrag_ipv6         24576  1 nf_conntrack
+nf_defrag_ipv4         12288  1 nf_conntrack
+dm_multipath           45056  0
+msr                    12288  0
+efi_pstore             12288  0
+nfnetlink              20480  4 nft_compat,nf_tables
+ip_tables              32768  0
+x_tables               65536  4 xt_conntrack,nft_compat,xt_recent,ip_tables
+autofs4                57344  2
+root@ip-172-31-46-211:/# tail -f /var/log/syslog
+2026-04-17T06:34:22.944375+00:00 ip-172-31-46-211 dbus-daemon[584]: [system] Successfully activated service 'org.freedesktop.fwupd'
+2026-04-17T06:35:30.607387+00:00 ip-172-31-46-211 kernel: ena 0000:00:05.0 ens5: entered promiscuous mode
+^Z
+[11]+  Stopped                 tail -f /var/log/syslog
+root@ip-172-31-46-211:/# awk '/2025-01-20/,/2025-01-21/' /var/log/syslog
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# dmesg | grep -i "oom"
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# echo -17 > /proc/457/oom adj
+-bash: /proc/457/oom: No such file or directory
+root@ip-172-31-46-211:/# ps aux | grep ubuntu
+root         869  0.0  1.1  14752 10504 ?        Ss   06:51   0:00 sshd: ubuntu [priv]
+ubuntu       874  0.0  1.2  20268 11508 ?        Ss   06:51   0:00 /usr/lib/systemd/systemd --user
+ubuntu       875  0.0  0.3  21164  3592 ?        S    06:51   0:00 (sd-pam)
+ubuntu       983  0.2  0.7  15008  7160 ?        S    06:51   0:00 sshd: ubuntu@pts/0
+ubuntu       984  0.0  0.5   9068  5448 pts/0    Ss   06:51   0:00 -bash
+root        1016  0.0  0.2   7084  2224 pts/1    S+   06:54   0:00 grep --color=auto ubuntu
+root@ip-172-31-46-211:/# pkill -f  efs
+root@ip-172-31-46-211:/# lsof | grep LOCK
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# sysctl -w net.core.rmem max=26214400
+sysctl: command line(0): invalid syntax, continuing...
+sysctl: cannot stat /proc/sys/max: No such file or directory
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# dmesg | grep "soft lockup"
+root@ip-172-31-46-211:/#
+root@ip-172-31-46-211:/# iostat -x 1
+Linux 6.17.0-1007-aws (ip-172-31-46-211)        04/17/26        _x86_64_        (2 CPU)
+
+avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+           0.75    0.00    0.58    0.19    0.03   98.46
+root@ip-172-31-46-211:/# tcpdump -D
+1.ens5 [Up, Running, Connected]
+2.any (Pseudo-device that captures on all interfaces) [Up, Running]
+3.lo [Up, Running, Loopback]
+4.bluetooth-monitor (Bluetooth Linux Monitor) [Wireless]
+5.nflog (Linux netfilter log (NFLOG) interface) [none]
+6.nfqueue (Linux netfilter queue (NFQUEUE) interface) [none]
+7.dbus-system (D-Bus system bus) [none]
+8.dbus-session (D-Bus session bus) [none]
+
+
