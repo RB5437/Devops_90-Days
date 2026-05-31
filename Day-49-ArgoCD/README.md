@@ -1,70 +1,183 @@
-# Chapter 4: First App Deployment with ArgoCD
+# 🔁 Day 49 — ArgoCD Deep Dive
 
-In this chapter, we will learn how to deploy applications with ArgoCD using **three different approaches**:  
-
-3. **Declarative Approach** → Online Shop example  
-
-Each method has its use cases, but only the **Declarative approach** aligns with the principles of GitOps.  
+**Date:** 31 May 2026 | **Challenge:** #90DaysOfDevOps
 
 ---
 
-## Fork and Clone this Git Repository into local system
+## ✅ Topics Covered Today
 
-1. First Fork it into your GitHub Account:
-
-   Go to below url, and fork it:
-
-      ```bash
-      https://github.com/Amitabh-DevOps/argocd-demos.git
-      ```
-
-2. Then clone it, into your Local system
-
-      ```bash
-      git clone https://github.com/<your-username>/argocd-demos.git
-      ```   
-
-Replace `<your-username>` with your GitHub Username.
-
-This repo contains the manifest files that are need to apply all three approaches
+| # | Topic | Status |
+|---|-------|--------|
+| 1 | Declarative Approach — Online-Shop App | ✅ Done |
+| 2 | ArgoCD Projects — Declarative YAML | ✅ Done |
+| 3 | App-of-Apps Pattern | ✅ Done |
+| 4 | Multi-Cluster Management | ✅ Done |
+| 5 | ApplicationSets — List Generator | ✅ Done |
 
 ---
 
-##  Learning Paths
+## 📄 1. Declarative Approach — Online-Shop
 
-We will explore three different methods to deploy applications using ArgoCD. Each method has its own advantages and is suited for different scenarios.
+The production way to deploy apps — define as YAML, apply with kubectl.
 
-👉 Click below to explore each approach step by step:
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: online-shop-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/RB5437/argocd-demos.git
+    targetRevision: main
+    path: declarative_approach/online_shop
+  destination:
+    server: https://172.31.21.55:33893
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
 
-1. [UI Approach (NGINX Example)](./ui_approach/nginx/README.md)  
-   - Deploy app via ArgoCD Dashboard  
-   - Good for beginners and demos  
-
-2. [CLI Approach (Apache Example)](./cli_approach/apache/README.md)  
-   - Deploy app via ArgoCD CLI (`argocd app create`)  
-   - Good for admins and operators  
-
-3. [Declarative Approach (Online Shop Example)](./declarative_approach/online_shop/README.md)  
-   - Deploy app via **Application CRD (YAML in Git)**  
-   - True GitOps → reproducible, auditable, production-ready  
-
----
-
-##  Comparison: UI vs CLI vs Declarative Approaches
-
-| Approach       | How App is Created | Where Config Lives | Best For | Limitations |
-|----------------|-------------------|--------------------|----------|-------------|
-| **UI** (NGINX) | Create app via **ArgoCD Dashboard** | In **Cluster only** | Learning, demos, POCs | Not reproducible, not version-controlled |
-| **CLI** (Apache) | `argocd app create ...` via **CLI** | In **Cluster only** | Operators, quick scripting | Still imperative, config not in Git |
-| **Declarative** (Online Shop) | Apply **Application CRD YAML** | In **Git + Cluster** | Production, teams, real GitOps | Initial setup effort needed |
-
----
-
-##  Key Takeaways
-
-- **UI** → Fast & visual → great for learning, but **not GitOps**.  
-- **CLI** → Scriptable & powerful → better than UI, but still **imperative**.  
-- **Declarative** → Version-controlled & reproducible → the **true GitOps way** (what you’ll use in production).  
+```bash
+kubectl apply -f online_shop_app.yml
+kubectl get pods   # 5 online-shop pods Running ✅
+```
+**Online Shop live at 54.87.51.207:8083** 🛒
 
 ---
 
+## 🗂️ 2. ArgoCD Projects — Declarative
+
+Projects = logical grouping + RBAC boundaries for apps.
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: frontend-team
+  namespace: argocd
+spec:
+  description: this project holds a new frontend app
+  sourceRepos:
+    - https://github.com/RB5437/argocd-demos.git
+  destinations:
+    - namespace: frontend
+      server: https://172.31.21.55:33893
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  roles:
+    - name: frontend-admins
+      policies:
+        - p, proj:frontend-team:frontend-admins, applications, *, frontend-team/*, allow
+```
+
+```bash
+kubectl apply -f project.yml -n argocd
+argocd proj list   # frontend-team created ✅
+```
+
+---
+
+## 🌳 3. App-of-Apps Pattern
+
+One root app manages ALL child apps. Git push = all apps sync!
+
+```yaml
+# root_app.yml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: root-app
+  namespace: argocd
+spec:
+  source:
+    path: app_of_apps/apps   # folder with child app YAMLs
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+```
+
+```bash
+kubectl apply -f root_app.yml -n argocd
+kubectl get applications -n argocd
+# apache-child    Synced  Healthy ✅
+# nginx-child     Synced  Progressing
+# root-app        Synced  Healthy ✅
+```
+
+---
+
+## 🌐 4. Multi-Cluster Management
+
+Manage dev + staging + prod from ONE ArgoCD UI!
+
+```bash
+# 2 clusters registered
+argocd cluster list
+# argocd-cluster  v1.33  Successful
+# prod-cluster    v1.33  Successful
+
+# dev → in-cluster, staging → argocd-cluster, prod → prod-cluster
+kubectl apply -f dev_app.yml
+kubectl apply -f stg_app.yml
+kubectl apply -f prod_app.yml
+```
+
+---
+
+## 📋 5. ApplicationSets — List Generator
+
+Template-based multi-app deployment — one YAML, many apps!
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: demo-list
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - app: nginx
+            path: ui_approach/nginx
+          - app: online-shop
+            path: multicluster/online-shop
+          - app: chaiapp
+            path: applicationsets/chai-app
+  template:
+    metadata:
+      name: '{{app}}-list'
+    spec:
+      source:
+        path: '{{path}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+```
+
+```bash
+kubectl apply -f list_generator.yml -n argocd
+argocd appset list   # demo-list Healthy ✅
+# nginx + online-shop → Running ✅
+# chai-app → ErrImagePull (wrong image tag in repo)
+```
+
+---
+
+## 🔗 Official Links
+
+| Topic | Link |
+|-------|------|
+| ArgoCD Docs | https://argo-cd.readthedocs.io/en/stable/ |
+| App-of-Apps | https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/ |
+| ApplicationSets | https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/ |
+| argocd-demos | https://github.com/RB5437/argocd-demos |
+
+📂 **GitHub:** https://github.com/RB5437/Devops_90-Days
