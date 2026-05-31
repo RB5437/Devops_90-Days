@@ -112,11 +112,11 @@ metadata:
 spec:
   project: default                 # ArgoCD Project (logical grouping of apps)
   source:
-    repoURL: https://github.com/<your-username>/argocd-demos.git   # Git repo containing manifests
+    repoURL: https://github.com/RB5437/argocd-demos.git   # Git repo containing manifests
     targetRevision: main           # Git branch or tag (e.g., main, dev, release-1.0)
     path: declarative_approach/online_shop   # Path inside repo where manifests live
   destination:
-    server: <argocd_cluster_server_url>   # Target cluster API
+    server: https://172.31.21.55:33893    # Target cluster API
     namespace: default             # Namespace in which to deploy the app
   syncPolicy:                      # Defines how ArgoCD syncs the app
     automated:                     # Enable auto-sync
