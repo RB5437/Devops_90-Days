@@ -1,0 +1,1460 @@
+ubuntu@ip-172-31-20-93:~$ sudo apt install docker.io -y
+Installing:
+  docker.io
+
+Installing dependencies:
+  bridge-utils  dns-root-data  pigz  ubuntu-fan
+  containerd    dnsmasq-base   runc
+
+Suggested packages:
+  ifupdown        | cgroup-lite  docker-compose-v2  rootlesskit
+  aufs-tools      debootstrap    docker-doc         zfs-fuse
+  cgroupfs-mount  docker-buildx  rinse              | zfsutils
+
+Summary:
+  Upgrading: 0, Installing: 8, Removing: 0, Not Upgrading: 39
+  Download size: 74.0 MB
+  Space needed: 281 MB / 24.5 GB available
+
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 pigz amd64 2.8-1build1 [68.5 kB]
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 bridge-utils amd64 1.7.1-4ubuntu3 [34.8 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 runc amd64 1.4.0-0ubuntu1 [9829 kB]
+Get:4 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 containerd amd64 2.2.2-0ubuntu1 [28.0 MB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/main amd64v3 dns-root-data all 2025080400build1 [6022 B]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates/main amd64v3 dnsmasq-base amd64 2.92-1ubuntu0.3 [441 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute-updates/universe amd64v3 docker.io amd64 29.1.3-0ubuntu4.1 [35.5 MB]
+Get:8 http://us-east-1.ec2.archive.ubuntu.com/ubuntu resolute/universe amd64v3 ubuntu-fan all 0.12.17 [34.3 kB]
+Fetched 74.0 MB in 1s (87.4 MB/s)
+Preconfiguring packages ...
+Selecting previously unselected package pigz.
+(Reading database ... 85301 files and directories currently installed.)
+Preparing to unpack .../0-pigz_2.8-1build1_amd64v3.deb ...
+Unpacking pigz (2.8-1build1) ...
+Selecting previously unselected package bridge-utils.
+Preparing to unpack .../1-bridge-utils_1.7.1-4ubuntu3_amd64v3.deb ...
+Unpacking bridge-utils (1.7.1-4ubuntu3) ...
+Selecting previously unselected package runc.
+Preparing to unpack .../2-runc_1.4.0-0ubuntu1_amd64v3.deb ...
+Unpacking runc (1.4.0-0ubuntu1) ...
+Selecting previously unselected package containerd.
+Preparing to unpack .../3-containerd_2.2.2-0ubuntu1_amd64v3.deb ...
+Unpacking containerd (2.2.2-0ubuntu1) ...
+Selecting previously unselected package dns-root-data.
+Preparing to unpack .../4-dns-root-data_2025080400build1_all.deb ...
+Unpacking dns-root-data (2025080400build1) ...
+Selecting previously unselected package dnsmasq-base.
+Preparing to unpack .../5-dnsmasq-base_2.92-1ubuntu0.3_amd64v3.deb ...
+Unpacking dnsmasq-base (2.92-1ubuntu0.3) ...
+Selecting previously unselected package docker.io.
+Preparing to unpack .../6-docker.io_29.1.3-0ubuntu4.1_amd64v3.deb ...
+Unpacking docker.io (29.1.3-0ubuntu4.1) ...
+Selecting previously unselected package ubuntu-fan.
+Preparing to unpack .../7-ubuntu-fan_0.12.17_all.deb ...
+Unpacking ubuntu-fan (0.12.17) ...
+Setting up dnsmasq-base (2.92-1ubuntu0.3) ...
+Setting up runc (1.4.0-0ubuntu1) ...
+Setting up dns-root-data (2025080400build1) ...
+Setting up bridge-utils (1.7.1-4ubuntu3) ...
+Setting up pigz (2.8-1build1) ...
+Setting up containerd (2.2.2-0ubuntu1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/containerd.service' → '/usr/lib/systemd/system/containerd.service'.
+Setting up ubuntu-fan (0.12.17) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/ubuntu-fan.service' → '/usr/lib/systemd/system/ubuntu-fan.service'.
+Setting up docker.io (29.1.3-0ubuntu4.1) ...
+Created symlink '/etc/systemd/system/multi-user.target.wants/docker.service' → '/usr/lib/systemd/system/docker.service'.
+Created symlink '/etc/systemd/system/sockets.target.wants/docker.socket' → '/usr/lib/systemd/system/docker.socket'.
+Processing triggers for dbus (1.16.2-2ubuntu4) ...
+Processing triggers for man-db (2.13.1-1build1) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+ubuntu@ip-172-31-20-93:~$ sudo usermod -aG docker $USER && newgrp docker
+ubuntu@ip-172-31-20-93:~$ docker --version
+Docker version 29.1.3, build 29.1.3-0ubuntu4.1
+ubuntu@ip-172-31-20-93:~$ [ $(uname -m) = x86_64 ] && curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.31.0/kind-linux-amd64
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              100     97 100     97   0      0   2564      0                              100     97 100     97   0      0   2544      0                              0
+  0      0   0      0   0      0      0      0                                0      0   0      0   0      0      0      0                                0      0   0      0   0      0      0      0                              0
+  0      0   0      0   0      0      0      0                              100 10.58M 100 10.58M   0      0 84.19M      0                              100 10.58M 100 10.58M   0      0 84.09M      0                              100 10.58M 100 10.58M   0      0 83.98M      0                              0
+ubuntu@ip-172-31-20-93:~$ ls
+chmod +x ./kind
+kind
+ubuntu@ip-172-31-20-93:~$ ls
+kind
+ubuntu@ip-172-31-20-93:~$ sudo mv ./kind  /usr/local/bin/kind
+ubuntu@ip-172-31-20-93:~$ kind version
+kind v0.31.0 go1.25.5 linux/amd64
+ubuntu@ip-172-31-20-93:~$
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+  0      0   0      0   0      0      0      0                              100 56.74M 100 56.74M   0      0 259.6M      0                              100 56.74M 100 56.74M   0      0 259.4M      0                              100 56.74M 100 56.74M   0      0 259.3M      0                              0
+ubuntu@ip-172-31-20-93:~$ ls
+kubectl
+ubuntu@ip-172-31-20-93:~$ chmod +x ./kubectl
+ubuntu@ip-172-31-20-93:~$ sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+ubuntu@ip-172-31-20-93:~$ kubectl version --client
+Client Version: v1.36.1
+Kustomize Version: v5.8.1
+ubuntu@ip-172-31-20-93:~$ curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-4
+ubuntu@ip-172-31-20-93:~$ chmod 700 get_helm.sh
+./get_helm.sh
+ helm version
+Downloading https://get.helm.sh/helm-v4.2.0-linux-amd64.tar.gz
+Verifying checksum... Done.
+Preparing to install helm into /usr/local/bin
+helm installed into /usr/local/bin/helm
+version.BuildInfo{Version:"v4.2.0", GitCommit:"06468084e85c244c712834933d25ea232a4c2093", GitTreeState:"clean", GoVersion:"go1.26.3", KubeClientVersion:"v1.36"}
+ubuntu@ip-172-31-20-93:~$ ls
+get_helm.sh  kubectl
+ubuntu@ip-172-31-20-93:~$ vi kind-config.yml
+ubuntu@ip-172-31-20-93:~$ cat kind-config.yml
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+networking:
+  apiServerAddress: "172.31.20.93"   # Change this to your EC2 private IP (run "hostname -I" to check or from your EC2 dashboard)
+  apiServerPort: 33893
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.31.7
+  - role: worker
+    image: kindest/node:v1.31.7
+ubuntu@ip-172-31-20-93:~$ kind create cluster --name argocd-cluster  --config kind-config.yml
+Creating cluster "argocd-cluster" ...
+ ✗ Ensuring node image (kindest/node:v1.31.7) 🖼
+ERROR: failed to create cluster: failed to pull image "kindest/node:v1.31.7": command "docker pull kindest/node:v1.31.7" failed with error: exit status 1
+Command Output: Error response from daemon: failed to resolve reference "docker.io/kindest/node:v1.31.7": docker.io/kindest/node:v1.31.7: not found
+ubuntu@ip-172-31-20-93:~$ vi k
+kind-config.yml  kubectl
+ubuntu@ip-172-31-20-93:~$ vi kind-config.yml
+ubuntu@ip-172-31-20-93:~$ kind create cluster --name argocd-cluster  --config kind-config.yml
+Creating cluster "argocd-cluster" ...
+ ✓ Ensuring node image (kindest/node:v1.33.1) 🖼
+ ✓ Preparing nodes 📦 📦
+ ✓ Writing configuration 📜
+ ✓ Starting control-plane 🕹️
+ ✓ Installing CNI 🔌
+ ✓ Installing StorageClass 💾
+ ✓ Joining worker nodes 🚜
+Set kubectl context to "kind-argocd-cluster"
+You can now use your cluster with:
+
+kubectl cluster-info --context kind-argocd-cluster
+
+Thanks for using kind! 😊
+ubuntu@ip-172-31-20-93:~$ kubectl cluster-info --context kind-argocd-cluster
+Kubernetes control plane is running at https://172.31.20.93:33893
+CoreDNS is running at https://172.31.20.93:33893/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+
+To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
+ubuntu@ip-172-31-20-93:~$ kubectl get nodes
+NAME                           STATUS   ROLES           AGE     VERSION
+argocd-cluster-control-plane   Ready    control-plane   2m27s   v1.33.1
+argocd-cluster-worker          Ready    <none>          2m15s   v1.33.1
+ubuntu@ip-172-31-20-93:~$ helm repo add argo https://argoproj.github.io/argo-helm
+"argo" has been added to your repositories
+ubuntu@ip-172-31-20-93:~$ helm repo update
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "argo" chart repository
+Update Complete. ⎈Happy Helming!⎈
+ubuntu@ip-172-31-20-93:~$ kubectl create namespace argocd
+namespace/argocd created
+ubuntu@ip-172-31-20-93:~$ helm install argocd argo/argo-cd -n argocd
+NAME: argocd
+LAST DEPLOYED: Mon Jun  1 05:50:03 2026
+NAMESPACE: argocd
+STATUS: deployed
+REVISION: 1
+DESCRIPTION: Install complete
+TEST SUITE: None
+NOTES:
+In order to access the server UI you have the following options:
+
+1. kubectl port-forward service/argocd-server -n argocd 8080:443
+
+    and then open the browser on http://localhost:8080 and accept the certificate
+
+2. enable ingress in the values file `server.ingress.enabled` and either
+      - Add the annotation for ssl passthrough: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-1-ssl-passthrough
+      - Set the `configs.params."server.insecure"` in the values file and terminate SSL at your ingress: https://argo-cd.readthedocs.io/en/stable/operator-manual/ingress/#option-2-multiple-ingress-objects-and-hosts
+
+
+After reaching the UI the first time you can login with username: admin and the random password generated during the installation. You can find the password by running:
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+(You should delete the initial secret afterwards as suggested by the Getting Started Guide: https://argo-cd.readthedocs.io/en/stable/getting_started/#4-login-using-the-cli)
+ubuntu@ip-172-31-20-93:~$ kubectl get pods -n argocd
+NAME                                                READY   STATUS      RESTARTS   AGE
+argocd-application-controller-0                     1/1     Running     0          51s
+argocd-applicationset-controller-6cb467498c-fxt5m   1/1     Running     0          51s
+argocd-dex-server-6c468465db-qvc2r                  1/1     Running     0          51s
+argocd-notifications-controller-7d799659bf-fp42l    1/1     Running     0          51s
+argocd-redis-67cffd569f-h8jjc                       1/1     Running     0          51s
+argocd-redis-secret-init-q2d5r                      0/1     Completed   0          68s
+argocd-repo-server-6458bd9fd6-txmtt                 1/1     Running     0          51s
+argocd-server-5758f69d8b-b6wbb                      1/1     Running     0          51s
+ubuntu@ip-172-31-20-93:~$ kubectl get svc -n argocd
+NAME                               TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+argocd-applicationset-controller   ClusterIP   10.96.128.38   <none>        7000/TCP            58s
+argocd-dex-server                  ClusterIP   10.96.110.36   <none>        5556/TCP,5557/TCP   58s
+argocd-redis                       ClusterIP   10.96.113.91   <none>        6379/TCP            58s
+argocd-repo-server                 ClusterIP   10.96.182.49   <none>        8081/TCP            58s
+argocd-server                      ClusterIP   10.96.67.176   <none>        80/TCP,443/TCP      58s
+kubectl port-forward svc/argocd-server -n argocd 8080:443 --address=0.0.0.0 &
+
+ubuntu@ip-172-31-20-93:~$ kubectl get secret argocd-initial-admin-secret -n argocd \
+  -o jsonpath="{.data.password}" | base64 -d && echo
+kue9c2majXcXKTzi
+ubuntu@ip-172-31-20-93:~$ curl -sSL -o argocd-linux-amd64 https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+sudo install -m 555 argocd-linux-amd64 /usr/local/bin/argocd
+rm argocd-linux-amd64
+ubuntu@ip-172-31-20-93:~$ argocd version --client
+argocd: v3.4.3+1801122
+  BuildDate: 2026-05-28T12:02:57Z
+  GitCommit: 1801122b4391cad4961301f787006dc9a88c2dd3
+  GitTreeState: clean
+  GoVersion: go1.26.0
+  Compiler: gc
+  Platform: linux/amd64
+ubuntu@ip-172-31-20-93:~$ argocd cluster list
+{"level":"fatal","msg":"Argo CD server address unspecified","time":"2026-06-01T05:57:21Z"}
+ubuntu@ip-172-31-20-93:~$ argocd  login 3.88.41.67:8080 --username admin --password admin@123 --insecure
+'admin:login' logged in successfully
+Context '3.88.41.67:8080' updated
+ubuntu@ip-172-31-20-93:~$ argocd account get-user-info
+Logged In: true
+Username: admin
+Issuer: argocd
+Groups:
+ubuntu@ip-172-31-20-93:~$ argocd cluster add kind-argocd-cluster --name argocd-cluster --insecure
+WARNING: This will create a service account `argocd-manager` on the cluster referenced by context `kind-argocd-cluster` with full cluster level privileges. Do you want to continue [y/N]? y
+{"level":"info","msg":"ServiceAccount \"argocd-manager\" created in namespace \"kube-system\"","time":"2026-06-01T05:58:28Z"}
+{"level":"info","msg":"ClusterRole \"argocd-manager-role\" created","time":"2026-06-01T05:58:28Z"}
+{"level":"info","msg":"ClusterRoleBinding \"argocd-manager-role-binding\" created","time":"2026-06-01T05:58:28Z"}
+{"level":"info","msg":"Created bearer token secret \"argocd-manager-long-lived-token\" for ServiceAccount \"argocd-manager\"","time":"2026-06-01T05:58:28Z"}
+Cluster 'https://172.31.20.93:33893' added
+ubuntu@ip-172-31-20-93:~$ argocd cluster list
+SERVER                          NAME            VERSION  STATUS   MESSAGE                                                  PROJECT
+https://172.31.20.93:33893      argocd-cluster           Unknown  Cluster has no applications and is not being monitored.
+https://kubernetes.default.svc  in-cluster      1.33.1   Unknown  Cluster has no applications and is not being monitored.
+ubuntu@ip-172-31-20-93:~$
+==============================================================
+ubuntu@ip-172-31-20-93:~$ ls
+get_helm.sh  kind-config.yml  kubectl
+ubuntu@ip-172-31-20-93:~$ mkdir notification
+ubuntu@ip-172-31-20-93:~$ cd notification/
+ubuntu@ip-172-31-20-93:~/notification$ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/notifications_catalog/install.yaml
+Warning: resource configmaps/argocd-notifications-cm is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+configmap/argocd-notifications-cm configured
+ubuntu@ip-172-31-20-93:~/notification$ vi secret.tml
+ubuntu@ip-172-31-20-93:~/notification$ vi secret.yml
+ubuntu@ip-172-31-20-93:~/notification$ cat secret.yml
+apiVersion: v1  # Specifies the API version for the Kubernetes object.
+kind: Secret    # Declares that this object is a Secret.
+metadata:
+  name: argocd-notifications-secret  # Name of the Secret resource.
+  namespace: argocd                 # Namespace where the Secret will be created.
+type: Opaque  # Generic secret type for arbitrary user-defined data.
+stringData:   # Allows you to provide secret data as unencoded strings (Kubernetes will encode them).
+  email-username: "ritikbawane5437@gmail.com"   # SMTP sender email address (replace with your own).
+  email-password: "wrbscibhzrbytquc"
+ubuntu@ip-172-31-20-93:~/notification$ kubectl apply -f secret.yml -n argocd
+Warning: resource secrets/argocd-notifications-secret is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by kubectl apply. kubectl apply should only be used on resources created declaratively by either kubectl create --save-config or kubectl apply. The missing annotation will be patched automatically.
+secret/argocd-notifications-secret configured
+ubuntu@ip-172-31-20-93:~/notification$
+ubuntu@ip-172-31-20-93:~/notification$ ls
+README.md  chai-app.yaml  output_images  secret.yml
+ubuntu@ip-172-31-20-93:~/notification$ vi configmap-email.yml
+ubuntu@ip-172-31-20-93:~/notification$ cat configmap-email.yml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-notifications-cm
+  namespace: argocd
+data:
+  # Context section: defines variables available in notification templates
+  context: |
+    argocdUrl: "http://3.88.41.67:8080"  # Replace with your ArgoCD server URL
+
+  # Email service configuration: SMTP settings for sending emails
+  service.email: |
+    username: $email-username         # Email username (set as secret)
+    password: $email-password         # Email password (set as secret)
+    host: smtp.gmail.com              # SMTP server host
+    port: 465                         # SMTP server port (SSL)
+    from: $email-username             # Sender email address
+
+  # Template for Degraded health: email content when app health is degraded
+  template.email-health-degraded: |
+    email:
+      subject: "[ArgoCD] {{.app.metadata.name}} health is {{.app.status.health.status}}"
+    message: |
+      🚨 Application: {{.app.metadata.name}}
+      📂 Namespace: {{.app.metadata.namespace}}
+      🔄 Sync status: {{.app.status.sync.status}}
+      📌 Revision: {{.app.status.sync.revision}}
+      ❤️ Health status: {{.app.status.health.status}}
+      📝 Health message: {{.app.status.health.message}}
+      ⚙️ Last operation: {{ if .app.operationState }}{{ .app.operationState.phase }}{{ else }}<none>{{ end }}
+      🔗 Details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}
+
+  # Template for Deployed (synced + healthy): email content when app is successfully deployed
+  template.email-deployed: |
+    email:
+      subject: "[ArgoCD] {{.app.metadata.name}} successfully deployed 🎉"
+    message: |
+      ✅ Application: {{.app.metadata.name}}
+      📂 Namespace: {{.app.metadata.namespace}}
+      🔄 Sync status: {{.app.status.sync.status}}
+      📌 Revision: {{.app.status.sync.revision}}
+      ❤️ Health status: {{.app.status.health.status}}
+      ⚙️ Last operation: {{ if .app.operationState }}{{ .app.operationState.phase }}{{ else }}<none>{{ end }}
+      Finished at: {{ if .app.operationState }}{{ .app.operationState.finishedAt }}{{ end }}
+      🔗 Details: {{.context.argocdUrl}}/applications/{{.app.metadata.name}}
+
+  # Trigger for Degraded health: sends email when app health is degraded
+  trigger.on-health-degraded: |
+    - when: app.status.health.status == 'Degraded'
+      send: [email-health-degraded]
+
+  # Trigger for Deployed: sends email when app is synced and healthy
+  trigger.on-deployed: |
+    - when: app.status.operationState.phase == 'Succeeded' and app.status.health.status == 'Healthy'
+      send: [email-deployed]
+
+# This ConfigMap configures ArgoCD Notifications to send email alerts for application health changes.
+# It defines SMTP settings, notification templates, and triggers for sending emails on specific events.
+ubuntu@ip-172-31-20-93:~/notification$
+ubuntu@ip-172-31-20-93:~/notification$
+ubuntu@ip-172-31-20-93:~/notification$ kubectl apply -f configmap-email.yml
+configmap/argocd-notifications-cm configured
+ubuntu@ip-172-31-20-93:~/notification$
+ubuntu@ip-172-31-20-93:~/notification$ ls
+README.md  chai-app.yaml  configmap-email.yml  output_images  secret.yml
+ubuntu@ip-172-31-20-93:~/notification$ vi chai-app.yaml
+ubuntu@ip-172-31-20-93:~/notification$ cat chai-app.yaml
+# chai-app.yaml
+# This file defines an ArgoCD Application resource for deploying the chai-app.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chai-app # Name of the ArgoCD application
+  namespace: argocd # Namespace where ArgoCD is installed
+  annotations:
+    # The email notifier must be configured in argocd-notifications-cm.yaml, The `.email` is the name of the notifier, i.e, `service.email` in the argocd-notifications-cm.yaml.
+    # Subscribe to notifications when the app health is degraded.
+    notifications.argoproj.io/subscribe.on-health-degraded.email: "ritikbawane5437@gmail.com"  # you can add multiple email ids separated by comma like "<receiver@example.com>, <receiver2@example.com>"
+    # Subscribe to notifications when the app is successfully deployed.
+    notifications.argoproj.io/subscribe.on-deployed.email: "ritikbawane5437@gmail.com" # you can add multiple email ids separated by comma like "<receiver@example.com>, <receiver2@example.com>"
+spec:
+  project: default # ArgoCD project this app belongs to
+  source:
+    repoURL: https://github.com/rb5437/argocd-demos.git # Git repository containing the app manifests
+    targetRevision: main # Git branch, tag, or commit to track
+    path: applicationsets/chai-app # Path within the repo where manifests are located
+  destination:
+    server: https://172.31.20.93:33893 # Kubernetes API server address (in-cluster)
+    namespace: default # Namespace where the app will be deployed
+  syncPolicy:
+    automated:
+      prune: true # Automatically delete resources that are no longer defined in Git
+      selfHeal: true # Automatically correct drift between Git and cluster state
+
+# Brief Info:
+# This manifest enables GitOps for chai-app using ArgoCD.
+# Notifications are set up for health degradation and deployment events.
+# Automated sync ensures the cluster matches the desired state in Git.
+ubuntu@ip-172-31-20-93:~/notification$ kubectl apply -f  chai-app.yaml -n argocd
+application.argoproj.io/chai-app created
+ubuntu@ip-172-31-20-93:~/notification$ kubectl get applications -n argocd
+NAME       SYNC STATUS   HEALTH STATUS
+chai-app   Synced        Healthy
+ubuntu@ip-172-31-20-93:~/notification$
+ubuntu@ip-172-31-20-93:~/image_updater$ ls
+README.md  chai-app.yaml  output_images  secret-image-updater-git.yaml
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml
+customresourcedefinition.apiextensions.k8s.io/imageupdaters.argocd-image-updater.argoproj.io created
+serviceaccount/argocd-image-updater-controller created
+role.rbac.authorization.k8s.io/argocd-image-updater created
+role.rbac.authorization.k8s.io/argocd-image-updater-leader-election-role created
+role.rbac.authorization.k8s.io/argocd-image-updater-manager-role created
+clusterrole.rbac.authorization.k8s.io/argocd-image-updater-metrics-auth-role created
+clusterrole.rbac.authorization.k8s.io/argocd-image-updater-metrics-reader created
+rolebinding.rbac.authorization.k8s.io/argocd-image-updater created
+rolebinding.rbac.authorization.k8s.io/argocd-image-updater-leader-election-rolebinding created
+rolebinding.rbac.authorization.k8s.io/argocd-image-updater-manager-rolebinding created
+clusterrolebinding.rbac.authorization.k8s.io/argocd-image-updater-metrics-auth-rolebinding created
+clusterrolebinding.rbac.authorization.k8s.io/argocd-image-updater-metrics-reader-rolebinding created
+configmap/argocd-image-updater-config created
+configmap/argocd-image-updater-ssh-config created
+secret/argocd-image-updater-secret created
+service/argocd-image-updater-controller-metrics-service created
+deployment.apps/argocd-image-updater-controller created
+networkpolicy.networking.k8s.io/allow-metrics-traffic created
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl -n argocd get pods -l app.kubernetes.io/name=argocd-image-updater
+NAME                                               READY   STATUS    RESTARTS   AGE
+argocd-image-updater-controller-764fd4cb47-5v5ms   1/1     Running   0          92s
+ubuntu@ip-172-31-20-93:~/image_updater$ docker login
+
+USING WEB-BASED LOGIN
+
+i Info → To sign in with credentials on the command line, use 'docker login -u <username>'
+
+
+Your one-time device confirmation code is: XHMD-XXVV
+Press ENTER to open your browser or submit your device code here: https://login.docker.com/activate
+
+Waiting for authentication in the browser…
+
+WARNING! Your credentials are stored unencrypted in '/home/ubuntu/.docker/config.json'.
+Configure a credential helper to remove this warning. See
+https://docs.docker.com/go/credential-store/
+
+Login Succeeded
+ubuntu@ip-172-31-20-93:~/image_updater$ docker pull amitabhdevops/chai-devops:latest
+latest: Pulling from amitabhdevops/chai-devops
+9366287bf8ac: Pull complete
+9824c27679d3: Pull complete
+6bc572a340ec: Pull complete
+7a8a46741e18: Pull complete
+c9ebe2ff2d2c: Pull complete
+403e3f251637: Pull complete
+a992fbc61ecc: Pull complete
+cb1ff4086f82: Pull complete
+9adfbae99cb7: Pull complete
+Digest: sha256:c02ef2ef57da5cccca5c0fd19eceae2d4c7d0e37655c402d5f1a417bae47ac21
+Status: Downloaded newer image for amitabhdevops/chai-devops:latest
+docker.io/amitabhdevops/chai-devops:latest
+ubuntu@ip-172-31-20-93:~/image_updater$ docker tag amitabhdevops/chai-devops:latest ritik2909/chai-devops:v1.0.0
+ubuntu@ip-172-31-20-93:~/image_updater$ docker images
+                                                                                                                                                                        i Info →   U  In Use
+IMAGE                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+amitabhdevops/chai-devops:latest   c02ef2ef57da         80MB         22.6MB
+kindest/node:v1.33.1               050072256b9a       1.54GB          452MB    U
+ritik2909/chai-devops:v1.0.0       c02ef2ef57da         80MB         22.6MB
+ubuntu@ip-172-31-20-93:~/image_updater$ docker push ritik2909/chai-devops:v1.0.0
+The push refers to repository [docker.io/ritik2909/chai-devops]
+9adfbae99cb7: Mounted from amitabhdevops/chai-devops
+7a8a46741e18: Mounted from amitabhdevops/chai-devops
+403e3f251637: Mounted from amitabhdevops/chai-devops
+c9ebe2ff2d2c: Mounted from amitabhdevops/chai-devops
+cb1ff4086f82: Mounted from amitabhdevops/chai-devops
+9366287bf8ac: Mounted from amitabhdevops/chai-devops
+9824c27679d3: Mounted from amitabhdevops/chai-devops
+6bc572a340ec: Mounted from amitabhdevops/chai-devops
+a992fbc61ecc: Mounted from amitabhdevops/chai-devops
+v1.0.0: digest: sha256:c02ef2ef57da5cccca5c0fd19eceae2d4c7d0e37655c402d5f1a417bae47ac21 size: 2199
+ubuntu@ip-172-31-20-93:~/image_updater$ ls
+README.md  chai-app.yaml  output_images  secret-image-updater-git.yaml
+ubuntu@ip-172-31-20-93:~/image_updater$ vi secret-image-updater-git.yaml
+"secret-image-updater-git.yaml" 8L, 450B written
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl apply -f secret-image-updater-git.yaml -n argocd
+secret/argocd-image-updater-git-creds created
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl -n argocd get pods -l app.kubernetes.io/name=argocd-image-updater
+NAME                                               READY   STATUS    RESTARTS   AGE
+argocd-image-updater-controller-764fd4cb47-5v5ms   1/1     Running   0          16m
+ubuntu@ip-172-31-20-93:~/image_updater$ ls
+README.md  chai-app.yaml  output_images  secret-image-updater-git.yaml
+ubuntu@ip-172-31-20-93:~/image_updater$ vi chai-app.yaml
+
+ubuntu@ip-172-31-20-93:~/image_updater$ cat chai-app.yaml
+apiVersion: argoproj.io/v1alpha1 # Specifies the API version for the ArgoCD Application CRD
+kind: Application               # Declares this resource as an ArgoCD Application
+metadata:
+  name: chai-app                # Name of the ArgoCD Application
+  namespace: argocd             # Namespace where the Application resource will be created
+  annotations:
+    # Assign alias 'chai-app' to your image
+    argocd-image-updater.argoproj.io/image-list: chai-app=ritik2909/chai-devops # Maps the image alias 'chai-app' to your DockerHub image
+
+    # Use git write-back
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds # Configures image updater to write changes back to Git using provided secret
+
+    # Update strategy for chai-app image
+    argocd-image-updater.argoproj.io/chai-app.update-strategy: semver # Uses semantic versioning for image updates
+
+spec:
+  project: default              # Associates this Application with the 'default' ArgoCD project
+  source:
+    repoURL: https://github.com/rb5437/argocd-demos.git # Git repository containing the app manifests
+    targetRevision: main        # Branch or tag to track in the repository
+    path: image_updater/chai-app # Path within the repo where the manifests(kustomization) are located
+  destination:
+    server: https://172.31.20.93:33893 # Kubernetes API server address (in-cluster)
+    namespace: default           # Namespace in the cluster where app resources will be deployed
+  syncPolicy:
+    automated:                  # Enables automated sync for the application
+      prune: true               # Automatically deletes resources that are no longer defined in Git
+      selfHeal: true            # Automatically corrects drift between live and desired state
+
+# Brief: This ArgoCD Application manifest configures automated deployment and image updates for the 'chai-app' using ArgoCD Image Updater, with changes written back to Git.
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl apply -f chai-app.yaml -n argocd
+application.argoproj.io/chai-app configured
+ubuntu@ip-172-31-20-93:~/image_updater$ docker images
+                                                                                                                                                                        i Info →   U  In Use
+IMAGE                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+amitabhdevops/chai-devops:latest   c02ef2ef57da         80MB         22.6MB
+kindest/node:v1.33.1               050072256b9a       1.54GB          452MB    U
+ritik2909/chai-devops:v1.0.0       c02ef2ef57da         80MB         22.6MB
+ubuntu@ip-172-31-20-93:~/image_updater$ docker tag ritik2909/chai-devops:v1.0.0 ritik2909/chai-devops:v1.0.1
+ubuntu@ip-172-31-20-93:~/image_updater$ docker images
+                                                                                                                                                                        i Info →   U  In Use
+IMAGE                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+amitabhdevops/chai-devops:latest   c02ef2ef57da         80MB         22.6MB
+kindest/node:v1.33.1               050072256b9a       1.54GB          452MB    U
+ritik2909/chai-devops:v1.0.0       c02ef2ef57da         80MB         22.6MB
+ritik2909/chai-devops:v1.0.1       c02ef2ef57da         80MB         22.6MB
+ubuntu@ip-172-31-20-93:~/image_updater$ docker push ritik2909/chai-devops:v1.0.1
+The push refers to repository [docker.io/ritik2909/chai-devops]
+6bc572a340ec: Layer already exists
+c9ebe2ff2d2c: Layer already exists
+403e3f251637: Layer already exists
+7a8a46741e18: Layer already exists
+cb1ff4086f82: Layer already exists
+9366287bf8ac: Layer already exists
+9824c27679d3: Layer already exists
+9adfbae99cb7: Layer already exists
+a992fbc61ecc: Layer already exists
+v1.0.1: digest: sha256:c02ef2ef57da5cccca5c0fd19eceae2d4c7d0e37655c402d5f1a417bae47ac21 size: 2199
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl -n argocd logs deploy/argocd-image-updater -f
+error: error from server (NotFound): deployments.apps "argocd-image-updater" not found in namespace "argocd"
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl logs -n argocd deploy/argocd-image-updater-controller -f
+time="2026-06-01T07:13:59Z" level=info msg="Controller runtime logger initialized." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup setAppLogLevel=info
+time="2026-06-01T07:13:59Z" level=info msg=starting app="argocd-image-updater: v1.2.1+1b62241" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater healthPort=":8081" interval=2m0s logger=controller-setup loglevel=INFO
+time="2026-06-01T07:13:59Z" level=info msg="commit message template not found, using default" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup path=/app/config/commit.template
+time="2026-06-01T07:13:59Z" level=info msg="Registry configuration not found or is a directory, using default configuration" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater error="{\"Op\":\"stat\",\"Path\":\"/app/config/registries.conf\",\"Err\":2}" logger=controller-setup path=/app/config/registries.conf
+time="2026-06-01T07:13:59Z" level=info msg="Resolved controller namespace from service account token" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Watching controller namespace only" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Adding cache warmer to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="Adding Webhook Server as a Runnable to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="webhook server is disabled, skip adding webhook server runnable to manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+I0601 07:13:59.846514      14 leaderelection.go:257] attempting to acquire leader lease argocd/c21b75f2.argoproj.io...
+time="2026-06-01T07:13:59Z" level=info msg="Starting metrics server" logger=controller-runtime.metrics
+time="2026-06-01T07:13:59Z" level=info msg="Disabling HTTP/2 support" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting server" addr="[::]:8081" name="health probe"
+I0601 07:13:59.930329      14 leaderelection.go:271] successfully acquired lease argocd/c21b75f2.argoproj.io
+time="2026-06-01T07:13:59Z" level=info msg="Starting EventSource" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater source="kind source: *v1alpha1.ImageUpdater"
+time="2026-06-01T07:14:00Z" level=info msg="Starting Controller" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater
+time="2026-06-01T07:14:00Z" level=info msg="Starting workers" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater worker count=1
+time="2026-06-01T07:14:00Z" level=info msg="No ImageUpdater CRs to process" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Finished cache warm-up." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Serving metrics server" bindAddress=":8443" logger=controller-runtime.metrics secure=true
+
+^Cubuntu@ip-172-31-20-93:~/image_updater$ kubectl get applications -n argocd
+NAME       SYNC STATUS   HEALTH STATUS
+chai-app   Synced        Progressing
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get application chai-app -n argocd -o yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd-image-updater.argoproj.io/chai-app.update-strategy: semver
+    argocd-image-updater.argoproj.io/image-list: chai-app=ritik2909/chai-devops
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Application","metadata":{"annotations":{"argocd-image-updater.argoproj.io/chai-app.update-strategy":"semver","argocd-image-updater.argoproj.io/image-list":"chai-app=ritik2909/chai-devops","argocd-image-updater.argoproj.io/write-back-method":"git:secret:argocd/argocd-image-updater-git-creds"},"name":"chai-app","namespace":"argocd"},"spec":{"destination":{"namespace":"default","server":"https://172.31.20.93:33893"},"project":"default","source":{"path":"image_updater/chai-app","repoURL":"https://github.com/rb5437/argocd-demos.git","targetRevision":"main"},"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}
+    notified.notifications.argoproj.io: '{"on-deployed:[0].v1A0rWCJXFbFy-6e_DZgBKGZB44:email:ritikbawane5437@gmail.com":1780296817}'
+  creationTimestamp: "2026-06-01T06:53:27Z"
+  generation: 43
+  name: chai-app
+  namespace: argocd
+  resourceVersion: "12647"
+  uid: fd996174-d2e7-4059-bf43-511dfdc256ab
+spec:
+  destination:
+    namespace: default
+    server: https://172.31.20.93:33893
+  project: default
+  source:
+    path: image_updater/chai-app
+    repoURL: https://github.com/rb5437/argocd-demos.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+status:
+  controllerNamespace: argocd
+  health:
+    lastTransitionTime: "2026-06-01T07:36:56Z"
+    status: Progressing
+  history:
+  - deployStartedAt: "2026-06-01T06:53:30Z"
+    deployedAt: "2026-06-01T06:53:31Z"
+    id: 0
+    initiatedBy:
+      automated: true
+    revision: e1956e96129b8d23088f74e74d34f646ef2fc59e
+    source:
+      path: applicationsets/chai-app
+      repoURL: https://github.com/rb5437/argocd-demos.git
+      targetRevision: main
+  - deployStartedAt: "2026-06-01T07:36:55Z"
+    deployedAt: "2026-06-01T07:36:56Z"
+    id: 1
+    initiatedBy:
+      automated: true
+    revision: 4ea0f5f4d4776477955f4d9c72ba842b048e501c
+    source:
+      path: image_updater/chai-app
+      repoURL: https://github.com/rb5437/argocd-demos.git
+      targetRevision: main
+  - deployStartedAt: "2026-06-01T07:38:41Z"
+    deployedAt: "2026-06-01T07:38:42Z"
+    id: 2
+    initiatedBy:
+      username: admin
+    revision: 4ea0f5f4d4776477955f4d9c72ba842b048e501c
+    source:
+      path: image_updater/chai-app
+      repoURL: https://github.com/rb5437/argocd-demos.git
+      targetRevision: main
+  operationState:
+    finishedAt: "2026-06-01T07:38:42Z"
+    message: successfully synced (all tasks run)
+    operation:
+      initiatedBy:
+        username: admin
+      retry: {}
+      sync:
+        revision: 4ea0f5f4d4776477955f4d9c72ba842b048e501c
+        source:
+          path: image_updater/chai-app
+          repoURL: https://github.com/rb5437/argocd-demos.git
+          targetRevision: main
+        syncStrategy:
+          hook: {}
+    phase: Succeeded
+    startedAt: "2026-06-01T07:38:41Z"
+    syncResult:
+      resources:
+      - group: ""
+        hookPhase: Running
+        kind: Secret
+        message: secret/chai-app-secret unchanged
+        name: chai-app-secret
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: ""
+        hookPhase: Running
+        kind: Service
+        message: service/chai-app-service unchanged
+        name: chai-app-service
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      - group: apps
+        hookPhase: Running
+        images:
+        - ritik2909/chai-devops:v1.0.3
+        kind: Deployment
+        message: deployment.apps/chai-app unchanged
+        name: chai-app
+        namespace: default
+        status: Synced
+        syncPhase: Sync
+        version: v1
+      revision: 4ea0f5f4d4776477955f4d9c72ba842b048e501c
+      source:
+        path: image_updater/chai-app
+        repoURL: https://github.com/rb5437/argocd-demos.git
+        targetRevision: main
+  reconciledAt: "2026-06-01T07:46:47Z"
+  resourceHealthSource: appTree
+  resources:
+  - kind: Secret
+    name: chai-app-secret
+    namespace: default
+    status: Synced
+    version: v1
+  - kind: Service
+    name: chai-app-service
+    namespace: default
+    status: Synced
+    version: v1
+  - group: apps
+    kind: Deployment
+    name: chai-app
+    namespace: default
+    status: Synced
+    version: v1
+  sourceHydrator: {}
+  sourceType: Kustomize
+  summary:
+    images:
+    - ritik2909/chai-devops:v1.0.3
+    - trainwithshubham/chai-devops:v1.0.0
+  sync:
+    comparedTo:
+      destination:
+        namespace: default
+        server: https://172.31.20.93:33893
+      source:
+        path: image_updater/chai-app
+        repoURL: https://github.com/rb5437/argocd-demos.git
+        targetRevision: main
+    revision: 4ea0f5f4d4776477955f4d9c72ba842b048e501c
+    status: Synced
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get applications -n argocd
+NAME       SYNC STATUS   HEALTH STATUS
+chai-app   Synced        Progressing
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl describe application chai-app -n argocd
+Name:         chai-app
+Namespace:    argocd
+Labels:       <none>
+Annotations:  argocd-image-updater.argoproj.io/chai-app.update-strategy: semver
+              argocd-image-updater.argoproj.io/image-list: chai-app=ritik2909/chai-devops
+              argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds
+              notified.notifications.argoproj.io: {"on-deployed:[0].v1A0rWCJXFbFy-6e_DZgBKGZB44:email:ritikbawane5437@gmail.com":1780296817}
+API Version:  argoproj.io/v1alpha1
+Kind:         Application
+Metadata:
+  Creation Timestamp:  2026-06-01T06:53:27Z
+  Generation:          43
+  Resource Version:    12647
+  UID:                 fd996174-d2e7-4059-bf43-511dfdc256ab
+Spec:
+  Destination:
+    Namespace:  default
+    Server:     https://172.31.20.93:33893
+  Project:      default
+  Source:
+    Path:             image_updater/chai-app
+    Repo URL:         https://github.com/rb5437/argocd-demos.git
+    Target Revision:  main
+  Sync Policy:
+    Automated:
+      Prune:      true
+      Self Heal:  true
+Status:
+  Controller Namespace:  argocd
+  Health:
+    Last Transition Time:  2026-06-01T07:36:56Z
+    Status:                Progressing
+  History:
+    Deploy Started At:  2026-06-01T06:53:30Z
+    Deployed At:        2026-06-01T06:53:31Z
+    Id:                 0
+    Initiated By:
+      Automated:  true
+    Revision:     e1956e96129b8d23088f74e74d34f646ef2fc59e
+    Source:
+      Path:             applicationsets/chai-app
+      Repo URL:         https://github.com/rb5437/argocd-demos.git
+      Target Revision:  main
+    Deploy Started At:  2026-06-01T07:36:55Z
+    Deployed At:        2026-06-01T07:36:56Z
+    Id:                 1
+    Initiated By:
+      Automated:  true
+    Revision:     4ea0f5f4d4776477955f4d9c72ba842b048e501c
+    Source:
+      Path:             image_updater/chai-app
+      Repo URL:         https://github.com/rb5437/argocd-demos.git
+      Target Revision:  main
+    Deploy Started At:  2026-06-01T07:38:41Z
+    Deployed At:        2026-06-01T07:38:42Z
+    Id:                 2
+    Initiated By:
+      Username:  admin
+    Revision:    4ea0f5f4d4776477955f4d9c72ba842b048e501c
+    Source:
+      Path:             image_updater/chai-app
+      Repo URL:         https://github.com/rb5437/argocd-demos.git
+      Target Revision:  main
+  Operation State:
+    Finished At:  2026-06-01T07:38:42Z
+    Message:      successfully synced (all tasks run)
+    Operation:
+      Initiated By:
+        Username:  admin
+      Retry:
+      Sync:
+        Revision:  4ea0f5f4d4776477955f4d9c72ba842b048e501c
+        Source:
+          Path:             image_updater/chai-app
+          Repo URL:         https://github.com/rb5437/argocd-demos.git
+          Target Revision:  main
+        Sync Strategy:
+          Hook:
+    Phase:       Succeeded
+    Started At:  2026-06-01T07:38:41Z
+    Sync Result:
+      Resources:
+        Group:
+        Hook Phase:  Running
+        Kind:        Secret
+        Message:     secret/chai-app-secret unchanged
+        Name:        chai-app-secret
+        Namespace:   default
+        Status:      Synced
+        Sync Phase:  Sync
+        Version:     v1
+        Group:
+        Hook Phase:  Running
+        Kind:        Service
+        Message:     service/chai-app-service unchanged
+        Name:        chai-app-service
+        Namespace:   default
+        Status:      Synced
+        Sync Phase:  Sync
+        Version:     v1
+        Group:       apps
+        Hook Phase:  Running
+        Images:
+          ritik2909/chai-devops:v1.0.3
+        Kind:        Deployment
+        Message:     deployment.apps/chai-app unchanged
+        Name:        chai-app
+        Namespace:   default
+        Status:      Synced
+        Sync Phase:  Sync
+        Version:     v1
+      Revision:      4ea0f5f4d4776477955f4d9c72ba842b048e501c
+      Source:
+        Path:              image_updater/chai-app
+        Repo URL:          https://github.com/rb5437/argocd-demos.git
+        Target Revision:   main
+  Reconciled At:           2026-06-01T07:46:47Z
+  Resource Health Source:  appTree
+  Resources:
+    Kind:       Secret
+    Name:       chai-app-secret
+    Namespace:  default
+    Status:     Synced
+    Version:    v1
+    Kind:       Service
+    Name:       chai-app-service
+    Namespace:  default
+    Status:     Synced
+    Version:    v1
+    Group:      apps
+    Kind:       Deployment
+    Name:       chai-app
+    Namespace:  default
+    Status:     Synced
+    Version:    v1
+  Source Hydrator:
+  Source Type:  Kustomize
+  Summary:
+    Images:
+      ritik2909/chai-devops:v1.0.3
+      trainwithshubham/chai-devops:v1.0.0
+  Sync:
+    Compared To:
+      Destination:
+        Namespace:  default
+        Server:     https://172.31.20.93:33893
+      Source:
+        Path:             image_updater/chai-app
+        Repo URL:         https://github.com/rb5437/argocd-demos.git
+        Target Revision:  main
+    Revision:             4ea0f5f4d4776477955f4d9c72ba842b048e501c
+    Status:               Synced
+Events:
+  Type    Reason              Age    From                           Message
+  ----    ------              ----   ----                           -------
+  Normal  OperationStarted    54m    argocd-application-controller  Initiated automated sync to 'e1956e96129b8d23088f74e74d34f646ef2fc59e'
+  Normal  ResourceUpdated     54m    argocd-application-controller  Updated sync status:  -> OutOfSync
+  Normal  ResourceUpdated     54m    argocd-application-controller  Updated health status:  -> Missing
+  Normal  ResourceUpdated     54m    argocd-application-controller  Updated health status: Missing -> Healthy
+  Normal  OperationCompleted  54m    argocd-application-controller  Sync operation to e1956e96129b8d23088f74e74d34f646ef2fc59e succeeded
+  Normal  ResourceUpdated     54m    argocd-application-controller  Updated sync status: OutOfSync -> Synced
+  Normal  ResourceUpdated     54m    argocd-application-controller  Updated health status: Healthy -> Progressing
+  Normal  ResourceUpdated     54m    argocd-application-controller  Updated health status: Progressing -> Healthy
+  Normal  OperationStarted    11m    argocd-application-controller  Initiated automated sync to '4ea0f5f4d4776477955f4d9c72ba842b048e501c'
+  Normal  ResourceUpdated     11m    argocd-application-controller  Updated sync status: Synced -> OutOfSync
+  Normal  OperationCompleted  11m    argocd-application-controller  Sync operation to 4ea0f5f4d4776477955f4d9c72ba842b048e501c succeeded
+  Normal  OperationStarted    11m    argocd-application-controller  Initiated automated sync to '4ea0f5f4d4776477955f4d9c72ba842b048e501c'
+  Normal  ResourceUpdated     11m    argocd-application-controller  Updated sync status: OutOfSync -> Synced
+  Normal  ResourceUpdated     11m    argocd-application-controller  Updated health status: Healthy -> Progressing
+  Normal  OperationCompleted  11m    argocd-application-controller  Partial sync operation to 4ea0f5f4d4776477955f4d9c72ba842b048e501c succeeded
+  Normal  OperationStarted    9m31s  argocd-server                  admin initiated sync to main (4ea0f5f4d4776477955f4d9c72ba842b048e501c)
+  Normal  OperationCompleted  9m30s  argocd-application-controller  Sync operation to 4ea0f5f4d4776477955f4d9c72ba842b048e501c succeeded
+  Normal  ResourceDeleted     7m24s  argocd-server                  admin deleted resource /Pod 'chai-app-57bd74dbdf-6rqtx'
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get deployment chai-app -n default -o jsonpath='{.spec.template.spec.containers[0].image}'
+ritik2909/chai-devops:v1.0.3ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get pods -n default
+NAME                        READY   STATUS             RESTARTS   AGE
+chai-app-57bd74dbdf-b6zsd   0/1     ImagePullBackOff   0          8m48s
+chai-app-5c9cd85f7f-9jk26   1/1     Running            0          56m
+chai-app-5c9cd85f7f-jmjk7   1/1     Running            0          56m
+chai-app-5c9cd85f7f-whl9n   1/1     Running            0          56m
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl describe pod chai-app-57bd74dbdf-b6zsd -n default
+Name:             chai-app-57bd74dbdf-b6zsd
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             argocd-cluster-worker/172.18.0.3
+Start Time:       Mon, 01 Jun 2026 07:40:48 +0000
+Labels:           app=chai-app
+                  pod-template-hash=57bd74dbdf
+Annotations:      <none>
+Status:           Pending
+IP:               10.244.1.15
+IPs:
+  IP:           10.244.1.15
+Controlled By:  ReplicaSet/chai-app-57bd74dbdf
+Containers:
+  chai-app:
+    Container ID:
+    Image:          ritik2909/chai-devops:v1.0.3
+    Image ID:
+    Port:           80/TCP
+    Host Port:      0/TCP
+    State:          Waiting
+      Reason:       ImagePullBackOff
+    Ready:          False
+    Restart Count:  0
+    Limits:
+      cpu:     200m
+      memory:  256Mi
+    Requests:
+      cpu:     50m
+      memory:  64Mi
+    Environment:
+      VITE_GEMINI_API:  <set to the key 'VITE_GEMINI_API' in secret 'chai-app-secret'>  Optional: false
+    Mounts:
+      /var/run/secrets/kubernetes.io/serviceaccount from kube-api-access-nqxl9 (ro)
+Conditions:
+  Type                        Status
+  PodReadyToStartContainers   True
+  Initialized                 True
+  Ready                       False
+  ContainersReady             False
+  PodScheduled                True
+Volumes:
+  kube-api-access-nqxl9:
+    Type:                    Projected (a volume that contains injected data from multiple sources)
+    TokenExpirationSeconds:  3607
+    ConfigMapName:           kube-root-ca.crt
+    Optional:                false
+    DownwardAPI:             true
+QoS Class:                   Burstable
+Node-Selectors:              <none>
+Tolerations:                 node.kubernetes.io/not-ready:NoExecute op=Exists for 300s
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age                     From               Message
+  ----     ------     ----                    ----               -------
+  Normal   Scheduled  9m19s                   default-scheduler  Successfully assigned default/chai-app-57bd74dbdf-b6zsd to argocd-cluster-worker
+  Normal   Pulling    6m23s (x5 over 9m18s)   kubelet            spec.containers{chai-app}: Pulling image "ritik2909/chai-devops:v1.0.3"
+  Warning  Failed     6m22s (x5 over 9m18s)   kubelet            spec.containers{chai-app}: Failed to pull image "ritik2909/chai-devops:v1.0.3": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/ritik2909/chai-devops:v1.0.3": failed to resolve reference "docker.io/ritik2909/chai-devops:v1.0.3": docker.io/ritik2909/chai-devops:v1.0.3: not found
+  Warning  Failed     6m22s (x5 over 9m18s)   kubelet            spec.containers{chai-app}: Error: ErrImagePull
+  Warning  Failed     4m18s (x20 over 9m18s)  kubelet            spec.containers{chai-app}: Error: ImagePullBackOff
+  Normal   BackOff    4m7s (x21 over 9m18s)   kubelet            spec.containers{chai-app}: Back-off pulling image "ritik2909/chai-devops:v1.0.3"
+ubuntu@ip-172-31-20-93:~/image_updater$ docker tag ritik2909/chai-devops:v1.0.1 ritik2909/chai-devops:v1.0.3
+
+docker push ritik2909/chai-devops:v1.0.3
+The push refers to repository [docker.io/ritik2909/chai-devops]
+9adfbae99cb7: Layer already exists
+6bc572a340ec: Layer already exists
+403e3f251637: Layer already exists
+7a8a46741e18: Layer already exists
+a992fbc61ecc: Layer already exists
+9366287bf8ac: Layer already exists
+9824c27679d3: Layer already exists
+cb1ff4086f82: Layer already exists
+c9ebe2ff2d2c: Layer already exists
+v1.0.3: digest: sha256:c02ef2ef57da5cccca5c0fd19eceae2d4c7d0e37655c402d5f1a417bae47ac21 size: 2199
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl -n argocd logs deploy/argocd-image-updater -f
+error: error from server (NotFound): deployments.apps "argocd-image-updater" not found in namespace "argocd"
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl -n argocd logs deploy/argocd-image-updater-controller -f
+time="2026-06-01T07:13:59Z" level=info msg="Controller runtime logger initialized." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup setAppLogLevel=info
+time="2026-06-01T07:13:59Z" level=info msg=starting app="argocd-image-updater: v1.2.1+1b62241" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater healthPort=":8081" interval=2m0s logger=controller-setup loglevel=INFO
+time="2026-06-01T07:13:59Z" level=info msg="commit message template not found, using default" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup path=/app/config/commit.template
+time="2026-06-01T07:13:59Z" level=info msg="Registry configuration not found or is a directory, using default configuration" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater error="{\"Op\":\"stat\",\"Path\":\"/app/config/registries.conf\",\"Err\":2}" logger=controller-setup path=/app/config/registries.conf
+time="2026-06-01T07:13:59Z" level=info msg="Resolved controller namespace from service account token" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Watching controller namespace only" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Adding cache warmer to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="Adding Webhook Server as a Runnable to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="webhook server is disabled, skip adding webhook server runnable to manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+I0601 07:13:59.846514      14 leaderelection.go:257] attempting to acquire leader lease argocd/c21b75f2.argoproj.io...
+time="2026-06-01T07:13:59Z" level=info msg="Starting metrics server" logger=controller-runtime.metrics
+time="2026-06-01T07:13:59Z" level=info msg="Disabling HTTP/2 support" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting server" addr="[::]:8081" name="health probe"
+I0601 07:13:59.930329      14 leaderelection.go:271] successfully acquired lease argocd/c21b75f2.argoproj.io
+time="2026-06-01T07:13:59Z" level=info msg="Starting EventSource" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater source="kind source: *v1alpha1.ImageUpdater"
+time="2026-06-01T07:14:00Z" level=info msg="Starting Controller" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater
+time="2026-06-01T07:14:00Z" level=info msg="Starting workers" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater worker count=1
+time="2026-06-01T07:14:00Z" level=info msg="No ImageUpdater CRs to process" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Finished cache warm-up." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Serving metrics server" bindAddress=":8443" logger=controller-runtime.metrics secure=true
+^Cubuntu@ip-172-31-20-93:~/image_updater$
+ubuntu@ip-172-31-20-93:~/image_updater$ docker pull ritik2909/chai-devops:v1.0.3
+v1.0.3: Pulling from ritik2909/chai-devops
+Digest: sha256:c02ef2ef57da5cccca5c0fd19eceae2d4c7d0e37655c402d5f1a417bae47ac21
+Status: Image is up to date for ritik2909/chai-devops:v1.0.3
+docker.io/ritik2909/chai-devops:v1.0.3
+ubuntu@ip-172-31-20-93:~/image_updater$ docker push ritik2909/chai-devops:v1.0.3
+The push refers to repository [docker.io/ritik2909/chai-devops]
+9366287bf8ac: Layer already exists
+9824c27679d3: Layer already exists
+403e3f251637: Layer already exists
+c9ebe2ff2d2c: Layer already exists
+9adfbae99cb7: Layer already exists
+7a8a46741e18: Layer already exists
+cb1ff4086f82: Layer already exists
+6bc572a340ec: Layer already exists
+a992fbc61ecc: Layer already exists
+v1.0.3: digest: sha256:c02ef2ef57da5cccca5c0fd19eceae2d4c7d0e37655c402d5f1a417bae47ac21 size: 2199
+ubuntu@ip-172-31-20-93:~/image_updater$ docker images
+                                                                                                                                                                        i Info →   U  In Use
+IMAGE                              ID             DISK USAGE   CONTENT SIZE   EXTRA
+amitabhdevops/chai-devops:latest   c02ef2ef57da         80MB         22.6MB
+kindest/node:v1.33.1               050072256b9a       1.54GB          452MB    U
+ritik2909/chai-devops:v1.0.0       c02ef2ef57da         80MB         22.6MB
+ritik2909/chai-devops:v1.0.1       c02ef2ef57da         80MB         22.6MB
+ritik2909/chai-devops:v1.0.3       c02ef2ef57da         80MB         22.6MB
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl rollout restart deployment chai-app -n default
+deployment.apps/chai-app restarted
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get pods -n default -w
+NAME                        READY   STATUS    RESTARTS   AGE
+chai-app-79ccfd5ff7-5j8jq   1/1     Running   0          22s
+chai-app-79ccfd5ff7-8grk8   1/1     Running   0          26s
+chai-app-79ccfd5ff7-gv9zm   1/1     Running   0          24s
+^Cubuntu@ip-172-31-20-93:~/image_updater$ kubectl get applications -n argocd
+NAME       SYNC STATUS   HEALTH STATUS
+chai-app   Synced        Healthy
+ubuntu@ip-172-31-20-93:~/image_updater$
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl -n argocd logs deploy/argocd-image-updater-controller -f
+time="2026-06-01T07:13:59Z" level=info msg="Controller runtime logger initialized." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup setAppLogLevel=info
+time="2026-06-01T07:13:59Z" level=info msg=starting app="argocd-image-updater: v1.2.1+1b62241" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater healthPort=":8081" interval=2m0s logger=controller-setup loglevel=INFO
+time="2026-06-01T07:13:59Z" level=info msg="commit message template not found, using default" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup path=/app/config/commit.template
+time="2026-06-01T07:13:59Z" level=info msg="Registry configuration not found or is a directory, using default configuration" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater error="{\"Op\":\"stat\",\"Path\":\"/app/config/registries.conf\",\"Err\":2}" logger=controller-setup path=/app/config/registries.conf
+time="2026-06-01T07:13:59Z" level=info msg="Resolved controller namespace from service account token" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Watching controller namespace only" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Adding cache warmer to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="Adding Webhook Server as a Runnable to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="webhook server is disabled, skip adding webhook server runnable to manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+I0601 07:13:59.846514      14 leaderelection.go:257] attempting to acquire leader lease argocd/c21b75f2.argoproj.io...
+time="2026-06-01T07:13:59Z" level=info msg="Starting metrics server" logger=controller-runtime.metrics
+time="2026-06-01T07:13:59Z" level=info msg="Disabling HTTP/2 support" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting server" addr="[::]:8081" name="health probe"
+I0601 07:13:59.930329      14 leaderelection.go:271] successfully acquired lease argocd/c21b75f2.argoproj.io
+time="2026-06-01T07:13:59Z" level=info msg="Starting EventSource" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater source="kind source: *v1alpha1.ImageUpdater"
+time="2026-06-01T07:14:00Z" level=info msg="Starting Controller" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater
+time="2026-06-01T07:14:00Z" level=info msg="Starting workers" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater worker count=1
+time="2026-06-01T07:14:00Z" level=info msg="No ImageUpdater CRs to process" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Finished cache warm-up." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Serving metrics server" bindAddress=":8443" logger=controller-runtime.metrics secure=true
+
+^Z
+[1]+  Stopped                    kubectl -n argocd logs deploy/argocd-image-updater-controller -f
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get application chai-app -n argocd -o yaml | grep image-updater -A20
+    argocd-image-updater.argoproj.io/chai-app.update-strategy: semver
+    argocd-image-updater.argoproj.io/image-list: chai-app=ritik2909/chai-devops
+    argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/argocd-image-updater-git-creds
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"argoproj.io/v1alpha1","kind":"Application","metadata":{"annotations":{"argocd-image-updater.argoproj.io/chai-app.update-strategy":"semver","argocd-image-updater.argoproj.io/image-list":"chai-app=ritik2909/chai-devops","argocd-image-updater.argoproj.io/write-back-method":"git:secret:argocd/argocd-image-updater-git-creds"},"name":"chai-app","namespace":"argocd"},"spec":{"destination":{"namespace":"default","server":"https://172.31.20.93:33893"},"project":"default","source":{"path":"image_updater/chai-app","repoURL":"https://github.com/rb5437/argocd-demos.git","targetRevision":"main"},"syncPolicy":{"automated":{"prune":true,"selfHeal":true}}}}
+    notified.notifications.argoproj.io: '{"on-deployed:[0].v1A0rWCJXFbFy-6e_DZgBKGZB44:email:ritikbawane5437@gmail.com":1780296817}'
+  creationTimestamp: "2026-06-01T06:53:27Z"
+  generation: 62
+  name: chai-app
+  namespace: argocd
+  resourceVersion: "15086"
+  uid: fd996174-d2e7-4059-bf43-511dfdc256ab
+spec:
+  destination:
+    namespace: default
+    server: https://172.31.20.93:33893
+  project: default
+  source:
+    path: image_updater/chai-app
+    repoURL: https://github.com/rb5437/argocd-demos.git
+    targetRevision: main
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get imageupdaters -A
+No resources found
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl logs -n argocd deploy/argocd-image-updater-controller --since=10m
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl logs -n argocd deploy/argocd-image-updater-controller --tail=200
+time="2026-06-01T07:13:59Z" level=info msg="Controller runtime logger initialized." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup setAppLogLevel=info
+time="2026-06-01T07:13:59Z" level=info msg=starting app="argocd-image-updater: v1.2.1+1b62241" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater healthPort=":8081" interval=2m0s logger=controller-setup loglevel=INFO
+time="2026-06-01T07:13:59Z" level=info msg="commit message template not found, using default" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup path=/app/config/commit.template
+time="2026-06-01T07:13:59Z" level=info msg="Registry configuration not found or is a directory, using default configuration" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater error="{\"Op\":\"stat\",\"Path\":\"/app/config/registries.conf\",\"Err\":2}" logger=controller-setup path=/app/config/registries.conf
+time="2026-06-01T07:13:59Z" level=info msg="Resolved controller namespace from service account token" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Watching controller namespace only" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T07:13:59Z" level=info msg="Adding cache warmer to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="Adding Webhook Server as a Runnable to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="webhook server is disabled, skip adding webhook server runnable to manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+I0601 07:13:59.846514      14 leaderelection.go:257] attempting to acquire leader lease argocd/c21b75f2.argoproj.io...
+time="2026-06-01T07:13:59Z" level=info msg="Starting metrics server" logger=controller-runtime.metrics
+time="2026-06-01T07:13:59Z" level=info msg="Disabling HTTP/2 support" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T07:13:59Z" level=info msg="starting server" addr="[::]:8081" name="health probe"
+I0601 07:13:59.930329      14 leaderelection.go:271] successfully acquired lease argocd/c21b75f2.argoproj.io
+time="2026-06-01T07:13:59Z" level=info msg="Starting EventSource" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater source="kind source: *v1alpha1.ImageUpdater"
+time="2026-06-01T07:14:00Z" level=info msg="Starting Controller" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater
+time="2026-06-01T07:14:00Z" level=info msg="Starting workers" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater worker count=1
+time="2026-06-01T07:14:00Z" level=info msg="No ImageUpdater CRs to process" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Finished cache warm-up." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T07:14:00Z" level=info msg="Serving metrics server" bindAddress=":8443" logger=controller-runtime.metrics secure=true
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get pods -n argocd
+NAME                                                READY   STATUS    RESTARTS   AGE
+argocd-application-controller-0                     1/1     Running   0          137m
+argocd-applicationset-controller-6cb467498c-fxt5m   1/1     Running   0          137m
+argocd-dex-server-6c468465db-qvc2r                  1/1     Running   0          137m
+argocd-image-updater-controller-764fd4cb47-5v5ms    1/1     Running   0          54m
+argocd-notifications-controller-7d799659bf-fp42l    1/1     Running   0          137m
+argocd-redis-67cffd569f-h8jjc                       1/1     Running   0          137m
+argocd-repo-server-6458bd9fd6-txmtt                 1/1     Running   0          137m
+argocd-server-5758f69d8b-b6wbb                      1/1     Running   0          137m
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get crds | grep imageupdater
+imageupdaters.argocd-image-updater.argoproj.io   2026-06-01T07:13:46Z
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get deploy -n argocd
+NAME                               READY   UP-TO-DATE   AVAILABLE   AGE
+argocd-applicationset-controller   1/1     1            1           138m
+argocd-dex-server                  1/1     1            1           138m
+argocd-image-updater-controller    1/1     1            1           54m
+argocd-notifications-controller    1/1     1            1           138m
+argocd-redis                       1/1     1            1           138m
+argocd-repo-server                 1/1     1            1           138m
+argocd-server                      1/1     1            1           138m
+ubuntu@ip-172-31-20-93:~/image_updater$
+ubuntu@ip-172-31-20-93:~/image_updater$ curl -L https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/config/install.yaml -o install.yaml
+
+kubectl apply -n argocd -f install.yaml
+  % Total    % Received % Xferd  Average Speed  Time    Time    Time   Current
+                                 Dload  Upload  Total   Spent   Left   Speed
+100  48643 100  48643   0      0 868.8k      0                              0
+customresourcedefinition.apiextensions.k8s.io/imageupdaters.argocd-image-updater.argoproj.io created
+serviceaccount/argocd-image-updater-controller unchanged
+role.rbac.authorization.k8s.io/argocd-image-updater unchanged
+role.rbac.authorization.k8s.io/argocd-image-updater-leader-election-role unchanged
+role.rbac.authorization.k8s.io/argocd-image-updater-manager-role unchanged
+clusterrole.rbac.authorization.k8s.io/argocd-image-updater-metrics-auth-role unchanged
+clusterrole.rbac.authorization.k8s.io/argocd-image-updater-metrics-reader unchanged
+rolebinding.rbac.authorization.k8s.io/argocd-image-updater unchanged
+rolebinding.rbac.authorization.k8s.io/argocd-image-updater-leader-election-rolebinding unchanged
+rolebinding.rbac.authorization.k8s.io/argocd-image-updater-manager-rolebinding unchanged
+clusterrolebinding.rbac.authorization.k8s.io/argocd-image-updater-metrics-auth-rolebinding unchanged
+clusterrolebinding.rbac.authorization.k8s.io/argocd-image-updater-metrics-reader-rolebinding unchanged
+configmap/argocd-image-updater-config unchanged
+configmap/argocd-image-updater-ssh-config unchanged
+secret/argocd-image-updater-secret unchanged
+service/argocd-image-updater-controller-metrics-service unchanged
+deployment.apps/argocd-image-updater-controller created
+networkpolicy.networking.k8s.io/allow-metrics-traffic unchanged
+ubuntu@ip-172-31-20-93:~/image_updater$
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get pods -n argocd | grep image
+argocd-image-updater-controller-764fd4cb47-krbqc    1/1     Running   0          46s
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get crd | grep imageupdater
+imageupdaters.argocd-image-updater.argoproj.io   2026-06-01T08:34:02Z
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl api-resources | grep -i image
+imageupdaters                                          argocd-image-updater.argoproj.io/v1alpha1   true         ImageUpdater
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl logs -n argocd deploy/argocd-image-updater-controller --tail=100
+time="2026-06-01T08:34:06Z" level=info msg="Controller runtime logger initialized." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup setAppLogLevel=info
+time="2026-06-01T08:34:06Z" level=info msg=starting app="argocd-image-updater: v1.2.1+1b62241" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater healthPort=":8081" interval=2m0s logger=controller-setup loglevel=INFO
+time="2026-06-01T08:34:06Z" level=info msg="commit message template not found, using default" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup path=/app/config/commit.template
+time="2026-06-01T08:34:06Z" level=info msg="Registry configuration not found or is a directory, using default configuration" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater error="{\"Op\":\"stat\",\"Path\":\"/app/config/registries.conf\",\"Err\":2}" logger=controller-setup path=/app/config/registries.conf
+time="2026-06-01T08:34:06Z" level=info msg="Resolved controller namespace from service account token" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T08:34:06Z" level=info msg="Watching controller namespace only" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T08:34:06Z" level=info msg="Adding cache warmer to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="Adding Webhook Server as a Runnable to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="webhook server is disabled, skip adding webhook server runnable to manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="starting manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="Starting metrics server" logger=controller-runtime.metrics
+time="2026-06-01T08:34:06Z" level=info msg="Disabling HTTP/2 support" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+I0601 08:34:06.992369      14 leaderelection.go:257] attempting to acquire leader lease argocd/c21b75f2.argoproj.io...
+time="2026-06-01T08:34:06Z" level=info msg="starting server" addr="[::]:8081" name="health probe"
+time="2026-06-01T08:34:07Z" level=info msg="Serving metrics server" bindAddress=":8443" logger=controller-runtime.metrics secure=true
+I0601 08:34:24.045325      14 leaderelection.go:271] successfully acquired lease argocd/c21b75f2.argoproj.io
+time="2026-06-01T08:34:24Z" level=info msg="Starting EventSource" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater source="kind source: *v1alpha1.ImageUpdater"
+time="2026-06-01T08:34:24Z" level=info msg="No ImageUpdater CRs to process" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T08:34:24Z" level=info msg="Finished cache warm-up." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T08:34:24Z" level=info msg="Starting Controller" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater
+time="2026-06-01T08:34:24Z" level=info msg="Starting workers" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater worker count=1
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl explain imageupdaters
+GROUP:      argocd-image-updater.argoproj.io
+KIND:       ImageUpdater
+VERSION:    v1alpha1
+
+DESCRIPTION:
+    ImageUpdater is the Schema for the imageupdaters API
+
+FIELDS:
+  apiVersion    <string>
+    APIVersion defines the versioned schema of this representation of an object.
+    Servers should convert recognized schemas to the latest internal value, and
+    may reject unrecognized values. More info:
+    https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+
+  kind  <string>
+    Kind is a string value representing the REST resource this object
+    represents. Servers may infer this from the endpoint the client submits
+    requests to. Cannot be updated. In CamelCase. More info:
+    https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+
+  metadata      <ObjectMeta>
+    Standard object's metadata. More info:
+    https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata
+
+  spec  <Object>
+    ImageUpdaterSpec defines the desired state of ImageUpdater
+    It specifies which applications to target, default update strategies,
+    and a list of images to manage.
+
+  status        <Object>
+    ImageUpdaterStatus defines the observed state of ImageUpdater
+
+
+ubuntu@ip-172-31-20-93:~/image_updater$
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl explain imageupdaters.spec
+GROUP:      argocd-image-updater.argoproj.io
+KIND:       ImageUpdater
+VERSION:    v1alpha1
+
+FIELD: spec <Object>
+
+
+DESCRIPTION:
+    ImageUpdaterSpec defines the desired state of ImageUpdater
+    It specifies which applications to target, default update strategies,
+    and a list of images to manage.
+
+FIELDS:
+  applicationRefs       <[]Object> -required-
+    ApplicationRefs indicates the set of applications to be managed.
+    ApplicationRefs is a list of rules to select Argo CD Applications within the
+    ImageUpdater CR's namespace.
+    Each reference can also provide specific overrides for the global settings
+    defined above.
+
+  commonUpdateSettings  <Object>
+    CommonUpdateSettings provides global default settings for update strategies,
+    tag filtering, pull secrets, etc., for all applications matched by this CR.
+    These can be overridden at the ApplicationRef or ImageConfig level.
+
+  writeBackConfig       <Object>
+    WriteBackConfig provides global default settings for how and where to write
+    back image updates.
+    This can be overridden at the ApplicationRef level.
+
+
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl explain imageupdaters.spec.applicationRefs
+GROUP:      argocd-image-updater.argoproj.io
+KIND:       ImageUpdater
+VERSION:    v1alpha1
+
+FIELD: applicationRefs <[]Object>
+
+
+DESCRIPTION:
+    ApplicationRefs indicates the set of applications to be managed.
+    ApplicationRefs is a list of rules to select Argo CD Applications within the
+    ImageUpdater CR's namespace.
+    Each reference can also provide specific overrides for the global settings
+    defined above.
+    ApplicationRef contains various criteria by which to include applications
+    for managing by image updater
+
+FIELDS:
+  commonUpdateSettings  <Object>
+    CommonUpdateSettings overrides the global CommonUpdateSettings for
+    applications
+    matched by this selector.
+    This field is ignored when UseAnnotations is true.
+
+  images        <[]Object>
+    Images contains a list of configurations that how images should be updated.
+    These rules apply to applications selected by namePattern in
+    ApplicationRefs, and each
+    image can override global/ApplicationRef settings.
+    This field is ignored when UseAnnotations is true.
+
+  labelSelectors        <Object>
+    LabelSelectors indicates the label selectors to apply for application
+    selection
+
+  namePattern   <string> -required-
+    NamePattern indicates the glob pattern for application name
+
+  useAnnotations        <boolean>
+    UseAnnotations When true, read image configuration from Application's
+    argocd-image-updater.argoproj.io/* annotations instead of
+    requiring explicit Images[] configuration in this CR.
+    When this field is set to true, only namePattern and labelSelectors are used
+    for
+    application selection. All other fields (CommonUpdateSettings,
+    WriteBackConfig, Images)
+    are ignored.
+
+  writeBackConfig       <Object>
+    WriteBackConfig overrides the global WriteBackConfig settings for
+    applications
+    matched by this selector.
+    This field is ignored when UseAnnotations is true.
+
+
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl explain imageupdaters.spec.applicationRefs --recursive
+GROUP:      argocd-image-updater.argoproj.io
+KIND:       ImageUpdater
+VERSION:    v1alpha1
+
+FIELD: applicationRefs <[]Object>
+
+
+DESCRIPTION:
+    ApplicationRefs indicates the set of applications to be managed.
+    ApplicationRefs is a list of rules to select Argo CD Applications within the
+    ImageUpdater CR's namespace.
+    Each reference can also provide specific overrides for the global settings
+    defined above.
+    ApplicationRef contains various criteria by which to include applications
+    for managing by image updater
+
+FIELDS:
+  commonUpdateSettings  <Object>
+    allowTags   <string>
+    forceUpdate <boolean>
+    ignoreTags  <[]string>
+    platforms   <[]string>
+    pullSecret  <string>
+    updateStrategy      <string>
+  images        <[]Object>
+    alias       <string> -required-
+    commonUpdateSettings        <Object>
+      allowTags <string>
+      forceUpdate       <boolean>
+      ignoreTags        <[]string>
+      platforms <[]string>
+      pullSecret        <string>
+      updateStrategy    <string>
+    imageName   <string> -required-
+    manifestTargets     <Object>
+      helm      <Object>
+        name    <string>
+        spec    <string>
+        tag     <string>
+      kustomize <Object>
+        name    <string> -required-
+  labelSelectors        <Object>
+    matchExpressions    <[]Object>
+      key       <string> -required-
+      operator  <string> -required-
+      values    <[]string>
+    matchLabels <map[string]string>
+  namePattern   <string> -required-
+  useAnnotations        <boolean>
+  writeBackConfig       <Object>
+    gitConfig   <Object>
+      branch    <string>
+      pullRequest       <Object>
+        github  <Object>
+        gitlab  <Object>
+      repository        <string>
+      writeBackTarget   <string>
+    method      <string> -required-
+
+ubuntu@ip-172-31-20-93:~/image_updater$ vi image-updater.yml
+ubuntu@ip-172-31-20-93:~/image_updater$ cat image-updater.yml
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: chai-app-updater
+  namespace: argocd
+
+spec:
+  applicationRefs:
+    - namePattern: "chai-app"
+      useAnnotations: true
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl apply -f image-updater.yml
+imageupdater.argocd-image-updater.argoproj.io/chai-app-updater created
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl apply -f image-updater.yml
+imageupdater.argocd-image-updater.argoproj.io/chai-app-updater unchanged
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl logs -n argocd deploy/argocd-image-updater-controller --tail=50
+time="2026-06-01T08:34:06Z" level=info msg="Controller runtime logger initialized." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup setAppLogLevel=info
+time="2026-06-01T08:34:06Z" level=info msg=starting app="argocd-image-updater: v1.2.1+1b62241" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater healthPort=":8081" interval=2m0s logger=controller-setup loglevel=INFO
+time="2026-06-01T08:34:06Z" level=info msg="commit message template not found, using default" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup path=/app/config/commit.template
+time="2026-06-01T08:34:06Z" level=info msg="Registry configuration not found or is a directory, using default configuration" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater error="{\"Op\":\"stat\",\"Path\":\"/app/config/registries.conf\",\"Err\":2}" logger=controller-setup path=/app/config/registries.conf
+time="2026-06-01T08:34:06Z" level=info msg="Resolved controller namespace from service account token" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T08:34:06Z" level=info msg="Watching controller namespace only" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup namespace=argocd
+time="2026-06-01T08:34:06Z" level=info msg="Adding cache warmer to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="Adding Webhook Server as a Runnable to the manager." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="webhook server is disabled, skip adding webhook server runnable to manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="starting manager" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+time="2026-06-01T08:34:06Z" level=info msg="Starting metrics server" logger=controller-runtime.metrics
+time="2026-06-01T08:34:06Z" level=info msg="Disabling HTTP/2 support" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=controller-setup
+I0601 08:34:06.992369      14 leaderelection.go:257] attempting to acquire leader lease argocd/c21b75f2.argoproj.io...
+time="2026-06-01T08:34:06Z" level=info msg="starting server" addr="[::]:8081" name="health probe"
+time="2026-06-01T08:34:07Z" level=info msg="Serving metrics server" bindAddress=":8443" logger=controller-runtime.metrics secure=true
+I0601 08:34:24.045325      14 leaderelection.go:271] successfully acquired lease argocd/c21b75f2.argoproj.io
+time="2026-06-01T08:34:24Z" level=info msg="Starting EventSource" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater source="kind source: *v1alpha1.ImageUpdater"
+time="2026-06-01T08:34:24Z" level=info msg="No ImageUpdater CRs to process" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T08:34:24Z" level=info msg="Finished cache warm-up." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater logger=warmup-cache
+time="2026-06-01T08:34:24Z" level=info msg="Starting Controller" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater
+time="2026-06-01T08:34:24Z" level=info msg="Starting workers" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater worker count=1
+time="2026-06-01T08:45:24Z" level=info msg="Successfully fetched ImageUpdater resource." controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+time="2026-06-01T08:45:24Z" level=info msg="metadata.finalizers: \"resources-finalizer.argocd-image-updater.argoproj.io\": prefer a domain-qualified finalizer name including a path (/) to avoid accidental conflicts with other finalizer writers" ImageUpdater="{\"name\":\"chai-app-updater\",\"namespace\":\"argocd\"}" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater name=chai-app-updater namespace=argocd reconcileID="\"34a051d4-50fd-4b48-8bb6-136bd7c3f5ac\""
+time="2026-06-01T08:45:24Z" level=info msg="Listing all applications in target namespace: argocd" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+time="2026-06-01T08:45:24Z" level=info msg="Starting image update cycle, considering 1 application(s) for update" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+time="2026-06-01T08:45:25Z" level=info msg="Setting new image to ritik2909/chai-devops:v1.0.4" application=argocd/chai-app controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd image_alias=chai-app image_name=ritik2909/chai-devops image_registry= image_tag=v1.0.3 logger=reconcile
+time="2026-06-01T08:45:25Z" level=info msg="Successfully updated image 'ritik2909/chai-devops:v1.0.3' to 'ritik2909/chai-devops:v1.0.4', but pending spec update (dry run=false)" application=argocd/chai-app controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd image_alias=chai-app image_name=ritik2909/chai-devops image_registry= image_tag=v1.0.3 logger=reconcile
+time="2026-06-01T08:45:25Z" level=info msg="Committing 1 parameter update(s) for application chai-app" application=argocd/chai-app controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+time="2026-06-01T08:45:25Z" level=info msg="Initializing https://github.com/rb5437/argocd-demos.git to /tmp/git-chai-app1626706219" application=argocd/chai-app controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+time="2026-06-01T08:45:25Z" level=info msg="git fetch origin main --force --prune --depth 1" dir=/tmp/git-chai-app1626706219 execID=2dbee
+{"args":"[git fetch origin main --force --prune --depth 1]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:25Z","time_ms":281.15032299999996}
+time="2026-06-01T08:45:25Z" level=info msg="git checkout --force main" dir=/tmp/git-chai-app1626706219 execID=4e63a
+{"args":"[git checkout --force main]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:25Z","time_ms":11.768556}
+time="2026-06-01T08:45:25Z" level=info msg="git clean -ffdx" dir=/tmp/git-chai-app1626706219 execID=64ec9
+{"args":"[git clean -ffdx]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:25Z","time_ms":2.427654}
+time="2026-06-01T08:45:25Z" level=info msg="git config user.name argocd-image-updater" dir=/tmp/git-chai-app1626706219 execID=f148c
+{"args":"[git config user.name argocd-image-updater]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:25Z","time_ms":2.082937}
+time="2026-06-01T08:45:25Z" level=info msg="git config user.email noreply@argoproj.io" dir=/tmp/git-chai-app1626706219 execID=32f42
+{"args":"[git config user.email noreply@argoproj.io]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:25Z","time_ms":1.540271}
+time="2026-06-01T08:45:25Z" level=info msg="git -c gpg.format=openpgp commit -a -F /tmp/image-updater-commit-msg3225552376" dir=/tmp/git-chai-app1626706219 execID=99600
+{"args":"[git -c gpg.format=openpgp commit -a -F /tmp/image-updater-commit-msg3225552376]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:25Z","time_ms":47.737051}
+time="2026-06-01T08:45:25Z" level=info msg="git push origin main" dir=/tmp/git-chai-app1626706219 execID=db5ce
+{"args":"[git push origin main]","dir":"/tmp/git-chai-app1626706219","level":"info","msg":"Trace","operation_name":"exec git","time":"2026-06-01T08:45:27Z","time_ms":1663.247926}
+time="2026-06-01T08:45:27Z" level=info msg="Successfully updated the live application spec" application=argocd/chai-app controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+time="2026-06-01T08:45:27Z" level=info msg="Processing results: applications=1 images_considered=1 images_skipped=0 images_updated=1 errors=0" controller=imageupdater controllerGroup=argocd-image-updater.argoproj.io controllerKind=ImageUpdater imageUpdater_name=chai-app-updater imageUpdater_namespace=argocd logger=reconcile
+ubuntu@ip-172-31-20-93:~/image_updater$ kubectl get deployment chai-app -n default -o jsonpath='{.spec.template.spec.containers[0].image}'
+ritik2909/chai-devops:v1.0.4ubuntu@ip-172-31-20-93:~/image_updater$ argocd-image-updater
+argocd-image-updater: command not found
+ubuntu@ip-172-31-20-93:~/image_updater$ docker build -t ritik2909/chai-devops:v1.0.5 .
+docker push ritik2909/chai-devops:v1.0.5
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/ubuntu/image_updater/Dockerfile: no such file or directory
+The push refers to repository [docker.io/ritik2909/chai-devops]
+tag does not exist: ritik2909/chai-devops:v1.0.5
+ubuntu@ip-172-31-20-93:~/image_updater$
+ubuntu@ip-172-31-20-93:~$ ls
+Monitoring  argocd  get_helm.sh  image_updater  kind-config.yml  kubectl  notification
+ubuntu@ip-172-31-20-93:~$ cd Monitoring/
+ubuntu@ip-172-31-20-93:~/Monitoring$ ls
+README.md  argocd-service-monitors.yaml  chai-app.yaml  online-shop-app.yaml  output_images
+ubuntu@ip-172-31-20-93:~/Monitoring$ kubectl get svc -n argocd
+NAME                                              TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)             AGE
+argocd-applicationset-controller                  ClusterIP   10.96.128.38   <none>        7000/TCP            3h10m
+argocd-dex-server                                 ClusterIP   10.96.110.36   <none>        5556/TCP,5557/TCP   3h10m
+argocd-image-updater-controller-metrics-service   ClusterIP   10.96.248.33   <none>        8443/TCP            107m
+argocd-redis                                      ClusterIP   10.96.113.91   <none>        6379/TCP            3h10m
+argocd-repo-server                                ClusterIP   10.96.182.49   <none>        8081/TCP            3h10m
+argocd-server                                     ClusterIP   10.96.67.176   <none>        80/TCP,443/TCP      3h10m
+ubuntu@ip-172-31-20-93:~/Monitoring$ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+"prometheus-community" has been added to your repositories
+ubuntu@ip-172-31-20-93:~/Monitoring$ kubectl create namespace monitoring
+namespace/monitoring created
+ubuntu@ip-172-31-20-93:~/Monitoring$ helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring
