@@ -1,4 +1,4 @@
-# ⚡ Day 52 — Terraform Commands (Copy-Paste Ready)
+# ⚡ Day 52 — Terraform Commands
 
 ## 🔗 Official Command References
 
