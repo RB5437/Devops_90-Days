@@ -18,7 +18,7 @@
 | ☁️ AWS S3 Resource | [registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) |
 | 📁 Local Provider | [registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) |
 | 🎥 Shubham Video | [youtube.com/watch?v=S9mohJI_R34&t=3100s](https://www.youtube.com/watch?v=S9mohJI_R34&t=3100s) |
-| 💾 Course Repo | [github.com/LondheShubham153/terraform-for-devops](https://github.com/LondheShubham153/terraform-for-devops) |
+
 
 ---
 
