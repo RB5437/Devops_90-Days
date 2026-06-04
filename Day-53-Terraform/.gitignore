@@ -1,0 +1,14 @@
+cat > .gitignore <<EOF
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+
+# AWS CLI downloads
+aws/
+awscliv2.zip
+
+# Sensitive files
+*.pem
+EOF
