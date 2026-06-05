@@ -1,0 +1,2991 @@
+
+# Key Value pair
+resource "aws_key_pair" "my_key_pair" {
+  key_name   = "terra-key-ec2"
+  public_key = file("terra-key-ec2.pub")
+}
+
+# VPC Default
+resource "aws_default_vpc" "default" {}
+
+# Security Group
+resource "aws_security_group" "my_security_group" {
+  name        = "automate-sg"
+  description = "this is Inbound and outbound rules for your instance Security group"
+  vpc_id      = aws_default_vpc.default.id
+
+  # Inbound rules
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow SSH access from anywhere"
+  }
+
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow HTTP access from anywhere"
+  }
+
+  # Outbound rules
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
+  }
+}
+
+# EC2 instance
+resource "aws_instance" "my_instance" {
+  ami                    = "ami-091138d0f0d41ff90" # OS AMI ID
+  instance_type          = "t3.micro"
+  key_name               = aws_key_pair.my_key_pair.key_name
+  vpc_security_group_ids = [aws_security_group.my_security_group.id]
+
+  # root storage (EBS)
+  root_block_device {
+    volume_size = 10
+    volume_type = "gp3"
+  }
+
+  tags = {
+    Name = "terra-automate-server"
+  }
+}
+
+
+
+PS C:\Users\HP\Documents\terraform> terraform init
+Initializing provider plugins found in the configuration...
+- Reusing previous version of hashicorp/aws from the dependency lock file
+- Using previously-installed hashicorp/aws v6.49.0
+
+Initializing the backend...
+
+
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+PS C:\Users\HP\Documents\terraform> terraform validate
+Success! The configuration is valid.
+
+PS C:\Users\HP\Documents\terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following
+symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance[0] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-0d76b909de1a0595d"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_instance.my_instance[1] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-0d76b909de1a0595d"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_instance.my_instance[2] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-0d76b909de1a0595d"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 6 to add, 0 to change, 0 to destroy.
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run
+"terraform apply" now.
+PS C:\Users\HP\Documents\terraform> terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following
+symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-0d76b909de1a0595d"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_key_pair.my_key_pair: Creating...
+aws_default_vpc.default: Creating...
+╷
+│ Error: importing EC2 Key Pair (terra-key-ec2): operation error EC2: ImportKeyPair, https response error StatusCode: 403, RequestID: 98679f79-716c-4d88-bfc8-b04c892835f4, api error UnauthorizedOperation: You are not authorized to perform this operation. User: arn:aws:iam::904352270417:user/terrafrom-admin is not authorized to perform: ec2:ImportKeyPair on resource: arn:aws:ec2:us-east-1:904352270417:key-pair/terra-key-ec2 because no identity-based policy allows the ec2:ImportKeyPair action. Encoded authorization failure message: GFtWRNoek7_HcihQm1zAw9js0ANTuvFHcmWnpe_M7YRDvyWCvRmo_GhZm7I3vBVtVI8wU5BaWiaGsy35OtUHtcLh0VRV-8ZtEVjbYbGDff_TnJdPZ0Ny6HpeSxHlRaRVv99EH6fnaCLZqYNOvbFN0fe-duqMwWoCqQnipeR--_wKIDalTS6uD15rz47VR4BjwiqyH5I_GznrCVtPBW6Jm-a3auMXDY3VxrxQcYjw_qLLQKUagylhUhPcT9gsWxGhiPpHjpecoLKfohBobGNnBRpfjBG7C7ZpAYYZ1WhBbl7dolIepSUjOu7ArQ7YbyUpGLZMfTaudSts8Dt-hATYjX4KJBYnkvSZzpNg1Ag033J_hwgCshtRvk2hP8N9hHOaCbBnhAa9nJJRDTXe5drl6cAl0nyZx_eUG-FmK-xFa39cEIsc-VorZFgpQyJS_Dk-leBrpjK9N1S526KXhDWYVlgsEZDTL3v0dmXM-ebtSgBwpNCd8T2gT-4gr-lTon-olFlz-N4TgJKuBVbvbFWPu3kyO3SNLZZZihReUhN4G_8G
+│ 
+│   with aws_key_pair.my_key_pair,
+│   on ec2.tf line 3, in resource "aws_key_pair" "my_key_pair":
+│    3: resource "aws_key_pair" "my_key_pair" {
+│ 
+╵
+╷
+│ Error: reading EC2 Default VPC (): operation error EC2: DescribeVpcs, https response error StatusCode: 403, RequestID: f6f8cb39-bed4-4182-86ca-891931d96e78, api error UnauthorizedOperation: You are not authorized to perform this operation. User: arn:aws:iam::904352270417:user/terrafrom-admin is not authorized to perform: ec2:DescribeVpcs because no identity-based policy allows the ec2:DescribeVpcs action
+│ 
+│   with aws_default_vpc.default,
+│   on ec2.tf line 9, in resource "aws_default_vpc" "default":
+│    9: resource "aws_default_vpc" "default" {}
+│ 
+╵
+PS C:\Users\HP\Documents\terraform> terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following
+symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-0d76b909de1a0595d"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_key_pair.my_key_pair: Creating...
+aws_default_vpc.default: Creating...
+aws_key_pair.my_key_pair: Creation complete after 1s [id=terra-key-ec2]
+aws_default_vpc.default: Creation complete after 5s [id=vpc-0f0637ea8d32462bd]
+aws_security_group.my_security_group: Creating...
+aws_security_group.my_security_group: Creation complete after 5s [id=sg-06a02a670988c5e4a]
+aws_instance.my_instance: Creating...
+╷
+│ Error: collecting instance settings: couldn't find resource
+│ 
+│   with aws_instance.my_instance,
+│   on ec2.tf line 45, in resource "aws_instance" "my_instance":
+│   45: resource "aws_instance" "my_instance" {
+│ 
+╵
+PS C:\Users\HP\Documents\terraform> terraform apply
+aws_key_pair.my_key_pair: Refreshing state... [id=terra-key-ec2]
+aws_default_vpc.default: Refreshing state... [id=vpc-0f0637ea8d32462bd]
+aws_security_group.my_security_group: Refreshing state... [id=sg-06a02a670988c5e4a]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following
+symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_instance.my_instance will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = [
+          + "sg-06a02a670988c5e4a",
+        ]
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+Plan: 1 to add, 0 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_instance.my_instance: Creating...
+aws_instance.my_instance: Still creating... [00m10s elapsed]
+aws_instance.my_instance: Creation complete after 17s [id=i-02913817837a69509]
+
+Apply complete! Resources: 1 added, 0 changed, 0 destroyed.
+PS C:\Users\HP\Documents\terraform> 
+
+PS C:\Users\HP\Documents\terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+PS C:\Users\HP\Documents\terraform> terraform apply
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_arn                 = (known after apply)
+  + ec2_instance_public_dns = (known after apply)
+  + ec2_instance_public_ip  = (known after apply)
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value: yes
+
+aws_key_pair.my_key_pair: Creating...
+aws_default_vpc.default: Creating...
+aws_key_pair.my_key_pair: Creation complete after 2s [id=terra-key-ec2]
+aws_default_vpc.default: Creation complete after 5s [id=vpc-0f0637ea8d32462bd]
+aws_security_group.my_security_group: Creating...
+aws_security_group.my_security_group: Creation complete after 5s [id=sg-0143a59212e24379b]
+aws_instance.my_instance: Creating...
+aws_instance.my_instance: Still creating... [00m10s elapsed]
+aws_instance.my_instance: Creation complete after 16s [id=i-01c88cc752e4af565]
+
+Apply complete! Resources: 4 added, 0 changed, 0 destroyed.
+
+Outputs:
+
+ec2_arn = "arn:aws:ec2:us-east-1:904352270417:instance/i-01c88cc752e4af565"
+ec2_instance_public_dns = "ec2-54-225-37-192.compute-1.amazonaws.com"
+ec2_instance_public_ip = "54.225.37.192"
+PS C:\Users\HP\Documents\terraform> terraform destroy -auto-approve
+aws_key_pair.my_key_pair: Refreshing state... [id=terra-key-ec2]
+aws_default_vpc.default: Refreshing state... [id=vpc-0f0637ea8d32462bd]
+aws_security_group.my_security_group: Refreshing state... [id=sg-0143a59212e24379b]
+aws_instance.my_instance: Refreshing state... [id=i-01c88cc752e4af565]
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  - destroy
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be destroyed
+  - resource "aws_default_vpc" "default" {
+      - arn                                  = "arn:aws:ec2:us-east-1:904352270417:vpc/vpc-0f0637ea8d32462bd" -> null
+      - assign_generated_ipv6_cidr_block     = false -> null
+      - cidr_block                           = "172.31.0.0/16" -> null
+      - default_network_acl_id               = "acl-068d276c59e20bdbb" -> null
+      - default_route_table_id               = "rtb-06c22daa342da0e05" -> null
+      - default_security_group_id            = "sg-08f0d23de372ca050" -> null
+      - dhcp_options_id                      = "dopt-018928c71602f8502" -> null
+      - enable_dns_hostnames                 = true -> null
+      - enable_dns_support                   = true -> null
+      - enable_network_address_usage_metrics = false -> null
+      - existing_default_vpc                 = true -> null
+      - force_destroy                        = false -> null
+      - id                                   = "vpc-0f0637ea8d32462bd" -> null
+      - instance_tenancy                     = "default" -> null
+      - ipv6_netmask_length                  = 0 -> null
+      - main_route_table_id                  = "rtb-06c22daa342da0e05" -> null
+      - owner_id                             = "904352270417" -> null
+      - region                               = "us-east-1" -> null
+      - tags                                 = {} -> null
+      - tags_all                             = {} -> null
+        # (4 unchanged attributes hidden)
+    }
+
+  # aws_instance.my_instance will be destroyed
+  - resource "aws_instance" "my_instance" {
+      - ami                                  = "ami-091138d0f0d41ff90" -> null
+      - arn                                  = "arn:aws:ec2:us-east-1:904352270417:instance/i-01c88cc752e4af565" -> null
+      - associate_public_ip_address          = true -> null
+      - availability_zone                    = "us-east-1d" -> null
+      - disable_api_stop                     = false -> null
+      - disable_api_termination              = false -> null
+      - ebs_optimized                        = false -> null
+      - force_destroy                        = false -> null
+      - get_password_data                    = false -> null
+      - hibernation                          = false -> null
+      - id                                   = "i-01c88cc752e4af565" -> null
+      - instance_initiated_shutdown_behavior = "stop" -> null
+      - instance_state                       = "running" -> null
+      - instance_type                        = "t3.micro" -> null
+      - ipv6_address_count                   = 0 -> null
+      - ipv6_addresses                       = [] -> null
+      - key_name                             = "terra-key-ec2" -> null
+      - monitoring                           = false -> null
+      - placement_partition_number           = 0 -> null
+      - primary_network_interface_id         = "eni-0160656dfd8877a86" -> null
+      - private_dns                          = "ip-172-31-45-229.ec2.internal" -> null
+      - private_ip                           = "172.31.45.229" -> null
+      - public_dns                           = "ec2-54-225-37-192.compute-1.amazonaws.com" -> null
+      - public_ip                            = "54.225.37.192" -> null
+      - region                               = "us-east-1" -> null
+      - secondary_private_ips                = [] -> null
+      - security_groups                      = [
+          - "automate-sg",
+        ] -> null
+      - source_dest_check                    = true -> null
+      - subnet_id                            = "subnet-0e6a02c44c3ae9fac" -> null
+      - tags                                 = {
+          - "Name" = "terra-automate-server"
+        } -> null
+      - tags_all                             = {
+          - "Name" = "terra-automate-server"
+        } -> null
+      - tenancy                              = "default" -> null
+      - user_data_replace_on_change          = false -> null
+      - vpc_security_group_ids               = [
+          - "sg-0143a59212e24379b",
+        ] -> null
+        # (8 unchanged attributes hidden)
+
+      - capacity_reservation_specification {
+          - capacity_reservation_preference = "open" -> null
+        }
+
+      - cpu_options {
+          - core_count            = 1 -> null
+          - threads_per_core      = 2 -> null
+            # (2 unchanged attributes hidden)
+        }
+
+      - credit_specification {
+          - cpu_credits = "unlimited" -> null
+        }
+
+      - enclave_options {
+          - enabled = false -> null
+        }
+
+      - maintenance_options {
+          - auto_recovery = "default" -> null
+        }
+
+      - metadata_options {
+          - http_endpoint               = "enabled" -> null
+          - http_protocol_ipv6          = "disabled" -> null
+          - http_put_response_hop_limit = 2 -> null
+          - http_tokens                 = "required" -> null
+          - instance_metadata_tags      = "disabled" -> null
+        }
+
+      - primary_network_interface {
+          - delete_on_termination = true -> null
+          - network_interface_id  = "eni-0160656dfd8877a86" -> null
+        }
+
+      - private_dns_name_options {
+          - enable_resource_name_dns_a_record    = false -> null
+          - enable_resource_name_dns_aaaa_record = false -> null
+          - hostname_type                        = "ip-name" -> null
+        }
+
+      - root_block_device {
+          - delete_on_termination = true -> null
+          - device_name           = "/dev/sda1" -> null
+          - encrypted             = false -> null
+          - iops                  = 3000 -> null
+          - tags                  = {} -> null
+          - tags_all              = {} -> null
+          - throughput            = 125 -> null
+          - volume_id             = "vol-0af9778bcd7c8aad9" -> null
+          - volume_size           = 10 -> null
+          - volume_type           = "gp3" -> null
+            # (1 unchanged attribute hidden)
+        }
+    }
+
+  # aws_key_pair.my_key_pair will be destroyed
+  - resource "aws_key_pair" "my_key_pair" {
+      - arn             = "arn:aws:ec2:us-east-1:904352270417:key-pair/terra-key-ec2" -> null
+      - fingerprint     = "HxK8mwGj5qojhaPnehbbdixjqLmmcifePxwzXgAr0I0=" -> null
+      - id              = "terra-key-ec2" -> null
+      - key_name        = "terra-key-ec2" -> null
+      - key_pair_id     = "key-07d5dbcc235afa8e4" -> null
+      - key_type        = "ed25519" -> null
+      - public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane" -> null
+      - region          = "us-east-1" -> null
+      - tags            = {} -> null
+      - tags_all        = {} -> null
+        # (1 unchanged attribute hidden)
+    }
+
+  # aws_security_group.my_security_group will be destroyed
+  - resource "aws_security_group" "my_security_group" {
+      - arn                    = "arn:aws:ec2:us-east-1:904352270417:security-group/sg-0143a59212e24379b" -> null
+      - description            = "this is Inbound and outbound rules for your instance Security group" -> null
+      - egress                 = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow all outbound traffic"
+              - from_port        = 0
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "-1"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 0
+            },
+        ] -> null
+      - id                     = "sg-0143a59212e24379b" -> null
+      - ingress                = [
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow HTTP access from anywhere"
+              - from_port        = 80
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 80
+            },
+          - {
+              - cidr_blocks      = [
+                  - "0.0.0.0/0",
+                ]
+              - description      = "Allow SSH access from anywhere"
+              - from_port        = 22
+              - ipv6_cidr_blocks = []
+              - prefix_list_ids  = []
+              - protocol         = "tcp"
+              - security_groups  = []
+              - self             = false
+              - to_port          = 22
+            },
+        ] -> null
+      - name                   = "automate-sg" -> null
+      - owner_id               = "904352270417" -> null
+      - region                 = "us-east-1" -> null
+      - revoke_rules_on_delete = false -> null
+      - tags                   = {} -> null
+      - tags_all               = {} -> null
+      - vpc_id                 = "vpc-0f0637ea8d32462bd" -> null
+        # (1 unchanged attribute hidden)
+    }
+
+Plan: 0 to add, 0 to change, 4 to destroy.
+
+Changes to Outputs:
+  - ec2_arn                 = "arn:aws:ec2:us-east-1:904352270417:instance/i-01c88cc752e4af565" -> null
+  - ec2_instance_public_dns = "ec2-54-225-37-192.compute-1.amazonaws.com" -> null
+  - ec2_instance_public_ip  = "54.225.37.192" -> null
+aws_instance.my_instance: Destroying... [id=i-01c88cc752e4af565]
+aws_instance.my_instance: Still destroying... [id=i-01c88cc752e4af565, 00m10s elapsed]
+aws_instance.my_instance: Still destroying... [id=i-01c88cc752e4af565, 00m20s elapsed]
+aws_instance.my_instance: Still destroying... [id=i-01c88cc752e4af565, 00m30s elapsed]
+aws_instance.my_instance: Destruction complete after 32s
+aws_key_pair.my_key_pair: Destroying... [id=terra-key-ec2]
+aws_security_group.my_security_group: Destroying... [id=sg-0143a59212e24379b]
+aws_key_pair.my_key_pair: Destruction complete after 1s
+aws_security_group.my_security_group: Destruction complete after 2s
+aws_default_vpc.default: Destroying... [id=vpc-0f0637ea8d32462bd]
+aws_default_vpc.default: Destruction complete after 0s
+
+Destroy complete! Resources: 4 destroyed.
+PS C:\Users\HP\Documents\terraform> PS C:\Users\HP\Documents\terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance[0] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_instance.my_instance[1] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "terra-automate-server"
+        }
+      + tags_all                             = {
+          + "Name" = "terra-automate-server"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_arn                 = [
+      + (known after apply),
+      + (known after apply),
+    ]
+  + ec2_instance_public_dns = [
+      + (known after apply),
+      + (known after apply),
+    ]
+  + ec2_instance_public_ip  = [
+      + (known after apply),
+      + (known after apply),
+    ]
+
+─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+PS C:\Users\HP\Documents\terraform>         }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+╷
+│ Error: Unsupported attribute
+│ 
+│   on output.tf line 20, in output "ec2_instance_public_id":
+│   20:     for key in aws_instance.my_instance : key.public_id
+│ 
+│ This object does not have an attribute named "public_id".
+╵
+PS C:\Users\HP\Documents\terraform> terraform validate
+Success! The configuration is valid.
+
+PS C:\Users\HP\Documents\terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform planned the following actions, but then encountered a problem:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance["instance1"] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "each.key"
+        }
+      + tags_all                             = {
+          + "Name" = "each.key"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_instance.my_instance["instance2"] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "each.key"
+        }
+      + tags_all                             = {
+          + "Name" = "each.key"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+╷
+│ Error: Unsupported attribute
+│ 
+│   on output.tf line 20, in output "ec2_instance_public_id":
+│   20:     for key in aws_instance.my_instance : key.public_id
+│ 
+│ This object does not have an attribute named "public_id".
+╵
+PS C:\Users\HP\Documents\terraform> terraform fmt
+output.tf
+PS C:\Users\HP\Documents\terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform planned the following actions, but then encountered a problem:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance["instance1"] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "each.key"
+        }
+      + tags_all                             = {
+          + "Name" = "each.key"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_instance.my_instance["instance2"] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "each.key"
+        }
+      + tags_all                             = {
+          + "Name" = "each.key"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+╷
+│ Error: Unsupported attribute
+│ 
+│   on output.tf line 20, in output "ec2_instance_public_id":
+│   20:     for key in aws_instance.my_instance : key.public_id
+│ 
+│ This object does not have an attribute named "public_id".
+╵
+PS C:\Users\HP\Documents\terraform> terraform plan
+
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # aws_default_vpc.default will be created
+  + resource "aws_default_vpc" "default" {
+      + arn                                  = (known after apply)
+      + cidr_block                           = (known after apply)
+      + default_network_acl_id               = (known after apply)
+      + default_route_table_id               = (known after apply)
+      + default_security_group_id            = (known after apply)
+      + dhcp_options_id                      = (known after apply)
+      + enable_dns_hostnames                 = true
+      + enable_dns_support                   = true
+      + enable_network_address_usage_metrics = (known after apply)
+      + existing_default_vpc                 = (known after apply)
+      + force_destroy                        = false
+      + id                                   = (known after apply)
+      + instance_tenancy                     = (known after apply)
+      + ipv6_association_id                  = (known after apply)
+      + ipv6_cidr_block                      = (known after apply)
+      + ipv6_cidr_block_network_border_group = (known after apply)
+      + main_route_table_id                  = (known after apply)
+      + owner_id                             = (known after apply)
+      + region                               = "us-east-1"
+      + tags_all                             = (known after apply)
+    }
+
+  # aws_instance.my_instance["instance1"] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t2.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "each.key"
+        }
+      + tags_all                             = {
+          + "Name" = "each.key"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_instance.my_instance["instance2"] will be created
+  + resource "aws_instance" "my_instance" {
+      + ami                                  = "ami-091138d0f0d41ff90"
+      + arn                                  = (known after apply)
+      + associate_public_ip_address          = (known after apply)
+      + availability_zone                    = (known after apply)
+      + disable_api_stop                     = (known after apply)
+      + disable_api_termination              = (known after apply)
+      + ebs_optimized                        = (known after apply)
+      + enable_primary_ipv6                  = (known after apply)
+      + force_destroy                        = false
+      + get_password_data                    = false
+      + host_id                              = (known after apply)
+      + host_resource_group_arn              = (known after apply)
+      + iam_instance_profile                 = (known after apply)
+      + id                                   = (known after apply)
+      + instance_initiated_shutdown_behavior = (known after apply)
+      + instance_lifecycle                   = (known after apply)
+      + instance_state                       = (known after apply)
+      + instance_type                        = "t3.micro"
+      + ipv6_address_count                   = (known after apply)
+      + ipv6_addresses                       = (known after apply)
+      + key_name                             = "terra-key-ec2"
+      + monitoring                           = (known after apply)
+      + outpost_arn                          = (known after apply)
+      + password_data                        = (known after apply)
+      + placement_group                      = (known after apply)
+      + placement_group_id                   = (known after apply)
+      + placement_partition_number           = (known after apply)
+      + primary_network_interface_id         = (known after apply)
+      + private_dns                          = (known after apply)
+      + private_ip                           = (known after apply)
+      + public_dns                           = (known after apply)
+      + public_ip                            = (known after apply)
+      + region                               = "us-east-1"
+      + secondary_private_ips                = (known after apply)
+      + security_groups                      = (known after apply)
+      + source_dest_check                    = true
+      + spot_instance_request_id             = (known after apply)
+      + subnet_id                            = (known after apply)
+      + tags                                 = {
+          + "Name" = "each.key"
+        }
+      + tags_all                             = {
+          + "Name" = "each.key"
+        }
+      + tenancy                              = (known after apply)
+      + user_data                            = <<-EOT
+            #!/bin/bash
+            apt update -y
+            apt install nginx -y
+            systemctl start nginx
+            systemctl enable nginx
+            
+            echo "Hello from Terraform on Ubuntu!" > /var/www/html/index.html
+        EOT
+      + user_data_base64                     = (known after apply)
+      + user_data_replace_on_change          = false
+      + vpc_security_group_ids               = (known after apply)
+
+      + capacity_reservation_specification (known after apply)
+
+      + cpu_options (known after apply)
+
+      + ebs_block_device (known after apply)
+
+      + enclave_options (known after apply)
+
+      + ephemeral_block_device (known after apply)
+
+      + instance_market_options (known after apply)
+
+      + maintenance_options (known after apply)
+
+      + metadata_options (known after apply)
+
+      + network_interface (known after apply)
+
+      + primary_network_interface (known after apply)
+
+      + private_dns_name_options (known after apply)
+
+      + root_block_device {
+          + delete_on_termination = true
+          + device_name           = (known after apply)
+          + encrypted             = (known after apply)
+          + iops                  = (known after apply)
+          + kms_key_id            = (known after apply)
+          + tags_all              = (known after apply)
+          + throughput            = (known after apply)
+          + volume_id             = (known after apply)
+          + volume_size           = 10
+          + volume_type           = "gp3"
+        }
+
+      + secondary_network_interface (known after apply)
+    }
+
+  # aws_key_pair.my_key_pair will be created
+  + resource "aws_key_pair" "my_key_pair" {
+      + arn             = (known after apply)
+      + fingerprint     = (known after apply)
+      + id              = (known after apply)
+      + key_name        = "terra-key-ec2"
+      + key_name_prefix = (known after apply)
+      + key_pair_id     = (known after apply)
+      + key_type        = (known after apply)
+      + public_key      = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFe7aWNR/BjhGaswKG3eKAAEiNGBckrIhPmLuT4OIfdq hp@RBawane"
+      + region          = "us-east-1"
+      + tags_all        = (known after apply)
+    }
+
+  # aws_security_group.my_security_group will be created
+  + resource "aws_security_group" "my_security_group" {
+      + arn                    = (known after apply)
+      + description            = "this is Inbound and outbound rules for your instance Security group"
+      + egress                 = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow all outbound traffic"
+              + from_port        = 0
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "-1"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 0
+            },
+        ]
+      + id                     = (known after apply)
+      + ingress                = [
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow HTTP access from anywhere"
+              + from_port        = 80
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 80
+            },
+          + {
+              + cidr_blocks      = [
+                  + "0.0.0.0/0",
+                ]
+              + description      = "Allow SSH access from anywhere"
+              + from_port        = 22
+              + ipv6_cidr_blocks = []
+              + prefix_list_ids  = []
+              + protocol         = "tcp"
+              + security_groups  = []
+              + self             = false
+              + to_port          = 22
+            },
+        ]
+      + name                   = "automate-sg"
+      + name_prefix            = (known after apply)
+      + owner_id               = (known after apply)
+      + region                 = "us-east-1"
+      + revoke_rules_on_delete = false
+      + tags_all               = (known after apply)
+      + vpc_id                 = (known after apply)
+    }
+
+Plan: 5 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + ec2_instance_public_ip = [
+      + (known after apply),
+      + (known after apply),
+    ]
+
+──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee to take exactly these actions if you run "terraform apply" now.
+PS C:\Users\HP\Documents\terraform> 
+
+
+
