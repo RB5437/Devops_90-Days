@@ -5,7 +5,7 @@
 ---
 
 ## 📚 Resources Used
-- 📺 **Abhishek Veeramalla — 7-Day Observability Series**
+- 📺 **Abhishek Veeramalla - Observability Series**
   - Day 1: https://www.youtube.com/watch?v=otY2_M_pTmU
   - Full Playlist: https://www.youtube.com/playlist?list=PLdpzxOOAlwvJUIfwmmVDoPYqXXUNbdBmb
   - GitHub Repo: https://github.com/iam-veeramalla/observability-zero-to-hero
