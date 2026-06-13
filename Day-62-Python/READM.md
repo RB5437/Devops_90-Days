@@ -1,180 +1,109 @@
-# Day 62 — Notes | Python for DevOps Day 2
-
+# Day 62 — Python for DevOps | Day 2 🐍
 ## 📅 Date: 13 June 2026
+## 🎯 Topic: Variables, Constants, Data Types, Operators, Input, Conditional Statements (if/elif/else)
 
 ---
 
-## 🐍 Concept 1: How Python Executes Code
-**Docs**: https://docs.python.org/3/tutorial/interpreter.html
-
-```
-YOU write code → Python Interpreter reads top to bottom → Output
-```
-
-### Two ways to run Python:
-```python
-# 1. Script mode — write .py file, run it
-python .\my-first-file.py
-
-# 2. REPL (Interactive Shell) — type one line, see result immediately
-# REPL = Read → Evaluate → Print → Loop
-python   # opens interactive shell
->>> print("hello")
-hello
-```
-
-**Why REPL matters for DevOps:** Quick testing of snippets without creating files — useful for debugging live servers.
+## 📚 Resources Used
+- 📺 **TrainWithShubham — Python for DevOps**
+  - YouTube: https://www.youtube.com/watch?v=E_eoFRX1Fzw
+  - GitHub: https://github.com/LondheShubham153/python-for-devops
 
 ---
 
-## 📦 Concept 2: Variables Deep Dive
-**Docs**: https://docs.python.org/3/tutorial/introduction.html
+## 🐍 How Python Works — Top Down Execution
 
-### Variable = Memory location that CHANGES
-```python
-output = "yes"   # output points to "yes"
-output = "no"    # output now points to "no" — "yes" is gone
 ```
-
-### Naming Rules (PEP8 — Python standard):
-```python
-# ✅ Snake case — Python standard
-employee_name = "Rahul"
-basic_salary = 50000
-total_salary = basic_salary + 10000
-
-# ❌ Camel case — not Python standard (used in Java/JS)
-employeeName = "Rahul"   # works but not Pythonic
+YOU → Write Code (.py file) → Python Interpreter → Magic (Output)
 ```
-**PEP8 Docs**: https://peps.python.org/pep-0008/
+- Python reads code **top to bottom** — line by line
+- `print` = most basic instruction to show output
+- **REPL** = Read → Evaluate → Print → Loop (Interactive Shell)
 
-### Variable vs Constant vs Operator:
+---
+
+## 📦 Variables vs Constants
+
+| Concept | Definition | Example |
+|---------|-----------|---------|
+| **Variable** | Named location in memory — value CAN change | `output = "yes"` then `output = "no"` |
+| **Constant** | Named location — value CANNOT change | `1`, `"dev"`, `True` |
+| **Script** | Set of instructions to perform a specific task | `.py` file |
+| **Program** | Code → App (runs on server) | Full application |
+
 ```python
-env = "dev"
-#  ↑     ↑    ↑
-# var  const  assignment operator (=)
+# Variable — changes
+output = "yes"   # vary + able = variable
+output = "no"    # changed!
+
+# Assignment
+env = "dev"      # env = variable, "dev" = constant, = is assignment operator
+a = 100
+b = 200
 ```
 
 ---
 
-## 🔢 Concept 3: Data Types
-**Docs**: https://docs.python.org/3/library/stdtypes.html
+## 🔢 Data Types
 
-### type() function — check data type
+| Type | Examples | Python check |
+|------|----------|-------------|
+| **int** | 1, 2, 3, 500, 7000 | `type(x)` → `<class 'int'>` |
+| **float** | 1.0, 2.5, 500.0 | `type(x)` → `<class 'float'>` |
+| **boolean** | True, False | `type(x)` → `<class 'bool'>` |
+| **string** | "hello", '123' | `type(x)` → `<class 'str'>` |
+
 ```python
 x = 500
-print(type(x))      # <class 'int'>
-
-print(type("y"))    # <class 'str'> ← "y" in quotes = string!
-print(type(y))      # <class 'int'> ← y without quotes = variable!
-```
-
-### DevOps relevance:
-```python
-# Reading config values — type matters!
-port = "8080"        # string — from config file
-port = int("8080")   # int — for arithmetic comparison
-
-# Boolean for flags
-debug_mode = True
-is_production = False
-```
-
-### Type conversion:
-```python
-"500" + "200"   = "500200"  # string concatenation!
-500  + 200      = 700       # integer addition
-int("500") + int("200") = 700  # convert then add
+y = 700
+print(type(x))    # <class 'int'>
+print(type("y"))  # <class 'str'>  ← "y" is string not variable!
 ```
 
 ---
 
-## ➕ Concept 4: Operators
-**Docs**: https://docs.python.org/3/library/operator.html
+## ➕ Operators
 
 ```python
-# Arithmetic Operators
-a + b   # addition
-a - b   # subtraction
-a * b   # multiplication
-a / b   # division (always returns float!)
-a // b  # floor division (returns int)
-a % b   # modulo (remainder)
-a ** b  # power
+# + - * / = (Operators)
+# a + b → a, b are operands; a + b is the operation
 
-# Comparison Operators
-a == b  # equal to (two equals signs!)
-a != b  # not equal
-a > b   # greater than
-a < b   # less than
-
-# Assignment Operator
-=   # assign value (NOT comparison!)
+x = 20
+y = 3
+z = x * y
+print("the multiplication of x and y is:", z)   # 60
 ```
 
-### Real output from today:
-```python
-x = 20, y = 3
-z = x * y → 60
-
-a = 12, b = 29
-Multiplication: 18    # Wait — 12*29 = 348? No, different values
-Addition: 11
-Subtraction: -7
-Division: 0.222...
-```
+**Naming Conventions:**
+- **Camel Case** → `helloDosto` (used in Java, JS)
+- **Snake Case** → `hello_dosto` (Python standard ✅)
 
 ---
 
-## ⌨️ Concept 5: input() Function
-**Docs**: https://docs.python.org/3/library/functions.html#input
+## ⌨️ Input from User
 
 ```python
-# input() ALWAYS returns a STRING
-name = input("Enter name: ")   # returns str
-age = input("Enter age: ")     # returns str "25", NOT int 25!
-
-# Convert to int for arithmetic
-age = int(input("Enter age: "))   # now it's int
-```
-
-### Why this matters for DevOps:
-```python
-# Reading environment from user or config
+# input() — gets keyboard input, always returns STRING
 env = input("Enter the environment (dev, test, prod): ")
-# env is always a string — safe for comparison with ==
+print("The environment you entered is:", env)
+
+# int() — convert string to integer
+a = int(input("Enter a number: 1"))
+b = int(input("Enter another number: 2"))
 ```
 
 ---
 
-## 🔀 Concept 6: Conditional Statements
-**Docs**: https://docs.python.org/3/tutorial/controlflow.html
+## 🔀 Conditional Statements — if / elif / else
 
-### Structure:
 ```python
-if condition:
-    # runs if condition is True
-elif another_condition:
-    # runs if first is False, this is True
+# if / else — DevOps use case!
+if env == "prod":
+    print("Don't Deploy on Friday")
 else:
-    # runs if ALL above are False
-```
+    print("You can deploy on any day it's safe")
 
-### Indentation is MANDATORY in Python:
-```python
-# ✅ Correct
-if env == "prod":
-    print("Don't Deploy on Friday")   # 4 spaces indent
-
-# ❌ Wrong — IndentationError
-if env == "prod":
-print("Don't Deploy on Friday")   # No indent!
-```
-
-### Real DevOps use case from today:
-```python
-env = input("Enter the environment (dev, test, prod): ")
-
+# if / elif / else — multiple conditions
 if env == "prod":
     print("Don't Deploy on Friday")
 elif env == "stg":
@@ -183,63 +112,39 @@ else:
     print("You can deploy on any day it's safe")
 ```
 
-**This is REAL DevOps logic!** Production deployment guardrails — exactly what gets implemented in CI/CD pipelines.
-
----
-
-## 💼 Concept 7: First Real Program — Salary Calculator
-**File**: `my_first_prg.py`
-
-```python
-employee_name = "Rahul"
-basic_salary = 50000
-bonus = 10000
-tax = 5000
-
-total_salary = basic_salary + bonus - tax
-
-print("Employee Name:", employee_name)    # Rahul
-print("Total Salary:", total_salary)      # 55000
-print("Data type of employee_name:", type(employee_name))  # str
-print("Data type of basic_salary:", type(basic_salary))    # int
+**Live output:**
 ```
-
-**Output:**
-```
-Employee Name: Rahul
-Total Salary: 55000
-Basic Salary: 50000
-Bonus: 10000
-Tax: 5000
-Data type of employee_name: <class 'str'>
-Data type of basic_salary: <class 'int'>
+Enter the environment: prod → "Don't Deploy on Friday" ✅
+Enter the environment: test → "You can deploy on any day it's safe" ✅
+Enter the environment: stg  → "Take backup & test well" ✅
 ```
 
 ---
 
-## 🔑 Key Points to Remember
+## 📁 Files Created Today — Day-02
 
-| Concept | Remember |
-|---------|----------|
-| Python execution | Top to bottom — line by line |
-| Variable | Can change — `output = "yes"` then `output = "no"` |
-| Constant | Cannot change — `1`, `"dev"`, `True` |
-| `type()` | Check data type of any value |
-| `input()` | ALWAYS returns string — convert with `int()` if needed |
-| `=` | Assignment (give value) |
-| `==` | Comparison (check if equal) |
-| Snake case | Python naming standard — `hello_dosto` not `helloDosto` |
-| Indentation | 4 spaces — mandatory in Python |
+| File | What it does |
+|------|-------------|
+| `variable_constant.py` | Variables, constants, operators, arithmetic |
+| `data-type.py` | int, float, bool, string — type() function |
+| `my_first_prg.py` | Salary calculator — employee name, basic, bonus, tax |
+| `check_env.py` | Environment checker — if/elif/else + input() + arithmetic |
 
 ---
 
-## 📖 Official Links
+## 🔗 Official Documentation Links
 
 | Topic | Link |
 |-------|------|
-| Python Tutorial | https://docs.python.org/3/tutorial/ |
-| Data Types | https://docs.python.org/3/library/stdtypes.html |
-| Built-in Functions | https://docs.python.org/3/library/functions.html |
-| Control Flow | https://docs.python.org/3/tutorial/controlflow.html |
-| PEP8 Style Guide | https://peps.python.org/pep-0008/ |
-| Shubham GitHub | https://github.com/LondheShubham153/python-for-devops |
+| Python Variables | https://docs.python.org/3/tutorial/introduction.html |
+| Python Data Types | https://docs.python.org/3/library/stdtypes.html |
+| Python Operators | https://docs.python.org/3/library/operator.html |
+| Python Input | https://docs.python.org/3/library/functions.html#input |
+| Python if/elif/else | https://docs.python.org/3/tutorial/controlflow.html |
+| Python Naming Conventions | https://peps.python.org/pep-0008/#naming-conventions |
+| TrainWithShubham Repo | https://github.com/LondheShubham153/python-for-devops |
+
+---
+
+## 📂 GitHub
+https://github.com/RB5437/Devops_90-Days
