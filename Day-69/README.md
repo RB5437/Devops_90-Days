@@ -13,7 +13,9 @@
 > A production-style, end-to-end CI/CD pipeline that takes code from a developer's laptop to a live running application on Kubernetes — fully automated, with zero manual deployment steps.
 
 **Project GitHub:** https://github.com/RB5437/Ultimate-CI-CD-Pipeline-Jenkins-End-to-End-Project
+
 **Reference:** Abhishek Veeramalla — Jenkins Zero To Hero
+
 **Live Output:** http://18.206.219.155:8085
 
 ---
