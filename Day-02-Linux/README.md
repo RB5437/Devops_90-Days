@@ -35,4 +35,4 @@ To understand how to monitor system performance and troubleshoot issues using Li
 
 ##  Outcome
 
-Gained hands-on experience in system monitoring, troubleshooting, and log analysis — essential skills for DevOps Engineers.
+Gained hands-on experience in system monitoring, troubleshooting, and log analysis — essential skills for DevOps Engineers
