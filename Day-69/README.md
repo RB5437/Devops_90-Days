@@ -14,7 +14,6 @@
 
 **Project GitHub:** https://github.com/RB5437/Ultimate-CI-CD-Pipeline-Jenkins-End-to-End-Project
 
-**Reference:** Abhishek Veeramalla — Jenkins Zero To Hero
 
 **Live Output:** http://18.206.219.155:8085
 
@@ -501,5 +500,3 @@ kubectl get pods
 |---|---|
 | My Project Repo | https://github.com/RB5437/Ultimate-CI-CD-Pipeline-Jenkins-End-to-End-Project |
 | My 90 Days Repo | https://github.com/RB5437/Devops_90-Days |
-| Reference Video | https://www.youtube.com/watch?v=JGQI5pkK82w |
-| Reference Repo | https://github.com/iam-veeramalla/Jenkins-Zero-To-Hero |
