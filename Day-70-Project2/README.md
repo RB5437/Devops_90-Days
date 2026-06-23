@@ -239,4 +239,4 @@ sonar.java.binaries=.
 | Trivy Official | https://aquasecurity.github.io/trivy/ |
 | SonarQube | https://www.sonarsource.com/products/sonarqube/ |
 | Spring Boot | https://spring.io/projects/spring-boot |
-| Reference Project (DevOps Shack) | https://github.com/jaiswaladi246/Boardgame |
+| Reference Project  | https://github.com/RB5437/Boardgame.git |
