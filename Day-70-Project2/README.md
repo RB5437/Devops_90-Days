@@ -1,234 +1,154 @@
-# Day 70 — Project 2 Planning: BoardGame DevSecOps Pipeline 🎲🔒
+# Day 70 — Project 2 Planning: Terraform Multi-Environment AWS Infrastructure 🏗️
 
-> **Status: Planning & Architecture only — implementation starts Day 71**
+> **Status: Watched reference video + architecture understood — implementation not started yet**
+> **Reference:** TrainWithShubham — "I coded Terraform to Create Multi-Environment AWS Infrastructure in 1 Hour (Hindi)"
 
 ---
 
 ## Project Name
 
-**BoardGame DevSecOps Pipeline**
-*"Secure CI/CD Pipeline for a Java Spring Boot Web Application"*
+**Terraform Multi-Environment Infrastructure**
+*"One Codebase, Three Environments — Dev, Staging, Production"*
 
 ---
 
 ## Real World Problem It Solves
 
-Companies fear unsigned, vulnerable, or low-quality code reaching production. A normal CI/CD pipeline (like Day 68's capstone) builds and deploys fast — but does not check for **security vulnerabilities** or **code quality** before deployment. This project adds a full **DevSecOps** layer: security scanning is built into every stage, not bolted on afterward.
+In every real company, an application never goes directly from a developer's laptop to production. It moves through stages:
 
-**Why this project is different from Day 68 capstone:**
+```
+Dev (developers test freely, break things)
+   ↓
+Staging (near-identical to production, final testing)
+   ↓
+Production (real users, must be stable and scaled)
+```
 
-| Day 68 Capstone | Day 70 BoardGame Project |
-|---|---|
-| Jenkins → SonarQube → Docker → ArgoCD → K8s | Jenkins → SonarQube → **Trivy (filesystem scan)** → Docker → **Trivy (image scan)** → K8s → **Prometheus + Grafana** |
-| Focus: GitOps automation | Focus: Security at every gate (DevSecOps) |
-| ArgoCD-driven deployment | Direct kubectl/Jenkins-driven deployment + monitoring |
+**The problem:** Writing separate Terraform code for each environment leads to copy-paste duplication, drift between environments, and human error (e.g. forgetting to add a resource in staging that exists in prod). This project solves that by using **one reusable Terraform codebase** that provisions different-sized infrastructure per environment, just by changing input variables.
 
 ---
 
 ## Skills Used in This Project
 
 | Skill | Where It's Used |
-|-------|-----------------|
-| Linux | Jenkins server setup on EC2, file permissions, service management |
-| Git/GitHub | Source repo, pull request + merge workflow |
-| Jenkins | Full CI pipeline — compile, test, build, scan, deploy |
-| AWS | EC2 hosting for Jenkins + SonarQube |
-| Docker | Multi-stage Dockerfile — build + runtime image |
-| Kubernetes | Deployment + Service (LoadBalancer) for the live app |
-| Prometheus + Grafana | Post-deployment monitoring of the running application |
-| Python (optional extension) | Custom health-check or notification script |
+|-------|------------------|
+| Terraform | Core IaC tool — modules, variables, workspaces |
+| AWS | S3, RDS (DB), EC2 — provisioned per environment |
+| Git/GitHub | Version-controlled infra code, environment branches/folders |
+| Linux | Running Terraform CLI, managing state files |
 
 ---
 
-## Application Overview
+## Architecture — Three Environments, One Codebase
 
-**App:** BoardGame Database — a Java Spring Boot web app where users can list, review, and rate board games.
+As shown in the reference diagram, each environment gets its own isolated set of resources, scaled appropriately for its purpose:
 
-| Detail | Value |
-|--------|-------|
-| Language | Java 17 |
-| Framework | Spring Boot |
-| Build Tool | Maven |
-| Source | https://github.com/RB5437 (forked from DevOps Shack reference) |
-| Container Port | 8080 |
+### DEV Environment
+| Resource | Count | Purpose |
+|----------|-------|---------|
+| S3 | 1 | Storage for dev artifacts/logs |
+| DB (RDS) | 1 | Single small database instance |
+| EC2 | 1 | Single small compute instance |
 
----
+### STAGING Environment
+| Resource | Count | Purpose |
+|----------|-------|---------|
+| S3 | 1 | Storage, same pattern as dev |
+| DB (RDS) | 1 | Single database — mirrors prod schema |
+| EC2 | 1 | Single instance — final testing before prod |
 
-## Complete Flow — From Ticket to Production
-
-This is the real-world process, exactly as planned on paper:
-
-1. **Client raises a ticket** (Jira/ServiceNow) — e.g. "Add a new feature / change background color"
-2. **Ticket assigned to developer**
-3. **Developer writes code locally**, adds the new feature, tests it locally
-4. **Developer pushes code to GitHub** — on a feature branch
-5. **Developer raises a Pull Request** to merge feature branch → main
-6. **Project architect/lead reviews the PR** — if code looks fine, it's merged to main
-7. **GitHub webhook fires** → Jenkins pipeline triggers automatically on new commit to main
-8. **Jenkins Pipeline stages run in order:**
-   - Compile the source code
-   - Run unit test cases (Maven)
-   - SonarQube static analysis — code quality check
-   - SonarQube Quality Gate check (pass/fail gate)
-   - Trivy filesystem scan — scan entire repo for vulnerabilities/sensitive data
-   - Build the application — generate the artifact (.jar)
-   - Publish artifact to GitHub (instead of Nexus, since this is a smaller setup)
-   - Build Docker image from the artifact
-   - Trivy image scan — scan the Docker image for vulnerabilities
-   - Push Docker image to Docker Hub
-   - Deploy to Kubernetes (Deployment + Service)
-9. **Application is live** — accessible via Kubernetes LoadBalancer/NodePort
-10. **Monitor the live application** using Prometheus (metrics) + Grafana (dashboards)
-11. **Feedback loop** — if client raises another ticket (new feature/bug), the cycle repeats from step 1
-
----
-
-## Architecture — Pipeline Stages (as planned)
+### PRODUCTION Environment
+| Resource | Count | Purpose |
+|----------|-------|---------|
+| S3 | 2 | Redundant storage |
+| DB (RDS) | 1 | Production database (typically with Multi-AZ in real setups) |
+| EC2 | 3 | Multiple instances — high availability, load distribution |
 
 ```
-Client → Jira Ticket → Developer (local code + test)
-        ↓
-GitHub (push + PR + merge to main)
-        ↓
-Jenkins triggered via webhook
-        ↓
-   ┌─────────────────────────────────┐
-   │ Compile → Unit Test (Maven)     │
-   │ SonarQube Analysis + Gate Check │
-   │ Trivy FS Scan (repo)            │
-   │ Build Artifact (Maven package)  │
-   │ Publish Artifact → GitHub       │
-   │ Docker Build & Tag              │
-   │ Trivy Image Scan                │
-   │ Docker Push → Docker Hub        │
-   └─────────────────────────────────┘
-        ↓
-Kubernetes Deployment + Service (LoadBalancer)
-        ↓
-Live Deployed Website
-        ↓
-Prometheus + Grafana (Monitoring)
-        ↓
-(Feedback loop → new ticket if issue/feature found)
+                    Terraform (single codebase)
+                            │
+        ┌───────────────────┼───────────────────┐
+        ▼                   ▼                   ▼
+   ┌─────────┐         ┌─────────┐         ┌──────────┐
+   │   DEV   │         │   STG   │         │   PROD   │
+   │ S3 x1   │         │ S3 x1   │         │ S3 x2    │
+   │ DB x1   │         │ DB x1   │         │ DB x1    │
+   │ EC2 x1  │         │ EC2 x1  │         │ EC2 x3   │
+   └─────────┘         └─────────┘         └──────────┘
 ```
 
 ---
 
-## Jenkinsfile (Current — base version, to be extended)
+## How This Will Be Built (Planned Approach)
 
-```groovy
-pipeline {
-    agent any
-    tools {
-        jdk 'jdk17'
-        maven 'maven3'
-    }
-    stages {
-        stage('Compile') {
-            steps { sh 'mvn compile' }
-        }
-        stage('Test') {
-            steps { sh 'mvn test' }
-        }
-        stage('Build') {
-            steps { sh 'mvn package' }
-        }
-    }
-}
+### Option A — Terraform Workspaces
+```bash
+terraform workspace new dev
+terraform workspace new staging
+terraform workspace new prod
+terraform workspace select dev
+terraform apply -var-file="dev.tfvars"
 ```
 
-**To be added in Day 71-72:** SonarQube stage, Trivy FS scan stage, Docker build/push stage, Trivy image scan stage, Kubernetes deploy stage.
-
----
-
-## Dockerfile (Multi-stage — already prepared)
-
-```dockerfile
-# ===== Build Stage =====
-FROM maven:3.9.9-eclipse-temurin-17 AS build
-WORKDIR /app
-COPY pom.xml .
-RUN mvn -B -q -DskipTests dependency:go-offline
-COPY src ./src
-RUN mvn clean package -DskipTests
-
-# ===== Runtime Stage =====
-FROM eclipse-temurin:17-jre-alpine
-WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+### Option B — Folder-per-environment with shared modules
+```
+terraform-multi-env/
+├── modules/
+│   ├── ec2/
+│   ├── s3/
+│   └── rds/
+├── environments/
+│   ├── dev/
+│   │   └── main.tf (calls modules with dev.tfvars)
+│   ├── staging/
+│   │   └── main.tf (calls modules with staging.tfvars)
+│   └── prod/
+│       └── main.tf (calls modules with prod.tfvars)
 ```
 
-**Why multi-stage build?** Build stage has Maven + JDK (heavy), runtime stage only has JRE (lightweight). Final image is much smaller — good practice point to mention in interview.
+**Why modules matter here:** Instead of writing EC2/S3/RDS resource blocks three separate times, the same module is called three times with different variables (instance count, instance size) — this is the core Terraform concept (Day 55-56 from the original 90-day roadmap) being applied to a real multi-environment use case.
 
 ---
 
-## Kubernetes Manifest (deployment-service.yaml — already prepared)
+## Variables That Will Differ Per Environment
 
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: boardgame-deployment
-spec:
-  selector:
-    matchLabels:
-      app: boardgame
-  replicas: 2
-  template:
-    metadata:
-      labels:
-        app: boardgame
-    spec:
-      containers:
-        - name: boardgame
-          image: <your-dockerhub>/boardgame:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: boardgame-ssvc
-spec:
-  selector:
-    app: boardgame
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 8080
-  type: LoadBalancer
-```
-
-**Note:** 2 replicas configured for high availability — if one pod fails, the other continues serving traffic.
+| Variable | Dev | Staging | Prod |
+|----------|-----|---------|------|
+| `ec2_instance_count` | 1 | 1 | 3 |
+| `ec2_instance_type` | t2.micro | t2.micro | t3.medium |
+| `s3_bucket_count` | 1 | 1 | 2 |
+| `db_instance_class` | db.t3.micro | db.t3.micro | db.t3.medium |
+| `environment_tag` | dev | staging | prod |
 
 ---
 
-## SonarQube Project Config (already prepared)
+## Why This Project Matters for Interview
 
-```properties
-sonar.projectKey=Boardgame
-sonar.projectName=Boardgame
-sonar.java.binaries=.
-```
+> "Most beginner Terraform projects provision a single environment. This one demonstrates understanding of how real teams manage infrastructure lifecycle — using a single, DRY (Don't Repeat Yourself) codebase with reusable modules to provision differently-sized environments for dev, staging, and production, rather than duplicating code three times."
+
+This also directly connects to GitOps and CI/CD concepts already covered in the Day 68 capstone — in a real pipeline, merging to a `dev` branch could trigger `terraform apply` against the dev workspace, while merging to `main` triggers production.
 
 ---
 
-## What's Different/New vs Day 68 — Key Talking Point for Interview
+## What's NOT Done Yet (Honest Status)
 
-| New Tool | Why It's Added Here |
-|----------|---------------------|
-| **Trivy (filesystem scan)** | Scans the entire source repo before build — catches secrets, vulnerable dependencies early |
-| **Trivy (image scan)** | Scans the final Docker image before pushing — catches vulnerabilities baked into the container layers |
-| **SonarQube Quality Gate (enforced)** | Pipeline can be configured to actually FAIL if code quality drops below threshold — not just informational |
-| **Prometheus + Grafana on live app** | Unlike Day 68 (infra-focused monitoring), this monitors the actual application's health post-deployment |
+- ❌ No `.tf` files written yet
+- ❌ No AWS resources provisioned
+- ❌ No state file/backend configured
+- ✅ Reference video watched and understood
+- ✅ Architecture and environment-scaling logic mapped out
 
 ---
 
+## Next Steps (Day 71 onwards for this project)
 
+| Day | Task |
+|-----|------|
+| Next | Write base Terraform modules (EC2, S3, RDS) |
+| Then | Create `dev.tfvars`, `staging.tfvars`, `prod.tfvars` |
+| Then | Set up remote state backend (S3 + DynamoDB lock) |
+| Then | Apply to dev first, verify, then staging, then prod |
+| Finally | Document + LinkedIn post with live resource screenshots |
 
 ---
 
@@ -236,7 +156,6 @@ sonar.java.binaries=.
 
 | Resource | Link |
 |----------|------|
-| Trivy Official | https://aquasecurity.github.io/trivy/ |
-| SonarQube | https://www.sonarsource.com/products/sonarqube/ |
-| Spring Boot | https://spring.io/projects/spring-boot |
-| Reference Project  | https://github.com/RB5437/Boardgame.git |
+| Reference Video | TrainWithShubham — "I coded Terraform to Create Multi-Environment AWS Infrastructure in 1 Hour (Hindi)" |
+| Terraform Workspaces Docs | https://developer.hashicorp.com/terraform/language/state/workspaces |
+| Terraform Modules Docs | https://developer.hashicorp.com/terraform/language/modules |
