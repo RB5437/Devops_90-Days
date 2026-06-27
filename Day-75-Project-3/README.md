@@ -346,4 +346,4 @@ kubectl port-forward svc/kubernetes-dashboard \
 
 ---
 
-*Day 75 of #90DaysOfDevOps | Ritik Bhatia | DevOps Engineer*
+*Day 75 of #90DaysOfDevOps | Ritik Bhatia | DevOps Engineer*.
