@@ -31,4 +31,4 @@ To understand and practice fundamental Linux commands used in daily DevOps tasks
 
 ##  Outcome
 
-Completed hands-on practice of basic Linux commands which are essential for DevOps and system administration.
+Completed hands-on practice of basic Linux commands which are essential for DevOps and system administration
