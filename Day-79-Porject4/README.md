@@ -95,3 +95,5 @@ docker push ritik2909/frontend-wanderlust:latest
 - [ ] Deploy MongoDB + Redis pods
 - [ ] Deploy Backend + Frontend pods
 - [ ] Verify app accessible at `Worker-Node-IP:31000`
+## Project Repo
+https://github.com/RB5437/wanderlust.git
