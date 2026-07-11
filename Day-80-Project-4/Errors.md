@@ -5,7 +5,7 @@
 **Command:**
 ```bash
 kubectl apply -f mongodb.yaml
-kubectl get pods
+kubectl get pods.
 ```
 
 **Symptom:**
@@ -190,4 +190,4 @@ Rebuilt and re-pushed the backend image, then `kubectl rollout restart deploymen
 Test Suites: 1 failed, 1 passed, 2 total
 Tests:       9 failed, 28 passed, 37 total
 ```
-All 9 failures are integration tests requiring a live MongoDB connection during `npm run test` inside `docker build` — same root cause documented on Day 79, still not fixed. Planned for Day 81: run integration tests against a real test-DB container, separate from the image build step.
+All 9 failures are integration tests requiring a live MongoDB connection during `npm run test` inside `docker build` — same root cause documented on Day 79, still not fixed. Planned for Day 81: run integration tests against a real test-DB container, separate from the image build step
