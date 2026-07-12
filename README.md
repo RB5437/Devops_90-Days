@@ -51,8 +51,8 @@ Become a job-ready **DevOps Engineer** with hands-on experience across the compl
 | Day 52–57 | 🏗️ Terraform | 3–8 Jun 2026 | ✅ Complete |
 | Day 58–61 | 📊 Prometheus & Grafana | 9–12 Jun 2026 | ✅ Complete |
 | Day 62–65 | 🤖 GenAI for DevOps | 13–16 Jun 2026 | ✅ Complete |
-| Day 66–75 | 🏆 Real World Projects | 17–26 Jun 2026 | ✅ Complete |
-| Day 76–90 | 🎯 Resume + Interview Prep | 27 Jun–11 Jul 2026 | ⬜ Upcoming |
+| Day 66–75 | 🏆 Real World Projects | 26Jun–05 Jul 2026 | ✅ Complete |
+| Day 76–90 | 🎯 Resume + Interview Prep | 06–20 Jul 2026 | ⬜ Upcoming |
 
 ---
 
