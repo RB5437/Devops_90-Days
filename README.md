@@ -35,24 +35,28 @@ Become a job-ready **DevOps Engineer** with hands-on experience across the compl
 
 ## 📅 90-Day Roadmap & Progress
 
-| Days | Topic | Dates | Status |
-|------|-------|-------|--------|
-| Day 01–05 | 🐧 Linux Administration | 13–17 Apr 2026 | ✅ Complete |
-| Day 06–07 | 🌐 Networking | 18–19 Apr 2026 | ✅ Complete |
-| Day 08–12 | 💻 Shell Scripting | 20–24 Apr 2026 | ✅ Complete |
-| Day 13 | ⚙️ DevOps Fundamentals | 25 Apr 2026 | ✅ Complete |
-| Day 14–17 | 🔧 Git & GitHub | 26–29 Apr 2026 | ✅ Complete |
-| Day 18–26 | ☁️ AWS | 30 Apr–8 May 2026 | ✅ Complete |
-| Day 27–32 | 🐳 Docker | 9–14 May 2026 | ✅ Complete |
-| Day 33–37 | 🔄 Jenkins | 15–19 May 2026 | ✅ Complete |
-| Day 38–45 | ☸️ Kubernetes | 20–27 May 2026 | ✅ Complete |
-| Day 46–48 | ⛵ Helm | 28–30 May 2026 | ✅ Complete |
-| Day 49–51 | 🔁 ArgoCD | 31 May–2 Jun 2026 | ✅ Complete |
-| Day 52–57 | 🏗️ Terraform | 3–8 Jun 2026 | ✅ Complete |
-| Day 58–61 | 📊 Prometheus & Grafana | 9–12 Jun 2026 | ✅ Complete |
-| Day 62–65 | 🤖 GenAI for DevOps | 13–16 Jun 2026 | ✅ Complete |
-| Day 66–75 | 🏆 Real World Projects | 26Jun–05 Jul 2026 | ✅ Complete |
-| Day 76–90 | 🎯 Resume + Interview Prep | 06–20 Jul 2026 | ⬜ Upcoming |
+| Days | Topic | Status |
+|------|-------|--------|
+| Day 01–05 | 🐧 Linux Administration | ✅ Complete |
+| Day 06–07 | 🌐 Networking | ✅ Complete |
+| Day 08–12 | 💻 Shell Scripting | ✅ Complete |
+| Day 13 | ⚙️ DevOps Fundamentals | ✅ Complete |
+| Day 14–17 | 🔧 Git & GitHub | ✅ Complete |
+| Day 18–26 | ☁️ AWS | ✅ Complete |
+| Day 27–32 | 🐳 Docker | ✅ Complete |
+| Day 33–37 | 🔄 Jenkins | ✅ Complete |
+| Day 38–46 | ☸️ Kubernetes | ✅ Complete |
+| Day 47 | ⛵ Helm | ✅ Complete |
+| Day 48–51 | 🔁 ArgoCD | ✅ Complete |
+| Day 52–56 | 🏗️ Terraform | ✅ Complete |
+| Day 57–60 | 📊 Prometheus & Grafana | ✅ Complete |
+| Day 61–64 | 🤖 Python + GenAI for DevOps | ✅ Complete |
+| Day 65–68 | 🏆 Capstone Project 1 — Jenkins + ArgoCD + Kubernetes CI/CD | ✅ Complete |
+| Day 70–72 | 🏆 Capstone Project 2 — Terraform Multi-Environment AWS Infra | ✅ Complete |
+| Day 73–75 | 🏆 Capstone Project 3 — Kubernetes Voting App + Monitoring | ✅ Complete |
+| Day 76–77 | 🤖 AI Agent for DevOps | ✅ Complete |
+| Day 78–80 | 🏆 Capstone Project 4 — Wanderlust MERN on Self-Managed Kubernetes | ✅ Complete |
+| Day 81–90 | 🎯 Revision + Resume + Interview Prep | 🔄 In Progress (Day 81 done) |
 
 ---
 
@@ -62,169 +66,52 @@ Become a job-ready **DevOps Engineer** with hands-on experience across the compl
 |----------|-------|
 | OS & Shell | Linux (RHEL/Ubuntu), Bash Scripting |
 | Version Control | Git, GitHub |
-| Cloud | AWS (EC2, S3, RDS, IAM, VPC, ALB, Auto Scaling, CloudWatch) |
-| Containers | Docker, Docker Compose, Docker Scout |
-| CI/CD | Jenkins (Pipelines, Agents, Shared Libraries, Webhooks, RBAC) |
-| Orchestration | Kubernetes *(in progress)* |
-| Package Manager | Helm *(upcoming)* |
-| GitOps | ArgoCD *(upcoming)* |
-| Infrastructure as Code | Terraform *(upcoming)* |
-| Monitoring | Prometheus, Grafana *(upcoming)* |
+| Cloud | AWS (EC2, S3, RDS, IAM, VPC, ALB, Auto Scaling, CloudWatch, DynamoDB) |
+| Containers | Docker, Docker Compose |
+| CI/CD | Jenkins (Pipelines, Agents, Credentials, Webhooks), SonarQube |
+| Orchestration | Kubernetes (Minikube, Kind, kubeadm) |
+| Package Manager | Helm |
+| GitOps | ArgoCD |
+| Infrastructure as Code | Terraform (multi-environment, remote state) |
+| Monitoring | Prometheus, Grafana (kube-prometheus-stack) |
+| Networking (K8s) | Calico CNI, CoreDNS |
+| Automation | Python, GenAI-assisted DevOps workflows |
 | Certifications | AWS SAA ✅ · RHCSA ✅ |
 
 ---
 
-## 🏆 Projects Built
+## 🏆 Capstone Projects Built
 
-### 🐳 Project 1 — Student Grade Tracker (Docker Full Stack)
-> Flask + MySQL + Nginx — fully containerized and live on AWS EC2
+### 1. 🔄 Ultimate CI/CD Pipeline — Jenkins + ArgoCD + Kubernetes
+GitOps CI/CD pipeline: GitHub webhook → Jenkins (Maven build → SonarQube scan → Docker build/push) → ArgoCD auto-syncs to Kubernetes. Code-push-to-live-pod in under 10 minutes, zero manual steps.
+🔗 [github.com/RB5437/Ultimate-CI-CD-Pipeline-Jenkins-End-to-End-Project](https://github.com/RB5437/Ultimate-CI-CD-Pipeline-Jenkins-End-to-End-Project)
 
-**Tech Stack:** Python Flask · MySQL · Nginx · Docker · Docker Compose
+### 2. 🏗️ Terraform Multi-Environment AWS Infrastructure
+Reusable Infrastructure-as-Code codebase provisioning isolated Dev/Production environments (EC2, S3, DynamoDB) from a single module, with S3 + DynamoDB remote state and locking.
+🔗 [github.com/RB5437/Terraform-Multi-Environment-AWS-Infrastructure](https://github.com/RB5437/Terraform-Multi-Environment-AWS-Infrastructure)
 
-| Feature | Detail |
-|---------|--------|
-| Multi-stage Docker build | Image size reduced **87%** — 1.6GB → 212MB |
-| Docker Compose | 3 services started with one command |
-| Custom bridge network | Container-to-container DNS resolution |
-| Named volumes | MySQL data persists across restarts |
-| Health checks | Non-root user security best practices |
-| Live deployment | AWS EC2 — `http://54.226.172.26` |
+### 3. ☸️ Kubernetes Voting App with Full Observability Stack
+5-microservice voting app on a Kind cluster with self-written manifests, ArgoCD GitOps delivery, and a full kube-prometheus-stack (Prometheus + Grafana + Alertmanager + Node Exporter) monitoring setup.
+🔗 [github.com/RB5437/k8s-kind-voting-app](https://github.com/RB5437/k8s-kind-voting-app)
 
-```bash
-# Start entire stack with one command
-docker compose up -d
-```
+### 4. 🌍 Wanderlust — MERN Stack on Self-Managed Kubernetes (kubeadm)
+Production-style Kubernetes cluster built from scratch using kubeadm (master + worker nodes, Calico CNI, CoreDNS) — not a managed service — running a 4-microservice MERN travel-blog app with MongoDB PersistentVolume storage.
+🔗 [github.com/RB5437/wanderlust](https://github.com/RB5437/wanderlust)
 
 ---
 
-### ☁️ Project 2 — AWS 3-Tier Architecture
-> EC2 + ALB + RDS + Auto Scaling + CloudWatch
+## 📖 What's in Each Day's Folder
 
-**Tech Stack:** AWS EC2 · ALB · RDS · Auto Scaling · VPC · CloudWatch · IAM
-
-- Public subnet: ALB + EC2 web tier
-- Private subnet: EC2 app tier + RDS Multi-AZ data tier
-- Auto Scaling Group with launch template
-- CloudWatch alarms with SNS notifications
-- IAM roles with least-privilege access
+Every `Day-XX` folder contains a mix of:
+- `README.md` — what was learned/built that day
+- `Notes.md` / `Commands.md` — reference commands and concepts
+- `Errors.md` — real errors faced and how they were fixed (the most valuable part for interview prep)
 
 ---
 
-### 🔄 Project 3 — DjangoCICD (Jenkins CI/CD Pipeline)
-> GitHub → Jenkins → Docker Build → DockerHub Push → Deploy on EC2
+## 📫 Connect
 
-**Tech Stack:** Jenkins · GitHub Webhook · Docker · Shared Libraries · Groovy
+- LinkedIn: [linkedin.com/in/ritik-bawane](https://www.linkedin.com/in/ritik-bawane)
+- GitHub: [github.com/RB5437](https://github.com/RB5437)
 
-| Feature | Detail |
-|---------|--------|
-| Declarative Pipeline | 4 stages: Code → Build → Test → Deploy |
-| Master-Agent setup | Builds run on dedicated Agent EC2 |
-| GitHub Webhook | Auto-trigger on every code push |
-| Shared Libraries | Reusable Groovy functions across pipelines |
-| Credentials Manager | Secure DockerHub login — no hardcoded passwords |
-| Build result | Build #10 — **Finished: SUCCESS** ✅ (~1min 37s) |
-
-```groovy
-// Reusable pipeline using Shared Libraries
-@Library("Shared") _
-pipeline {
-    agent { label "agent-jenkins" }
-    stages {
-        stage("Code")  { steps { script { clone("repo-url", "main") } } }
-        stage("Build") { steps { script { docker_build("notes_app", "latest", "ritik2909") } } }
-        stage("Push")  { steps { script { docker_push("notes_app", "latest", "ritik2909") } } }
-        stage("Deploy"){ steps { sh "docker compose down && docker compose up -d" } }
-    }
-}
-```
-
----
-
-## 📁 Repository Structure
-
-```
-Devops_90-Days/
-│
-├── Day-01_Linux/               # File permissions, processes, systemctl
-├── Day-06_Networking/          # TCP/IP, DNS, VPC, subnets
-├── Day-08_Shell_Scripting/     # Automation scripts
-├── Day-13_DevOps_Fundamentals/ # CI/CD concepts, SDLC, Agile
-├── Day-14_Git/                 # Branching, merge, GitFlow
-│
-├── Day-18_AWS/                 # EC2, S3, RDS, IAM, VPC, ALB
-│
-├── Day-27_Docker/              # Dockerfiles, Compose, Networks, Volumes
-│   └── Student-Grade-Tracker/  # Full stack project — live on AWS EC2
-│
-├── Day-33_Jenkins/             # Pipelines, Agents, Webhooks, RBAC
-│   └── DjangoCICD/             # Complete CI/CD pipeline project
-│
-├── Day-38_Kubernetes/          # In Progress...
-│
-└── README.md
-```
-
----
-
-## 📊 Progress Tracker
-
-```
-🐧 Linux          ████████████████████  100% ✅
-🌐 Networking     ████████████████████  100% ✅
-💻 Shell Script   ████████████████████  100% ✅
-⚙️  DevOps Basics  ████████████████████  100% ✅
-🔧 Git/GitHub     ████████████████████  100% ✅
-☁️  AWS            ████████████████████  100% ✅
-🐳 Docker         ████████████████████  100% ✅
-🔄 Jenkins        ████████████████████  100% ✅
-☸️  Kubernetes   ████████████████████   100% ✅
-⛵ Helm          ████████████████████     100% ✅
-🔁 ArgoCD         ████████████████████   100% ✅
-🏗️  Terraform     ████████████████████   100% ✅
-📊 Monitoring     ████████████████████    100% ✅
-```
-
----
-
-## 🏅 Certifications
-
-| Certification | Issuer | Valid Until |
-|---------------|--------|-------------|
-| AWS Certified Solutions Architect – Associate | Amazon Web Services | 2027 |
-| RHCSA — Red Hat Certified System Administrator | Red Hat | 2027 |
-
----
-
-## 💼 Professional Background
-
-| Company | Role | Duration |
-|---------|------|----------|
-| Kyndryl India | System Management Engineer | Jan 2023 – Mar 2025 |
-| Kyndryl India | Associate Technical Engineer | Sep 2021 – Jan 2023 |
-
-**Production experience with:** AWS · Linux · IBM DB2 · IIS/FTP Web Servers · ServiceNow · 24×7 SLA Support
-
----
-
-## 🔗 Connect With Me
-
-<div align="center">
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect%20with%20me-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/ritik-bawane)
-[![GitHub](https://img.shields.io/badge/GitHub-Follow%20me-black?style=for-the-badge&logo=github)](https://github.com/RB5437)
-
-📍 **Location:** Nagpur, Maharashtra | Open to Relocation
-💼 **Open to:** DevOps Engineer · Cloud Engineer · Linux Admin
-⚡ **Available:** Immediately
-
-</div>
-
----
-
-<div align="center">
-
-**⭐ If this repo helped you, give it a star!**
-
-*"Every expert was once a beginner. Consistency beats talent every single day."*
-
-</div>
+⭐ If you found this repository helpful, don't forget to Star it!
