@@ -114,4 +114,4 @@ Every `Day-XX` folder contains a mix of:
 - LinkedIn: [linkedin.com/in/ritik-bawane](https://www.linkedin.com/in/ritik-bawane)
 - GitHub: [github.com/RB5437](https://github.com/RB5437)
 
-⭐ If you found this repository helpful, don't forget to Star it!
+⭐ If you found this repository helpful, don't forget to Star it!.
