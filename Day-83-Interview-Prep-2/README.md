@@ -39,4 +39,4 @@ Full Q&A document: `Day2_Linux_Advanced_Interview_Prep.docx`
 
 ---
 
-*Part of the #90DaysOfDevOps interview-prep stretch (Day 81–90) — Ritik Bawane*
+*Part of the #90DaysOfDevOps interview-prep stretch (Day 81–90) — Ritik Bawane*.
