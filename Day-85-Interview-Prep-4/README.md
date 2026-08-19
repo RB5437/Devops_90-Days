@@ -43,4 +43,4 @@ Almost every hard Docker question reduces to one of two ideas: **layers** (the b
 
 ---
 
-*Part of the #90DaysOfDevOps interview-prep stretch (Day 81–90) — Ritik Bawane*
+*Part of the #90DaysOfDevOps interview-prep stretch (Day 81–90) — Ritik Bawane*.
