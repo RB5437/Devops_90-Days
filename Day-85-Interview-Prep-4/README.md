@@ -1,6 +1,6 @@
 # Day 85 — Interview Preparation: Docker (Day 1 + Day 2)
 
-**Challenge:** #90DaysOfDevOps | **Phase:** Interview Prep (Day 81–90) | **Target:** 10+ LPA / 3+ years experience bar
+**Challenge:** #90DaysOfDevOps | **Phase:** Interview Prep (Day 81–90) | **Target:** 10+ LPA / 3+ years experience 
 
 ---
 
