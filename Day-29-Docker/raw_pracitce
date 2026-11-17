@@ -52,8 +52,8 @@ ubuntu@ip-172-31-47-139:~/Devops_90-Days/Day-11-Shell_Scripting$ ./create_ec2.sh
 ubuntu@ip-172-31-47-139:~/Devops_90-Days/Day-11-Shell_Scripting$ sudo mkdir -p /root/.aws
 sudo cp -r ~/.aws/* /root/.aws/
 ubuntu@ip-172-31-47-139:~/Devops_90-Days/Day-11-Shell_Scripting$ aws configure
-AWS Access Key ID [****************HOUZ]: AKIA5FD4YRBI35PHHOUZ
-AWS Secret Access Key [****************ANVU]: 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
+AWS Access Key ID [****************HOUZ]: 
+AWS Secret Access Key [****************ANVU]: 
 Default region name [ap-south-1]:
 Default output format [None]:
 ubuntu@ip-172-31-47-139:~/Devops_90-Days/Day-11-Shell_Scripting$ aws sts get-caller-identity
